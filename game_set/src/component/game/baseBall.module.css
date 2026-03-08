@@ -1,0 +1,89 @@
+.baseball_game {
+  width: 1100px;
+  margin: 50px auto;
+  display: flex;
+  gap: 50px;
+  padding: 30px;
+  border-radius: 8px;
+  background-color: rgb(246, 234, 255);
+}
+
+.baseball_score {
+  width: 350px;
+  background-color: var(--color1);
+  border-radius: 8px;
+  background-color: var(--color3);
+}
+
+.baseball_score > hr {
+  color: black;
+}
+
+.baseball_score > div > ul {
+  display: flex;
+  list-style-type: none;
+  padding: 10px;
+  justify-content: space-between;
+}
+
+.baseball_score > div > ul > li:first-child {
+  border-right: 2px solid var(--color2);
+  padding-right: 10px;
+}
+
+.baseball_score > h3 {
+  border-radius: 8px 8px 0px 0px;
+  background-color: var(--color1);
+  color: var(--color2);
+  text-align: center;
+  padding: 5px 0px;
+}
+
+.baseball_board {
+  width: 100%;
+  padding: 80px;
+}
+
+.baseBall_inputs {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.baseball_input > input {
+  width: 100px;
+  height: 100px;
+  font-size: 100px;
+  font-weight: 700;
+  color: var(--color2);
+  padding: 5px;
+  text-align: center;
+  background-color: var(--color3);
+  border: none;
+  outline: none;
+  border-radius: 8px;
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+}
+
+.btn > button {
+  background-color: var(--color1);
+  border: none;
+  padding: 20px 40px;
+  font-size: 30px;
+  font-weight: 700;
+  border-radius: 8px;
+  color: white;
+}

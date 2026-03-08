@@ -1,0 +1,14 @@
+.page{
+    width: 1200px;
+    margin: 30px auto;
+    padding: 5px;
+    background-color: white;
+}
+
+.page>h2{
+    text-align: center;
+    color: var(--color2);
+    font-size: 25px;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
