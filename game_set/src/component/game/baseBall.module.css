@@ -1,47 +1,59 @@
 .baseball_game {
   width: 1100px;
+  height: 700px;
   margin: 50px auto;
   display: flex;
   gap: 50px;
-  padding: 30px;
+  padding: 50px;
   border-radius: 8px;
   background-color: rgb(246, 234, 255);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
 }
 
 .baseball_score {
   width: 350px;
-  background-color: var(--color1);
   border-radius: 8px;
   background-color: var(--color3);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
-.baseball_score > hr {
-  color: black;
-}
-
-.baseball_score > div > ul {
+.baseball_score>div>ul {
   display: flex;
   list-style-type: none;
   padding: 10px;
   justify-content: space-between;
 }
 
-.baseball_score > div > ul > li:first-child {
+.baseball_score>div>ul>li:first-child {
   border-right: 2px solid var(--color2);
   padding-right: 10px;
+  text-align: center;
+  width: 15%;
 }
 
-.baseball_score > h3 {
+.baseball_score>div>hr {
+  border: none;
+  border-top: 2px solid var(--color6);
+  margin: 0px 5px;
+}
+
+.baseball_score>h3 {
   border-radius: 8px 8px 0px 0px;
   background-color: var(--color1);
-  color: var(--color2);
+  color: var(--color0);
   text-align: center;
-  padding: 5px 0px;
+  padding: 10px 0px;
 }
 
 .baseball_board {
   width: 100%;
   padding: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+  gap: 40px;
 }
 
 .baseBall_inputs {
@@ -52,33 +64,88 @@
   gap: 20px;
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 
-.baseball_input > input {
+.baseball_input {
   width: 100px;
   height: 100px;
-  font-size: 100px;
-  font-weight: 700;
-  color: var(--color2);
-  padding: 5px;
-  text-align: center;
   background-color: var(--color3);
+  color: var(--color4);
+  font-size: 80px;
+  font-weight: 700;
+  text-align: center;
+  padding-bottom: 0px;
   border: none;
   outline: none;
   border-radius: 8px;
+  cursor: pointer;
+}
+
+.baseball_input:hover {
+  transform: scale(1.05);
+  border: 4px solid rgba(0, 0, 0, 0.1);
+}
+
+.input_btn_zone {
+  padding: 20px;
+  background-color: var(--color3);
+  color: var(--color4);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 500px;
+  border-radius: 8px;
+}
+
+.input_btn_zone>h1 {
+  text-align: center;
+}
+
+.input_buttons {
+  color: var(--color4);
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.input_button {
+  width: 70px;
+  height: 70px;
+  font-size: 40px;
+  font-weight: 700;
+  background-color: transparent;
+  color: var(--color4);
+  outline: none;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid var(--color2);
+}
+
+.input_button:hover {
+  background-color: var(--color2);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+.input_button_already {
+  width: 70px;
+  height: 70px;
+  font-size: 40px;
+  font-weight: 700;
+  background-color: transparent;
+  color: var(--color4);
+  outline: none;
+  border-radius: 8px;
+  border: 2px solid var(--color2);
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 .btn {
   display: flex;
   justify-content: center;
-  margin-top: 100px;
 }
 
-.btn > button {
+.btn>button {
   background-color: var(--color1);
   border: none;
   padding: 20px 40px;
