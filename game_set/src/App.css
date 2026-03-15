@@ -1,0 +1,29 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(250, 246, 255);
+}
+
+:root {
+  --color0: #fff;
+  --color1: #6d28d9;
+  --color2: #e2c9ff;
+  --color3: #fef8ff;
+  --color4: #5b21b6;
+  --color5: #d8a4e3;
+  --color6: #8b5cf6;
+}
+
+.wrap {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex-grow: 1;
+}

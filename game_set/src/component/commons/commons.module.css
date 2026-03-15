@@ -1,0 +1,48 @@
+.header {
+  padding: 20px;
+  background: linear-gradient(90deg, #4c1d95, #6d28d9, #e9a8d4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+a {
+  text-decoration: none;
+}
+
+.logo a {
+  color: white;
+  font-size: 30px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.nav {
+  display: flex;
+  gap: 10px;
+}
+
+.nav > a,
+.nav > p {
+  color: var(--color2);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.footer {
+  background-color: var(--color2);
+  padding: 20px;
+}
+
+.footer > div {
+  width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.footer > div > p {
+  padding: 4px 0px;
+  color: var(--color1);
+  font-weight: 600;
+}

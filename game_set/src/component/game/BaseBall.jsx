@@ -26,28 +26,29 @@ const BaseBall = () => {
     }
 
     if (strike === 4) {
-      return (
-        Swal.fire({
-          title: "Correct!",
-          text: "answer: " + answer.join("") + " , " + scores.length + " Times",
-          icon: "success",
-          showCancelButton: true,
-          confirmButtonColor: "#6D28D9",
-          cancelButtonColor: "rgb(0, 0, 0)",
-          confirmButtonText: "REPLAY",
-          cancelButtonText: "HOME"
-        }).then((result) => {
-          if (result.value) {
-            window.location.reload();
-          }
-          if (result.isDismissed) {
-            navigate("/");
-          }
-        })
-      )
+      return Swal.fire({
+        title: "Correct!",
+        text: "answer: " + answer.join("") + " , " + scores.length + " Times",
+        icon: "success",
+        showCancelButton: true,
+        confirmButtonColor: "#6D28D9",
+        cancelButtonColor: "rgb(0, 0, 0)",
+        confirmButtonText: "REPLAY",
+        cancelButtonText: "HOME",
+      }).then((result) => {
+        if (result.value) {
+          window.location.reload();
+        }
+        if (result.isDismissed) {
+          navigate("/");
+        }
+      });
     }
 
-    setScores(scores => [...scores, { number: myAnswer.join(""), strikeCount: strike, ballCount: ball }]);
+    setScores((scores) => [
+      ...scores,
+      { number: myAnswer.join(""), strikeCount: strike, ballCount: ball },
+    ]);
     setThrowBall({});
     setSelectNum("one");
   };
@@ -64,13 +65,19 @@ const BaseBall = () => {
   }, []);
 
   useEffect(() => {
-    console.log(answer);  // answer 값이 변경된 후 로그 출력
+    console.log(answer); // answer 값이 변경된 후 로그 출력
   }, [answer]);
 
   return (
     <div className={styles.baseball_game}>
       <BaseBallScore scores={scores} />
-      <BaseBallInput throwBall={throwBall} setThrowBall={setThrowBall} result={result} selectNum={selectNum} setSelectNum={setSelectNum} />
+      <BaseBallInput
+        throwBall={throwBall}
+        setThrowBall={setThrowBall}
+        result={result}
+        selectNum={selectNum}
+        setSelectNum={setSelectNum}
+      />
     </div>
   );
 };
@@ -82,7 +89,7 @@ const BaseBallScore = ({ scores }) => {
       {scores.map((score, i) => {
         return (
           <div key={"base-" + i}>
-            <ul >
+            <ul>
               <li>{i + 1}</li>
               <li>{score.number}</li>
               <li>{score.strikeCount}S</li>
@@ -94,9 +101,15 @@ const BaseBallScore = ({ scores }) => {
       })}
     </div>
   );
-}
+};
 
-const BaseBallInput = ({ throwBall, setThrowBall, result, selectNum, setSelectNum }) => {
+const BaseBallInput = ({
+  throwBall,
+  setThrowBall,
+  result,
+  selectNum,
+  setSelectNum,
+}) => {
   const arr = Array.from({ length: 10 }, (_, i) => i);
 
   const btnClick = (i) => {
@@ -104,25 +117,39 @@ const BaseBallInput = ({ throwBall, setThrowBall, result, selectNum, setSelectNu
     if (selectNum === "one") setSelectNum("two");
     else if (selectNum === "two") setSelectNum("three");
     else if (selectNum === "three") setSelectNum("four");
-  }
+  };
 
   return (
     <div className={styles.baseball_board}>
       <div className={styles.baseBall_inputs}>
-        <button className={styles.baseball_input} name="one"
-          onClick={(e) => { setSelectNum(e.target.name) }}>
+        <button
+          className={styles.baseball_input}
+          name="one"
+          onClick={(e) => {
+            setSelectNum(e.target.name);
+          }}
+        >
           {throwBall.one}
         </button>
-        <button className={styles.baseball_input} name="two"
-          onClick={(e) => setSelectNum(e.target.name)}>
+        <button
+          className={styles.baseball_input}
+          name="two"
+          onClick={(e) => setSelectNum(e.target.name)}
+        >
           {throwBall.two}
         </button>
-        <button className={styles.baseball_input} name="three"
-          onClick={(e) => setSelectNum(e.target.name)}>
+        <button
+          className={styles.baseball_input}
+          name="three"
+          onClick={(e) => setSelectNum(e.target.name)}
+        >
           {throwBall.three}
         </button>
-        <button className={styles.baseball_input} name="four"
-          onClick={(e) => setSelectNum(e.target.name)}>
+        <button
+          className={styles.baseball_input}
+          name="four"
+          onClick={(e) => setSelectNum(e.target.name)}
+        >
           {throwBall.four}
         </button>
       </div>
@@ -130,9 +157,16 @@ const BaseBallInput = ({ throwBall, setThrowBall, result, selectNum, setSelectNu
         <h1>{selectNum}</h1>
         <div className={styles.input_buttons}>
           {arr.map((i) => (
-            <button className={Object.values(throwBall).includes(i) ? styles.input_button_already : styles.input_button}
+            <button
+              className={
+                Object.values(throwBall).includes(i)
+                  ? styles.input_button_already
+                  : styles.input_button
+              }
               key={"button-" + i}
-              onClick={() => { btnClick(i); }}
+              onClick={() => {
+                btnClick(i);
+              }}
             >
               {i}
             </button>
@@ -140,10 +174,12 @@ const BaseBallInput = ({ throwBall, setThrowBall, result, selectNum, setSelectNu
         </div>
       </div>
       <div className={styles.btn}>
-        <button onClick={result} disabled={Object.keys(throwBall).length < 4}>THROW</button>
+        <button onClick={result} disabled={Object.keys(throwBall).length < 4}>
+          THROW
+        </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default BaseBall;

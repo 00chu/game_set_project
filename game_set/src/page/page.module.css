@@ -1,14 +1,59 @@
 .page {
-    width: 1200px;
-    margin: 30px auto;
-    padding: 30px;
-    background-color: white;
+  width: 1200px;
+  margin: 80px auto;
+  padding: 50px 0px 10px 0px;
+  background-color: white;
+  border-radius: 16px;
 }
 
-.page>h2 {
-    text-align: center;
-    color: var(--color4);
-    font-size: 40px;
-    font-weight: 800;
-    margin-bottom: 30px;
+.page > h2 {
+  text-align: center;
+  color: var(--color4);
+  font-size: 40px;
+  font-weight: 800;
+  margin-bottom: 50px;
+  text-transform: uppercase;
+}
+
+.games > ul {
+  padding: 40px;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.games > ul > a {
+  font-size: 30px;
+  color: var(--color4);
+  font-weight: 600;
+}
+
+.games > ul > a > li {
+  border: 3px solid var(--color6);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+}
+
+.games > ul > a > li:hover {
+  background-color: var(--color2);
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.colorMatch_page {
+  width: 1200px;
+  margin: 80px auto;
+  padding: 50px 0px 10px 0px;
+  background-color: var(--color2);
+  border-radius: 16px;
+}
+
+.colorMatch_page > h2 {
+  text-align: center;
+  color: var(--color4);
+  font-size: 40px;
+  font-weight: 800;
+  margin-bottom: 50px;
+  text-transform: uppercase;
 }
