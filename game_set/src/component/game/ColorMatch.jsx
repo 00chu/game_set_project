@@ -17,7 +17,7 @@ const ColorMatch = () => {
   ];
   const colorKor = ["빨강", "주황", "노랑", "초록", "파랑", "보라", "검정"];
 
-  const [language, setLanguage] = useState();
+  const [language, setLanguage] = useState(0);
 
   const [word, setWord] = useState();
   const [wordColor, setWordColor] = useState();
@@ -29,71 +29,96 @@ const ColorMatch = () => {
     return Math.random() > 0.5 ? arr : [arr[1], arr[0]];
   };
 
-  const match = (i) => {
-    //한국어일때 영어일때로나눠서
-    if (colorEng.indexOf(wordColor) === colorKor.indexOf(i)) {
-      console.log(2);
-      setCount(count + 1);
-    } else {
-      return Swal.fire({
-        title: "Wrong!",
-        text: "",
-        icon: "error",
-        showCancelButton: true,
-        confirmButtonColor: "#6D28D9",
-        cancelButtonColor: "rgb(0, 0, 0)",
-        confirmButtonText: "REPLAY",
-        cancelButtonText: "HOME",
-      }).then((result) => {
-        if (result.value) {
-          window.location.reload();
-        }
-        if (result.isDismissed) {
-          navigate("/");
-        }
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (language) {
-      //한국어
+  const generateGame = () => {
+    if (language === 1) {
       const randomWord = colorKor[Math.floor(Math.random() * colorKor.length)];
-      while (true) {
-        const randomColor =
-          colorKor[Math.floor(Math.random() * colorKor.length)];
-        if (randomWord !== randomColor) {
-          const arr = [];
-          arr.push(randomWord);
-          arr.push(randomColor);
 
-          setWord(randomWord);
-          setWordColor(colorEng[colorKor.indexOf(randomColor)]);
-          setButtonList(shuffle(arr));
+      let randomColor;
+
+      while (true) {
+        const temp = colorKor[Math.floor(Math.random() * colorKor.length)];
+        if (temp !== randomWord) {
+          randomColor = temp;
           break;
         }
       }
-    } else {
-      //영어
-      const randomWord = colorEng[Math.floor(Math.random() * colorEng.length)];
-      const randomColor = colorEng[Math.floor(Math.random() * colorEng.length)];
 
-      const arr = [];
-      arr.push(randomWord);
-      arr.push(randomColor);
+      const arr = shuffle([randomWord, randomColor]);
+
+      setWord(randomWord);
+      setWordColor(colorEng[colorKor.indexOf(randomColor)]);
+      setButtonList(arr);
+    } else {
+      const randomWord = colorEng[Math.floor(Math.random() * colorEng.length)];
+
+      let randomColor;
+
+      while (true) {
+        const temp = colorEng[Math.floor(Math.random() * colorEng.length)];
+        if (temp !== randomWord) {
+          randomColor = temp;
+          break;
+        }
+      }
+
+      const arr = shuffle([randomWord, randomColor]);
 
       setWord(randomWord);
       setWordColor(randomColor);
       setButtonList(arr);
     }
-  }, [count]);
+  };
+
+  const match = (i) => {
+    //한국어일때 영어일때로나눠서
+    if (language === 1) {
+      if (colorEng.indexOf(wordColor) === colorKor.indexOf(i)) {
+        setCount(count + 1);
+      } else {
+        handleWrong();
+      }
+    } else {
+      if (i === wordColor) {
+        setCount(count + 1);
+      } else {
+        handleWrong();
+      }
+    }
+  };
+
+  const handleWrong = async () => {
+    const result = await Swal.fire({
+      title: "Wrong!",
+      icon: "error",
+      showCancelButton: true,
+      confirmButtonColor: "#6D28D9",
+      cancelButtonColor: "rgb(0, 0, 0)",
+      confirmButtonText: "REPLAY",
+      cancelButtonText: "HOME",
+    });
+
+    if (result.isConfirmed) {
+      window.location.reload();
+    }
+
+    if (result.isDismissed) {
+      navigate("/");
+    }
+  };
+
+  useEffect(() => {
+    if (count !== undefined) {
+      generateGame();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [count, language]);
 
   return (
     <div className={styles.colorMatch_game}>
-      {!language && (
+      {language === 0 && (
         <ColorMatchStart setLanguage={setLanguage} setCount={setCount} />
       )}
-      {language && (
+      {language !== 0 && (
         <ColorMatchMain
           count={count}
           word={word}
@@ -116,7 +141,7 @@ const ColorMatchStart = ({ setLanguage, setCount }) => {
       <div className={styles.language}>
         <button
           onClick={() => {
-            setLanguage(true);
+            setLanguage(1);
             setCount(0);
           }}
         >
@@ -124,7 +149,7 @@ const ColorMatchStart = ({ setLanguage, setCount }) => {
         </button>
         <button
           onClick={() => {
-            setLanguage(false);
+            setLanguage(2);
             setCount(0);
           }}
         >
