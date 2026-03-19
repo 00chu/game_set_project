@@ -25,9 +25,13 @@ const ColorMatch = () => {
 
   const [count, setCount] = useState();
 
+  const shuffle = (arr) => {
+    return Math.random() > 0.5 ? arr : [arr[1], arr[0]];
+  };
+
   const match = (i) => {
     //한국어일때 영어일때로나눠서
-    if (wordColor === i) {
+    if (colorEng.indexOf(wordColor) === colorKor.indexOf(i)) {
       console.log(2);
       setCount(count + 1);
     } else {
@@ -52,7 +56,8 @@ const ColorMatch = () => {
   };
 
   useEffect(() => {
-    if (language === 1) {
+    if (language) {
+      //한국어
       const randomWord = colorKor[Math.floor(Math.random() * colorKor.length)];
       while (true) {
         const randomColor =
@@ -64,15 +69,12 @@ const ColorMatch = () => {
 
           setWord(randomWord);
           setWordColor(colorEng[colorKor.indexOf(randomColor)]);
-          console.log(colorKor);
-          console.log(randomWord, randomColor);
-          console.log(colorKor.indexOf(randomColor));
-          console.log(colorEng[colorKor.indexOf(randomColor)]);
-          setButtonList(arr);
+          setButtonList(shuffle(arr));
           break;
         }
       }
     } else {
+      //영어
       const randomWord = colorEng[Math.floor(Math.random() * colorEng.length)];
       const randomColor = colorEng[Math.floor(Math.random() * colorEng.length)];
 
@@ -84,63 +86,86 @@ const ColorMatch = () => {
       setWordColor(randomColor);
       setButtonList(arr);
     }
-  }, [language, count]);
+  }, [count]);
 
   return (
     <div className={styles.colorMatch_game}>
       {!language && (
-        <div className={styles.start}>
-          <div className={styles.game_title}>
-            <p>COLOR</p>
-            <p>MATCH</p>
-          </div>
-          <div className={styles.language}>
-            <button
-              onClick={() => {
-                setLanguage(1);
-              }}
-            >
-              한국어
-            </button>
-            <button
-              onClick={() => {
-                setLanguage(2);
-              }}
-            >
-              English
-            </button>
-          </div>
-        </div>
+        <ColorMatchStart setLanguage={setLanguage} setCount={setCount} />
       )}
       {language && (
-        <>
-          <div className={styles.progress}>
-            <h1>time</h1>
-            <h1>{count}!</h1>
-          </div>
-          <div className={styles.word_zone}>
-            <h1>글씨의 색을 선택하세요</h1>
-            <p style={{ color: wordColor }}>{word}</p>
-            <div className={styles.btn_zone}>
-              {buttonList.map((i) => {
-                return (
-                  <button
-                    key={"button-" + i}
-                    name={i}
-                    onClick={(e) => {
-                      console.log(e.target.name);
-                      match(i);
-                    }}
-                  >
-                    {i}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </>
+        <ColorMatchMain
+          count={count}
+          word={word}
+          wordColor={wordColor}
+          buttonList={buttonList}
+          match={match}
+        />
       )}
     </div>
+  );
+};
+
+const ColorMatchStart = ({ setLanguage, setCount }) => {
+  return (
+    <main className={styles.start}>
+      <div className={styles.game_title}>
+        <p>COLOR</p>
+        <p>MATCH</p>
+      </div>
+      <div className={styles.language}>
+        <button
+          onClick={() => {
+            setLanguage(true);
+            setCount(0);
+          }}
+        >
+          한국어
+        </button>
+        <button
+          onClick={() => {
+            setLanguage(false);
+            setCount(0);
+          }}
+        >
+          English
+        </button>
+      </div>
+    </main>
+  );
+};
+
+const ColorMatchMain = ({ count, word, wordColor, buttonList, match }) => {
+  return (
+    <main>
+      <div className={styles.progress}>
+        <p>count: {count}</p>
+        <p>time: </p>
+      </div>
+      <div className={styles.word_zone}>
+        <p className={styles.main_title}>글씨의 색을 선택하세요</p>
+        <p className={styles.color_word} style={{ color: wordColor }}>
+          {word}
+        </p>
+        <div className={styles.btn_zone}>
+          {buttonList.map((i) => {
+            return (
+              <button
+                className={styles.color_btn}
+                key={"button-" + i}
+                name={i}
+                onClick={(e) => {
+                  console.log(e.target.name);
+                  match(i);
+                }}
+              >
+                {i}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </main>
   );
 };
 
