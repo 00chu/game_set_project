@@ -18,12 +18,12 @@ const ColorMatch = () => {
   const colorKor = ["빨강", "주황", "노랑", "초록", "파랑", "보라", "검정"];
 
   const [language, setLanguage] = useState(0);
-
   const [word, setWord] = useState();
   const [wordColor, setWordColor] = useState();
   const [buttonList, setButtonList] = useState([]);
-
   const [count, setCount] = useState();
+  const [time, setTime] = useState(0);
+  const [over, setOver] = useState(false);
 
   const shuffle = (arr) => {
     return Math.random() > 0.5 ? arr : [arr[1], arr[0]];
@@ -70,7 +70,7 @@ const ColorMatch = () => {
   };
 
   const match = (i) => {
-    //한국어일때 영어일때로나눠서
+    //한국어일때 영어일때
     if (language === 1) {
       if (colorEng.indexOf(wordColor) === colorKor.indexOf(i)) {
         setCount(count + 1);
@@ -87,9 +87,12 @@ const ColorMatch = () => {
   };
 
   const handleWrong = async () => {
+    setOver(true);
+
     const result = await Swal.fire({
-      title: "Wrong!",
+      title: "Game Over",
       icon: "error",
+      text: `Correct: ${count}, time: ${parseInt(time / 60)}:${time % 60}`,
       showCancelButton: true,
       confirmButtonColor: "#6D28D9",
       cancelButtonColor: "rgb(0, 0, 0)",
@@ -113,6 +116,17 @@ const ColorMatch = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [count, language]);
 
+  useEffect(() => {
+    const id = setInterval(() => {
+      setTime((time) => time + 1);
+    }, 1000);
+
+    if (over) {
+      clearInterval(id);
+    }
+    return () => clearInterval(id);
+  }, [time, over]);
+
   return (
     <div className={styles.colorMatch_game}>
       {language === 0 && (
@@ -121,6 +135,7 @@ const ColorMatch = () => {
       {language !== 0 && (
         <ColorMatchMain
           count={count}
+          time={time}
           word={word}
           wordColor={wordColor}
           buttonList={buttonList}
@@ -160,12 +175,21 @@ const ColorMatchStart = ({ setLanguage, setCount }) => {
   );
 };
 
-const ColorMatchMain = ({ count, word, wordColor, buttonList, match }) => {
+const ColorMatchMain = ({
+  count,
+  time,
+  word,
+  wordColor,
+  buttonList,
+  match,
+}) => {
   return (
     <main>
       <div className={styles.progress}>
         <p>count: {count}</p>
-        <p>time: </p>
+        <p>
+          time: {parseInt(time / 60)}:{time % 60}
+        </p>
       </div>
       <div className={styles.word_zone}>
         <p className={styles.main_title}>글씨의 색을 선택하세요</p>
