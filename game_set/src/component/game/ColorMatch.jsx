@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./colorMatch.module.css";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +25,8 @@ const ColorMatch = () => {
   const [time, setTime] = useState(0);
   const [over, setOver] = useState(false);
   const [progress, setProgress] = useState(100);
+  const timerRef = useRef(null);
+  const GameOverRef = useRef(false);
 
   const shuffle = (arr) => {
     return Math.random() > 0.5 ? arr : [arr[1], arr[0]];
@@ -71,6 +73,7 @@ const ColorMatch = () => {
   };
 
   const match = (i) => {
+    if (GameOverRef.current) return;
     //한국어일때 영어일때
     if (language === 1) {
       if (colorEng.indexOf(wordColor) === colorKor.indexOf(i)) {
@@ -88,7 +91,14 @@ const ColorMatch = () => {
   };
 
   const handleWrong = async () => {
+    if (GameOverRef.current) return;
+
+    GameOverRef.current = true;
     setOver(true);
+
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
 
     const result = await Swal.fire({
       title: "Game Over",
@@ -135,7 +145,11 @@ const ColorMatch = () => {
   }, [over]);
 
   useEffect(() => {
-    if (over) return;
+    if (language === 0 || over) return;
+
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
 
     setProgress(100);
 
@@ -145,23 +159,34 @@ const ColorMatch = () => {
 
     let current = 100;
 
-    const id = setInterval(() => {
+    timerRef.current = setInterval(() => {
       current -= step;
       setProgress(current);
 
       if (current <= 0) {
-        clearInterval(id);
-        handleWrong();
+        clearInterval(timerRef.current);
+        if (!GameOverRef.current) {
+          handleWrong();
+        }
       }
     }, intervalTime);
 
-    return () => clearInterval(id);
-  }, [count]);
+    // cleanup
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [count, language]);
 
   return (
     <div className={styles.colorMatch_game}>
       {language === 0 && (
-        <ColorMatchStart setLanguage={setLanguage} setCount={setCount} />
+        <ColorMatchStart
+          setLanguage={setLanguage}
+          setCount={setCount}
+          GameOverRef={GameOverRef}
+        />
       )}
       {language !== 0 && (
         <ColorMatchMain
@@ -179,7 +204,7 @@ const ColorMatch = () => {
   );
 };
 
-const ColorMatchStart = ({ setLanguage, setCount }) => {
+const ColorMatchStart = ({ setLanguage, setCount, GameOverRef }) => {
   return (
     <main className={styles.start}>
       <div className={styles.game_title}>
@@ -191,6 +216,8 @@ const ColorMatchStart = ({ setLanguage, setCount }) => {
           onClick={() => {
             setLanguage(1);
             setCount(0);
+
+            GameOverRef.current = false;
           }}
         >
           한국어
@@ -199,6 +226,7 @@ const ColorMatchStart = ({ setLanguage, setCount }) => {
           onClick={() => {
             setLanguage(2);
             setCount(0);
+            GameOverRef.current = false;
           }}
         >
           English
