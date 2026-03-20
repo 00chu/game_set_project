@@ -21,9 +21,10 @@ const ColorMatch = () => {
   const [word, setWord] = useState();
   const [wordColor, setWordColor] = useState();
   const [buttonList, setButtonList] = useState([]);
-  const [count, setCount] = useState();
+  const [count, setCount] = useState(0);
   const [time, setTime] = useState(0);
   const [over, setOver] = useState(false);
+  const [progress, setProgress] = useState(100);
 
   const shuffle = (arr) => {
     return Math.random() > 0.5 ? arr : [arr[1], arr[0]];
@@ -73,13 +74,13 @@ const ColorMatch = () => {
     //한국어일때 영어일때
     if (language === 1) {
       if (colorEng.indexOf(wordColor) === colorKor.indexOf(i)) {
-        setCount(count + 1);
+        setCount((prev) => prev + 1);
       } else {
         handleWrong();
       }
     } else {
       if (i === wordColor) {
-        setCount(count + 1);
+        setCount((prev) => prev + 1);
       } else {
         handleWrong();
       }
@@ -92,7 +93,7 @@ const ColorMatch = () => {
     const result = await Swal.fire({
       title: "Game Over",
       icon: "error",
-      text: `Correct: ${count}, time: ${parseInt(time / 60)}:${time % 60}`,
+      text: `Correct: ${count}, time: ${formatTime(time)}`,
       showCancelButton: true,
       confirmButtonColor: "#6D28D9",
       cancelButtonColor: "rgb(0, 0, 0)",
@@ -107,6 +108,12 @@ const ColorMatch = () => {
     if (result.isDismissed) {
       navigate("/");
     }
+  };
+
+  const formatTime = (time) => {
+    const m = String(Math.floor(time / 60)).padStart(2, "0");
+    const s = String(time % 60).padStart(2, "0");
+    return `${m}:${s}`;
   };
 
   useEffect(() => {
@@ -125,7 +132,31 @@ const ColorMatch = () => {
       clearInterval(id);
     }
     return () => clearInterval(id);
-  }, [time, over]);
+  }, [over]);
+
+  useEffect(() => {
+    if (over) return;
+
+    setProgress(100);
+
+    const duration = 3000;
+    const intervalTime = 50;
+    const step = 100 / (duration / intervalTime);
+
+    let current = 100;
+
+    const id = setInterval(() => {
+      current -= step;
+      setProgress(current);
+
+      if (current <= 0) {
+        clearInterval(id);
+        handleWrong();
+      }
+    }, intervalTime);
+
+    return () => clearInterval(id);
+  }, [count]);
 
   return (
     <div className={styles.colorMatch_game}>
@@ -140,6 +171,8 @@ const ColorMatch = () => {
           wordColor={wordColor}
           buttonList={buttonList}
           match={match}
+          formatTime={formatTime}
+          progress={progress}
         />
       )}
     </div>
@@ -181,27 +214,41 @@ const ColorMatchMain = ({
   word,
   wordColor,
   buttonList,
+  formatTime,
   match,
+  progress,
 }) => {
   return (
     <main>
       <div className={styles.progress}>
         <p>count: {count}</p>
-        <p>
-          time: {parseInt(time / 60)}:{time % 60}
-        </p>
+        <p>time: {formatTime(time)}</p>
       </div>
       <div className={styles.word_zone}>
+        <div className={styles.progress_bar}>
+          <div
+            className={styles.progress_fill}
+            style={{
+              width: `${progress}%`,
+              background:
+                progress > 50
+                  ? "#6D28D9"
+                  : progress > 20
+                    ? "#F59E0B"
+                    : "#EF4444",
+            }}
+          />
+        </div>
         <p className={styles.main_title}>글씨의 색을 선택하세요</p>
         <p className={styles.color_word} style={{ color: wordColor }}>
           {word}
         </p>
         <div className={styles.btn_zone}>
-          {buttonList.map((i) => {
+          {buttonList.map((i, index) => {
             return (
               <button
                 className={styles.color_btn}
-                key={"button-" + i}
+                key={"button-" + i + index}
                 name={i}
                 onClick={(e) => {
                   console.log(e.target.name);
