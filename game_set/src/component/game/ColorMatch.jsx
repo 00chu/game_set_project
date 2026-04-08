@@ -88,6 +88,8 @@ const ColorMatch = () => {
   };
 
   const handleWrong = async () => {
+    if (over) return;
+
     setOver(true);
 
     const result = await Swal.fire({
@@ -124,6 +126,8 @@ const ColorMatch = () => {
   }, [count, language]);
 
   useEffect(() => {
+    if (language === 0) return;
+
     const id = setInterval(() => {
       setTime((time) => time + 1);
     }, 1000);
@@ -132,10 +136,10 @@ const ColorMatch = () => {
       clearInterval(id);
     }
     return () => clearInterval(id);
-  }, [over]);
+  }, [over, language]);
 
   useEffect(() => {
-    if (over) return;
+    if (language === 0 || over) return;
 
     setProgress(100);
 
@@ -156,7 +160,7 @@ const ColorMatch = () => {
     }, intervalTime);
 
     return () => clearInterval(id);
-  }, [count]);
+  }, [count, language, over]);
 
   return (
     <div className={styles.colorMatch_game}>
