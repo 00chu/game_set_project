@@ -7,11 +7,14 @@ const GameMainPage = () => {
       <h2>🎮game list🎮</h2>
       <ul className={styles.games}>
         <ul>
-          <Link to="/baseBall">
-            <li>⚾baseball⚾</li>
+          <Link to="/baseball">
+            <li>⚾ baseball ⚾</li>
           </Link>
-          <Link to="/colorMatch">
-            <li>✅colormatch✅</li>
+          <Link to="/color-match">
+            <li>✅ color match ✅</li>
+          </Link>
+          <Link to="/speed-test">
+            <li>💨 speed test 💨</li>
           </Link>
         </ul>
       </ul>
