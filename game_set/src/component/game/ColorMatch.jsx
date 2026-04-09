@@ -122,7 +122,6 @@ const ColorMatch = () => {
     if (count !== undefined) {
       generateGame();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [count, language]);
 
   useEffect(() => {
