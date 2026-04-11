@@ -1,62 +1,83 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./SpeedSelectNumber.module.css";
 
 const SpeedSelectNumber = () => {
   const [start, setStart] = useState(false);
-  const [number, setNumber] = useState(25);
+  const [num, setNum] = useState(10);
+  const [list, setList] = useState([]);
 
-  return start ? (
+  useEffect(() => {
+    const numList = Array.from({ length: num }, (_, i) => i + 1).sort(
+      () => Math.random() - 0.5,
+    );
+
+    setList(numList);
+  }, [start]);
+
+  return !start ? (
     <SpeedSelectNumberStart
       start={start}
       setStart={setStart}
-      number={number}
-      setNumber={setNumber}
+      num={num}
+      setNum={setNum}
     />
   ) : (
-    <SpeedSelectNumberStart />
+    <SpeedSelectNumberGame list={list} />
   );
 };
 
-const SpeedSelectNumberStart = ({ number, setNumber, setStart }) => {
+const SpeedSelectNumberStart = ({ num, setNum, setStart }) => {
   return (
-    <div>
-      <h1>Speed Test</h1>
-      <input
-        type="number"
-        name="number"
-        id="number"
-        value={number}
-        onChange={(e) => {
-          setNumber(e.target.value);
-        }}
-      ></input>
-      <div className={styles.number_button_wrap}>
-        <button
-          type="button"
-          className={styles.button_up}
-          onClick={setNumber((prev) => {
-            prev + 1;
-          })}
-        >
-          ▲
-        </button>
-        <button
-          type="button"
-          className={styles.button_down}
-          onClick={setNumber((prev) => {
-            prev - 1;
-          })}
-        >
-          ▼
-        </button>
+    <div className={styles.speed_game}>
+      <h1 className={styles.speed_game_title}>Choose a number</h1>
+      <div className={styles.input_number}>
+        <input
+          type="number"
+          name="number"
+          id="number"
+          value={num}
+          readOnly={true}
+          onChange={(e) => {
+            setNum(e.target.value);
+          }}
+        ></input>
+        <div className={styles.number_button_wrap}>
+          <button
+            type="button"
+            className={styles.button_up}
+            onClick={() => setNum((prev) => Math.min(100, prev + 10))}
+          >
+            ▲
+          </button>
+          <button
+            type="button"
+            className={styles.button_down}
+            onClick={() => setNum((prev) => Math.max(10, prev - 10))}
+          >
+            ▼
+          </button>
+        </div>
       </div>
       <button
         type="button"
         className={styles.button_start}
-        onClick={setStart(true)}
+        onClick={() => setStart(true)}
       >
         start
       </button>
+    </div>
+  );
+};
+
+const SpeedSelectNumberGame = ({ list }) => {
+  return (
+    <div className={styles.speed_game}>
+      <h1 className={styles.speed_game_title}>Click the numbers in order</h1>
+      <div className={styles.button_list_wrap}>
+        {list.map((n) => (
+          <button key={"button" + n}>{n}</button>
+        ))}
+      </div>
     </div>
   );
 };

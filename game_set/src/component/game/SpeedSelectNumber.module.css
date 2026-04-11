@@ -1,0 +1,88 @@
+.speed_game {
+  width: 1100px;
+  height: 700px;
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+  padding: 50px;
+  border-radius: 8px;
+  background-color: rgb(246, 234, 255);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  justify-content: center;
+}
+
+.speed_game_title {
+  color: var(--color4);
+  font-size: 50px;
+  font-weight: 800;
+  background-color: var(--color2);
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.input_number {
+  display: flex;
+  gap: 12px;
+}
+
+.input_number > input {
+  width: 200px;
+  font-size: 100px;
+  font-weight: 600;
+  border-radius: 8px;
+  outline: none;
+  color: var(--color4);
+  border: 4px solid var(--color6);
+  text-align: center;
+  cursor: default;
+}
+
+.number_button_wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.number_button_wrap > button {
+  font-size: 50px;
+  border-radius: 8px;
+  width: 80px;
+  height: 80px;
+
+  color: var(--color4);
+  border: 4px solid var(--color6);
+  background-color: var(--color3);
+}
+
+.button_start {
+  font-size: 80px;
+  padding: 10px 20px;
+  font-weight: 600;
+  border-radius: 8px;
+  color: var(--color4);
+  border: 4px solid var(--color6);
+  background-color: var(--color3);
+  text-align: center;
+}
+
+.button_list_wrap {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.button_list_wrap > button {
+  padding: 10px;
+  border-radius: 4px;
+  background-color: white;
+  border: 1px solid var(--color6);
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--color4);
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  cursor: pointer;
+}
