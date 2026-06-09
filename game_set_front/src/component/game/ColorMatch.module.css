@@ -1,0 +1,432 @@
+.colorMatch_game {
+  width: min(1200px, 95%);
+  min-height: 700px;
+  background: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 700px;
+}
+
+/* =========================
+   START
+========================= */
+
+.start {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 80px;
+
+  padding: 40px;
+}
+
+.game_title {
+  text-align: center;
+}
+
+.game_title > p {
+  font-size: clamp(56px, 10vw, 110px);
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  letter-spacing: 8px;
+
+  background: linear-gradient(90deg, #8b5cf6, #c084fc);
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.language {
+  display: flex;
+
+  gap: 20px;
+
+  flex-wrap: wrap;
+}
+
+.language > button {
+  min-width: 180px;
+
+  padding: 18px 30px;
+
+  border: none;
+
+  border-radius: 16px;
+
+  background: linear-gradient(90deg, #8b5cf6, #a855f7);
+
+  color: white;
+
+  font-size: 24px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition: 0.25s;
+}
+
+.language > button:hover {
+  transform: translateY(-5px);
+
+  box-shadow: 0 12px 25px rgba(139, 92, 246, 0.4);
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+.progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 18px 26px;
+
+  background: rgba(15, 23, 42, 0.7);
+}
+
+.progress > p {
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+
+  padding: 6px 12px;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.08);
+  transition: 0.2s;
+}
+
+/* =========================
+   GAME
+========================= */
+
+.word_zone {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 50px;
+
+  padding: 40px;
+}
+
+.progress_bar {
+  width: min(700px, 100%);
+
+  height: 12px;
+
+  background: #334155;
+
+  border-radius: 999px;
+
+  overflow: hidden;
+}
+
+.progress_fill {
+  height: 100%;
+
+  transition: width 0.1s linear;
+}
+
+.main_title {
+  color: #cbd5e1;
+
+  font-size: clamp(22px, 3vw, 34px);
+
+  font-weight: 700;
+
+  text-align: center;
+}
+
+.color_word {
+  font-size: clamp(60px, 12vw, 120px);
+
+  font-weight: 900;
+
+  text-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+}
+
+.btn_zone {
+  display: flex;
+
+  gap: 20px;
+
+  flex-wrap: wrap;
+
+  justify-content: center;
+}
+
+.color_btn {
+  min-width: 180px;
+
+  padding: 18px 30px;
+
+  border: 2px solid #334155;
+
+  border-radius: 18px;
+
+  background: #0f172a;
+
+  color: white;
+
+  font-size: 26px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition: 0.25s;
+}
+
+.color_btn:hover {
+  border-color: #8b5cf6;
+  box-shadow: 0 12px 25px rgba(139, 92, 246, 0.35);
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 1024px) {
+  .colorMatch_game {
+    width: 95%;
+  }
+
+  .word_zone {
+    gap: 40px;
+  }
+
+  .progress > p {
+    font-size: 20px;
+  }
+
+  .color_btn {
+    min-width: 150px;
+
+    font-size: 22px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+  .colorMatch_game {
+    width: 100%;
+
+    height: auto;
+
+    min-height: auto;
+
+    margin: 0;
+
+    padding: 20px;
+
+    border-radius: 20px;
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .start {
+    gap: 25px;
+    padding: 20px;
+  }
+
+  .game_title > p {
+    font-size: 56px;
+
+    letter-spacing: 8px;
+  }
+
+  .language {
+    width: 100%;
+
+    flex-direction: column;
+  }
+
+  .language > button {
+    width: 100%;
+
+    font-size: 22px;
+  }
+
+  .progress {
+    background: transparent;
+    padding: 10px 0;
+  }
+
+  .progress > p {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    color: #1e293b;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0.8;
+  }
+
+  .word_zone {
+    gap: 20px;
+    padding: 10px 0;
+  }
+
+  .main_title {
+    font-size: 22px;
+  }
+
+  .color_word {
+    font-size: 48px;
+  }
+
+  .btn_zone {
+    width: 100%;
+
+    flex-direction: column;
+
+    gap: 12px;
+  }
+
+  .color_btn {
+    height: 48px;
+    padding: 0 16px;
+
+    font-size: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.gameOverOverlay {
+  position: fixed;
+  inset: 0;
+
+  /* 🔥 배경 개선 (너무 검정 → 그라데이션) */
+  background: radial-gradient(
+    circle at center,
+    rgba(139, 92, 246, 0.25),
+    rgba(0, 0, 0, 0.85)
+  );
+
+  backdrop-filter: blur(8px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 9999;
+}
+
+.gameOverCard {
+  width: min(420px, 90vw); /* 🔥 커짐 */
+  padding: 32px 28px;
+
+  border-radius: 20px;
+
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(139, 92, 246, 0.2);
+
+  text-align: center;
+
+  animation: pop 0.25s ease;
+}
+
+.gameOverCard h1 {
+  margin: 0 0 14px;
+  font-size: 26px;
+  font-weight: 900;
+
+  color: #ef4444;
+  letter-spacing: 3px;
+
+  text-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+.gameOverCard p {
+  margin: 8px 0;
+  color: #e5e7eb;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.btnRow {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.btnRow button {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+
+  border: none;
+  cursor: pointer;
+
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+/* REPLAY */
+.btnRow button:first-child {
+  background: #6d28d9;
+  color: white;
+}
+
+.btnRow button:first-child:hover {
+  background: #5b21b6;
+  transform: translateY(-1px);
+}
+
+/* HOME */
+.btnRow button:last-child {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e5e7eb;
+}
+
+.btnRow button:last-child:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
