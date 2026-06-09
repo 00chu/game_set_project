@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import styles from "./page.module.css";
+import styles from "./GameMainPage.module.css";
 
 const GameMainPage = () => {
   return (

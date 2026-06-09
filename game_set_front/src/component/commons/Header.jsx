@@ -8,7 +8,9 @@ const Header = () => {
         🎮 CodeArcade
       </Link>
 
-      <span className={styles.badge}>React Mini Games</span>
+      <Link to="/login" className={styles.badge}>
+        Log In
+      </Link>
     </header>
   );
 };

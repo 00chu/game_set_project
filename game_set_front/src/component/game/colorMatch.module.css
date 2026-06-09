@@ -200,10 +200,7 @@ main {
 }
 
 .color_btn:hover {
-  transform: translateY(-5px);
-
   border-color: #8b5cf6;
-
   box-shadow: 0 12px 25px rgba(139, 92, 246, 0.35);
 }
 
@@ -325,4 +322,111 @@ main {
     align-items: center;
     justify-content: center;
   }
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.gameOverOverlay {
+  position: fixed;
+  inset: 0;
+
+  /* 🔥 배경 개선 (너무 검정 → 그라데이션) */
+  background: radial-gradient(
+    circle at center,
+    rgba(139, 92, 246, 0.25),
+    rgba(0, 0, 0, 0.85)
+  );
+
+  backdrop-filter: blur(8px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 9999;
+}
+
+.gameOverCard {
+  width: min(420px, 90vw); /* 🔥 커짐 */
+  padding: 32px 28px;
+
+  border-radius: 20px;
+
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(139, 92, 246, 0.2);
+
+  text-align: center;
+
+  animation: pop 0.25s ease;
+}
+
+.gameOverCard h1 {
+  margin: 0 0 14px;
+  font-size: 26px;
+  font-weight: 900;
+
+  color: #ef4444;
+  letter-spacing: 3px;
+
+  text-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+.gameOverCard p {
+  margin: 8px 0;
+  color: #e5e7eb;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.btnRow {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.btnRow button {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+
+  border: none;
+  cursor: pointer;
+
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+/* REPLAY */
+.btnRow button:first-child {
+  background: #6d28d9;
+  color: white;
+}
+
+.btnRow button:first-child:hover {
+  background: #5b21b6;
+  transform: translateY(-1px);
+}
+
+/* HOME */
+.btnRow button:last-child {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e5e7eb;
+}
+
+.btnRow button:last-child:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
 }

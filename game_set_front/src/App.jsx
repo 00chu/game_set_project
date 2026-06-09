@@ -5,6 +5,7 @@ import GameMainPage from "./page/GameMainPage";
 import Footer from "./component/commons/Footer";
 import "./App.css";
 import ColorMatchPage from "./page/ColorMatchPage";
+import LoginPage from "./page/LoginPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <div className="main">
         <Routes>
           <Route path="/" element={<GameMainPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/baseBall" element={<BaseBallPage />} />
           <Route path="/colorMatch" element={<ColorMatchPage />} />
         </Routes>

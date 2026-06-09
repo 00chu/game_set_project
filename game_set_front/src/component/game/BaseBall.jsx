@@ -11,44 +11,37 @@ const BaseBall = () => {
   const [scores, setScores] = useState([]);
   const [selectNum, setSelectNum] = useState("one");
 
+  const [isGameOver, setIsGameOver] = useState(false);
+
   const result = () => {
     const myAnswer = Object.values(throwBall);
+
     let strike = 0;
     let ball = 0;
+
     for (let i = 0; i < 4; i++) {
       if (answer[i] === myAnswer[i]) {
         strike++;
-      } else {
-        if (answer.includes(myAnswer[i])) {
-          ball++;
-        }
+      } else if (answer.includes(myAnswer[i])) {
+        ball++;
       }
     }
 
     if (strike === 4) {
-      return Swal.fire({
-        title: "Correct!",
-        text: "answer: " + answer.join("") + " , " + scores.length + " Times",
-        icon: "success",
-        showCancelButton: true,
-        confirmButtonColor: "#6D28D9",
-        cancelButtonColor: "rgb(0, 0, 0)",
-        confirmButtonText: "REPLAY",
-        cancelButtonText: "HOME",
-      }).then((result) => {
-        if (result.value) {
-          window.location.reload();
-        }
-        if (result.isDismissed) {
-          navigate("/");
-        }
-      });
+      setIsGameOver(true); // 🔥 여기 중요
+
+      return;
     }
 
     setScores((scores) => [
       ...scores,
-      { number: myAnswer.join(""), strikeCount: strike, ballCount: ball },
+      {
+        number: myAnswer.join(""),
+        strikeCount: strike,
+        ballCount: ball,
+      },
     ]);
+
     setThrowBall({});
     setSelectNum("one");
   };
@@ -100,6 +93,34 @@ const BaseBall = () => {
           selectNum={selectNum}
           setSelectNum={setSelectNum}
         />
+      )}
+      {isGameOver && (
+        <div className={styles.gameOverOverlay}>
+          <div className={styles.gameOverCard}>
+            <h1>HOME RUN 🎉</h1>
+
+            <p>정답: {answer.join("")}</p>
+            <p>시도 횟수: {scores.length + 1}</p>
+
+            <div className={styles.btnRow}>
+              <button
+                onClick={() => {
+                  window.location.reload();
+                }}
+              >
+                REPLAY
+              </button>
+
+              <button
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                HOME
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

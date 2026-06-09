@@ -3,19 +3,18 @@ import styles from "./ColorMatch.module.css";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
+const COLORS = [
+  { name: "red", kor: "빨강", color: "#ef4444" },
+  { name: "orange", kor: "주황", color: "#f97316" },
+  { name: "yellow", kor: "노랑", color: "#facc15" },
+  { name: "green", kor: "초록", color: "#22c55e" },
+  { name: "blue", kor: "파랑", color: "#3b82f6" },
+  { name: "purple", kor: "보라", color: "#a855f7" },
+  { name: "black", kor: "검정", color: "#111827" },
+];
+
 const ColorMatch = () => {
   const navigate = useNavigate();
-
-  const colorEng = [
-    "red",
-    "orange",
-    "yellow",
-    "green",
-    "blue",
-    "purple",
-    "black",
-  ];
-  const colorKor = ["빨강", "주황", "노랑", "초록", "파랑", "보라", "검정"];
 
   const [language, setLanguage] = useState(0);
   const [word, setWord] = useState();
@@ -25,99 +24,67 @@ const ColorMatch = () => {
   const [time, setTime] = useState(0);
   const [over, setOver] = useState(false);
   const [progress, setProgress] = useState(100);
+
   const timerRef = useRef(null);
-  const GameOverRef = useRef(false);
+  const gameOverRef = useRef(false);
 
-  const shuffle = (arr) => {
-    return Math.random() > 0.5 ? arr : [arr[1], arr[0]];
-  };
+  const shuffle = (arr) => (Math.random() > 0.5 ? arr : [arr[1], arr[0]]);
 
+  // 🎯 게임 생성
   const generateGame = () => {
+    const list = COLORS;
+
+    const randomIndex = Math.floor(Math.random() * list.length);
+    const randomWord = list[randomIndex];
+
+    let randomColorObj;
+    while (true) {
+      const temp = list[Math.floor(Math.random() * list.length)];
+      if (temp.name !== randomWord.name) {
+        randomColorObj = temp;
+        break;
+      }
+    }
+
+    const arr = shuffle([randomWord, randomColorObj]);
+
     if (language === 1) {
-      const randomWord = colorKor[Math.floor(Math.random() * colorKor.length)];
-
-      let randomColor;
-
-      while (true) {
-        const temp = colorKor[Math.floor(Math.random() * colorKor.length)];
-        if (temp !== randomWord) {
-          randomColor = temp;
-          break;
-        }
-      }
-
-      const arr = shuffle([randomWord, randomColor]);
-
-      setWord(randomWord);
-      setWordColor(colorEng[colorKor.indexOf(randomColor)]);
-      setButtonList(arr);
+      // 한국어 모드
+      setWord(randomWord.kor);
+      setWordColor(randomColorObj.color);
+      setButtonList(arr.map((v) => v.kor));
     } else {
-      const randomWord = colorEng[Math.floor(Math.random() * colorEng.length)];
-
-      let randomColor;
-
-      while (true) {
-        const temp = colorEng[Math.floor(Math.random() * colorEng.length)];
-        if (temp !== randomWord) {
-          randomColor = temp;
-          break;
-        }
-      }
-
-      const arr = shuffle([randomWord, randomColor]);
-
-      setWord(randomWord);
-      setWordColor(randomColor);
-      setButtonList(arr);
+      // 영어 모드
+      setWord(randomWord.name);
+      setWordColor(randomColorObj.color);
+      setButtonList(arr.map((v) => v.name));
     }
   };
 
-  const match = (i) => {
-    if (GameOverRef.current) return;
-    //한국어일때 영어일때
-    if (language === 1) {
-      if (colorEng.indexOf(wordColor) === colorKor.indexOf(i)) {
-        setCount((prev) => prev + 1);
-      } else {
-        handleWrong();
-      }
+  // 🎯 정답 체크
+  const match = (value) => {
+    if (gameOverRef.current) return;
+
+    const target = COLORS.find((c) =>
+      language === 1 ? c.kor === value : c.name === value,
+    );
+
+    const targetColor = COLORS.find((c) => c.color === wordColor);
+
+    if (target?.name === targetColor?.name) {
+      setCount((prev) => prev + 1);
     } else {
-      if (i === wordColor) {
-        setCount((prev) => prev + 1);
-      } else {
-        handleWrong();
-      }
+      handleWrong();
     }
   };
 
-  const handleWrong = async () => {
-    if (GameOverRef.current) return;
+  const handleWrong = () => {
+    if (gameOverRef.current) return;
 
-    GameOverRef.current = true;
+    gameOverRef.current = true;
     setOver(true);
 
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
-
-    const result = await Swal.fire({
-      title: "Game Over",
-      icon: "error",
-      text: `Correct: ${count}, time: ${formatTime(time)}`,
-      showCancelButton: true,
-      confirmButtonColor: "#6D28D9",
-      cancelButtonColor: "rgb(0, 0, 0)",
-      confirmButtonText: "REPLAY",
-      cancelButtonText: "HOME",
-    });
-
-    if (result.isConfirmed) {
-      window.location.reload();
-    }
-
-    if (result.isDismissed) {
-      navigate("/");
-    }
+    if (timerRef.current) clearInterval(timerRef.current);
   };
 
   const formatTime = (time) => {
@@ -126,30 +93,25 @@ const ColorMatch = () => {
     return `${m}:${s}`;
   };
 
+  // 🎯 게임 재생성
   useEffect(() => {
-    if (count !== undefined) {
+    if (language !== 0 && !over) {
       generateGame();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [count, language]);
 
+  // ⏱ 타이머
   useEffect(() => {
-    const id = setInterval(() => {
-      setTime((time) => time + 1);
-    }, 1000);
-
-    if (over) {
-      clearInterval(id);
-    }
+    const id = setInterval(() => setTime((t) => t + 1), 1000);
+    if (over) clearInterval(id);
     return () => clearInterval(id);
   }, [over]);
 
+  // 🔥 프로그레스 타이머
   useEffect(() => {
     if (language === 0 || over) return;
 
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
+    if (timerRef.current) clearInterval(timerRef.current);
 
     setProgress(100);
 
@@ -165,18 +127,11 @@ const ColorMatch = () => {
 
       if (current <= 0) {
         clearInterval(timerRef.current);
-        if (!GameOverRef.current) {
-          handleWrong();
-        }
+        if (!gameOverRef.current) handleWrong();
       }
     }, intervalTime);
 
-    // cleanup
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
+    return () => clearInterval(timerRef.current);
   }, [count, language]);
 
   return (
@@ -185,9 +140,10 @@ const ColorMatch = () => {
         <ColorMatchStart
           setLanguage={setLanguage}
           setCount={setCount}
-          GameOverRef={GameOverRef}
+          gameOverRef={gameOverRef}
         />
       )}
+
       {language !== 0 && (
         <ColorMatchMain
           count={count}
@@ -200,33 +156,49 @@ const ColorMatch = () => {
           progress={progress}
         />
       )}
+
+      {over && (
+        <div className={styles.gameOverOverlay}>
+          <div className={styles.gameOverCard}>
+            <h1>GAME OVER</h1>
+            <p>Correct: {count}</p>
+            <p>Time: {formatTime(time)}</p>
+
+            <div className={styles.btnRow}>
+              <button onClick={() => window.location.reload()}>REPLAY</button>
+              <button onClick={() => navigate("/")}>HOME</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-const ColorMatchStart = ({ setLanguage, setCount, GameOverRef }) => {
+const ColorMatchStart = ({ setLanguage, setCount, gameOverRef }) => {
   return (
     <main className={styles.start}>
       <div className={styles.game_title}>
         <p>COLOR</p>
         <p>MATCH</p>
       </div>
+
       <div className={styles.language}>
         <button
           onClick={() => {
             setLanguage(1);
             setCount(0);
-
-            GameOverRef.current = false;
+            gameOverRef.current = false;
           }}
         >
           한국어
         </button>
+
         <button
           onClick={() => {
             setLanguage(2);
             setCount(0);
-            GameOverRef.current = false;
+            gameOverRef.current = false;
           }}
         >
           English
@@ -242,8 +214,8 @@ const ColorMatchMain = ({
   word,
   wordColor,
   buttonList,
-  formatTime,
   match,
+  formatTime,
   progress,
 }) => {
   return (
@@ -252,6 +224,7 @@ const ColorMatchMain = ({
         <p>count: {count}</p>
         <p>time: {formatTime(time)}</p>
       </div>
+
       <div className={styles.word_zone}>
         <div className={styles.progress_bar}>
           <div
@@ -267,26 +240,23 @@ const ColorMatchMain = ({
             }}
           />
         </div>
+
         <p className={styles.main_title}>🎨</p>
+
         <p className={styles.color_word} style={{ color: wordColor }}>
           {word}
         </p>
+
         <div className={styles.btn_zone}>
-          {buttonList.map((i, index) => {
-            return (
-              <button
-                className={styles.color_btn}
-                key={"button-" + i + index}
-                name={i}
-                onClick={(e) => {
-                  console.log(e.target.name);
-                  match(i);
-                }}
-              >
-                {i}
-              </button>
-            );
-          })}
+          {buttonList.map((i, index) => (
+            <button
+              key={i + index}
+              className={styles.color_btn}
+              onClick={() => match(i)}
+            >
+              {i}
+            </button>
+          ))}
         </div>
       </div>
     </main>
