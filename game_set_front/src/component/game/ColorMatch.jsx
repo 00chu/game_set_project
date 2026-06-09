@@ -30,7 +30,6 @@ const ColorMatch = () => {
 
   const shuffle = (arr) => (Math.random() > 0.5 ? arr : [arr[1], arr[0]]);
 
-  // 🎯 게임 생성
   const generateGame = () => {
     const list = COLORS;
 
@@ -61,7 +60,6 @@ const ColorMatch = () => {
     }
   };
 
-  // 🎯 정답 체크
   const match = (value) => {
     if (gameOverRef.current) return;
 
@@ -93,7 +91,6 @@ const ColorMatch = () => {
     return `${m}:${s}`;
   };
 
-  // 🎯 게임 재생성
   useEffect(() => {
     if (language !== 0 && !over) {
       generateGame();
@@ -107,7 +104,6 @@ const ColorMatch = () => {
     return () => clearInterval(id);
   }, [over]);
 
-  // 🔥 프로그레스 타이머
   useEffect(() => {
     if (language === 0 || over) return;
 
