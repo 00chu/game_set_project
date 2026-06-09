@@ -3,8 +3,12 @@ import styles from "./page.module.css";
 
 const ColorMatchPage = () => {
   return (
-    <div className={styles.colorMatch_page}>
-      <h2>colormatch game</h2>
+    <div className={styles.page}>
+      <div className={styles.gameHero}>
+        <h1>🎨 COLOR MATCH</h1>
+        <p>Choose the color of the text</p>
+      </div>
+
       <ColorMatch />
     </div>
   );

@@ -1,156 +1,445 @@
 .baseball_game {
-  width: 1100px;
-  height: 700px;
-  margin: 50px auto;
-  display: flex;
-  gap: 50px;
-  padding: 50px;
-  border-radius: 8px;
-  background-color: rgb(246, 234, 255);
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  width: min(1200px, 95%);
+  min-height: 700px;
+
+  display: grid;
+  grid-template-columns: 320px 1fr;
+
+  gap: 30px;
+
+  padding: 30px;
+
+  border-radius: 24px;
+
+  background: #111827;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
 }
+
+/* =========================
+  SCORE
+========================= */
 
 .baseball_score {
-  width: 350px;
-  border-radius: 8px;
-  background-color: var(--color3);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
+  background: #1e293b;
 
-.baseball_score>div>ul {
-  display: flex;
-  list-style-type: none;
-  padding: 10px;
-  justify-content: space-between;
-}
+  border-radius: 20px;
 
-.baseball_score>div>ul>li:first-child {
-  border-right: 2px solid var(--color2);
-  padding-right: 10px;
-  text-align: center;
-  width: 15%;
-}
+  border: 1px solid rgba(255, 255, 255, 0.05);
 
-.baseball_score>div>hr {
-  border: none;
-  border-top: 2px solid var(--color6);
-  margin: 0px 5px;
-}
+  max-height: 690px;
 
-.baseball_score>h3 {
-  border-radius: 8px 8px 0px 0px;
-  background-color: var(--color1);
-  color: var(--color0);
-  text-align: center;
-  padding: 10px 0px;
-}
-
-.baseball_board {
-  width: 100%;
-  padding: 80px;
   display: flex;
   flex-direction: column;
+
+  overflow: hidden;
+}
+
+.score_body {
+  flex: 1;
+
+  overflow-y: auto;
+
+  min-height: 0;
+}
+
+.score_body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.score_body::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 10px;
+}
+
+.baseball_score > h3 {
+  background: linear-gradient(90deg, #8b5cf6, #a855f7);
+
+  color: white;
+
+  text-align: center;
+
+  padding: 20px;
+
+  font-size: 24px;
+
+  font-weight: 800;
+
+  position: sticky;
+  top: 0;
+}
+
+.score_body > div > ul {
+  display: flex;
   align-items: center;
+
+  list-style: none;
+  padding: 16px 20px;
+  color: white;
+}
+
+.score_body > div:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.score_body > div > ul > li:nth-child(1) {
+  width: 30px;
+}
+
+.score_body > div > ul > li:nth-child(2) {
+  flex: 1;
+}
+
+.score_body > div > ul > li:nth-child(3),
+.score_body > div > ul > li:nth-child(4) {
+  width: 40px;
+  text-align: center;
+}
+
+.score_body li:first-child {
+  color: #8b5cf6;
+  font-weight: 700;
+}
+
+.baseball_score hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* =========================
+  BOARD
+========================= */
+
+.baseball_board {
+  display: flex;
+
+  flex-direction: column;
+
   justify-content: center;
-  margin-top: 30px;
-  gap: 40px;
+
+  align-items: center;
+
+  gap: 30px;
 }
 
 .baseBall_inputs {
-  width: 100%;
   display: flex;
-  flex-direction: row;
+
   justify-content: center;
+
   gap: 20px;
+
+  flex-wrap: wrap;
 }
 
-
 .baseball_input {
-  width: 100px;
-  height: 100px;
-  background-color: var(--color3);
-  color: var(--color4);
-  font-size: 80px;
-  font-weight: 700;
-  text-align: center;
-  padding-bottom: 0px;
-  border: none;
-  outline: none;
-  border-radius: 8px;
+  width: 120px;
+  height: 120px;
+
+  border-radius: 20px;
+
+  background: #0f172a;
+
+  border: 2px solid #334155;
+
+  color: white;
+
+  font-size: 72px;
+
+  font-weight: 800;
+
   cursor: pointer;
+
+  transition: 0.25s;
 }
 
 .baseball_input:hover {
-  transform: scale(1.05);
-  border: 4px solid rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+
+  border-color: #8b5cf6;
+
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
 }
+
+/* =========================
+  NUMBER PAD
+========================= */
 
 .input_btn_zone {
-  padding: 20px;
-  background-color: var(--color3);
-  color: var(--color4);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 500px;
-  border-radius: 8px;
+  width: 650px;
+
+  background: #1e293b;
+
+  border-radius: 24px;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  padding: 30px;
 }
 
-.input_btn_zone>h1 {
+.input_btn_zone > h1 {
   text-align: center;
+
+  color: white;
+
+  margin-bottom: 25px;
+
+  font-size: 24px;
+
+  letter-spacing: 2px;
 }
 
 .input_buttons {
-  color: var(--color4);
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+
+  grid-template-columns: repeat(5, 1fr);
+
+  gap: 15px;
 }
 
 .input_button {
-  width: 70px;
-  height: 70px;
-  font-size: 40px;
+  height: 80px;
+
+  background: #0f172a;
+
+  border: 2px solid #334155;
+
+  border-radius: 16px;
+
+  color: white;
+
+  font-size: 34px;
+
   font-weight: 700;
-  background-color: transparent;
-  color: var(--color4);
-  outline: none;
-  border-radius: 8px;
+
   cursor: pointer;
-  border: 2px solid var(--color2);
+
+  transition: 0.25s;
 }
 
 .input_button:hover {
-  background-color: var(--color2);
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+
+  border-color: #8b5cf6;
+
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.35);
 }
 
 .input_button_already {
-  width: 70px;
-  height: 70px;
-  font-size: 40px;
+  height: 80px;
+
+  background: #0f172a;
+
+  border: 2px solid #334155;
+
+  border-radius: 16px;
+
+  color: #64748b;
+
+  font-size: 34px;
+
   font-weight: 700;
-  background-color: transparent;
-  color: var(--color4);
-  outline: none;
-  border-radius: 8px;
-  border: 2px solid var(--color2);
+
+  opacity: 0.35;
+
   pointer-events: none;
-  opacity: 0.5;
 }
+
+/* =========================
+  BUTTON
+========================= */
 
 .btn {
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
-.btn>button {
-  background-color: var(--color1);
+.btn > button {
+  background: linear-gradient(90deg, #8b5cf6, #a855f7);
+
   border: none;
-  padding: 20px 40px;
-  font-size: 30px;
-  font-weight: 700;
-  border-radius: 8px;
+
+  border-radius: 16px;
+
+  padding: 18px 90px;
+
   color: white;
+
+  font-size: 24px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition: 0.25s;
+}
+
+.btn > button:hover:not(:disabled) {
+  transform: translateY(-4px);
+
+  box-shadow: 0 15px 35px rgba(139, 92, 246, 0.4);
+}
+
+.btn > button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* =========================
+  TABLET
+========================= */
+
+@media (max-width: 1024px) {
+  .baseball_game {
+    grid-template-columns: 260px 1fr;
+    gap: 20px;
+  }
+
+  .baseball_score {
+    max-height: 650px;
+  }
+
+  .input_btn_zone {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .baseball_game {
+    width: 100%;
+
+    min-height: auto;
+
+    margin: 0;
+
+    padding: 20px;
+
+    border-radius: 18px;
+  }
+}
+
+.mobileGame {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+.mobileTitle {
+  text-align: center;
+
+  color: white;
+
+  font-size: 32px;
+
+  font-weight: 800;
+}
+
+.hiddenInput {
+  position: absolute;
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+.mobileNumberBoxes {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 12px;
+
+  cursor: text;
+}
+
+.mobileNumberBoxes > div {
+  width: 100%;
+
+  aspect-ratio: 1 / 1;
+
+  border-radius: 16px;
+
+  border: 2px solid #8b5cf6;
+
+  background: #0f172a;
+
+  color: white;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  font-size: clamp(24px, 8vw, 40px);
+
+  font-weight: 700;
+}
+
+.mobileThrow {
+  height: 60px;
+
+  border: none;
+
+  border-radius: 16px;
+
+  background: linear-gradient(90deg, #8b5cf6, #a855f7);
+
+  color: white;
+
+  font-size: 20px;
+
+  font-weight: 700;
+}
+
+.mobileThrow:disabled {
+  opacity: 0.4;
+}
+
+.mobileHistory {
+  background: #1e293b;
+
+  border-radius: 20px;
+
+  overflow-y: auto;
+
+  min-height: 300px;
+
+  max-height: 420px;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mobileHistoryHeader {
+  position: sticky;
+
+  top: 0;
+
+  background: #8b5cf6;
+
+  color: white;
+
+  text-align: center;
+
+  padding: 14px;
+
+  font-weight: 700;
+}
+
+.mobileHistoryItem {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 16px;
+
+  color: white;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }

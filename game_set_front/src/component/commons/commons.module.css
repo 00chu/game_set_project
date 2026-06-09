@@ -1,48 +1,151 @@
 .header {
-  padding: 20px;
-  background: linear-gradient(90deg, #4c1d95, #6d28d9, #e9a8d4);
+  width: 100%;
+
+  padding: 18px 40px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  background: rgba(15, 23, 42, 0.75);
+
+  backdrop-filter: blur(16px);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-a {
+.logo {
   text-decoration: none;
-}
 
-.logo a {
   color: white;
-  font-size: 30px;
+
+  font-size: 28px;
   font-weight: 900;
-  text-transform: uppercase;
+
+  letter-spacing: -0.5px;
+
+  transition: 0.25s;
 }
 
-.nav {
-  display: flex;
-  gap: 10px;
+.logo:hover {
+  color: #c4b5fd;
+
+  text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
 }
 
-.nav > a,
-.nav > p {
-  color: var(--color2);
-  font-size: 18px;
+.badge {
+  padding: 8px 14px;
+
+  border-radius: 999px;
+
+  background: rgba(139, 92, 246, 0.15);
+
+  border: 1px solid rgba(139, 92, 246, 0.3);
+
+  color: #c4b5fd;
+
+  font-size: 13px;
   font-weight: 700;
 }
 
+.subtitle {
+  color: #94a3b8;
+
+  font-size: 14px;
+}
+
 .footer {
-  background-color: var(--color2);
-  padding: 20px;
+  margin-top: 60px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+  background: #0f172a;
+
+  padding: 30px 20px;
 }
 
 .footer > div {
-  width: 1200px;
+  max-width: 1200px;
+
+  width: 100%;
+
   margin: 0 auto;
-  align-items: center;
 }
 
-.footer > div > p {
-  padding: 4px 0px;
-  color: var(--color1);
+.footer a {
+  color: #c4b5fd;
+
+  font-size: 15px;
+
   font-weight: 600;
+
+  text-decoration: none;
+
+  transition: all 0.25s ease;
+}
+
+.footer a:hover {
+  color: #ffffff;
+
+  font-size: 16px;
+
+  text-shadow: 0 0 8px rgba(168, 85, 247, 0.8);
+
+  transform: translateY(-1px);
+}
+
+.footer p {
+  color: #94a3b8;
+
+  line-height: 1.8;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 1024px) {
+  .header {
+    padding: 20px 30px;
+  }
+
+  .logo {
+    font-size: 28px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+  .header {
+    padding: 16px;
+  }
+
+  .logo {
+    font-size: 22px;
+  }
+
+  .badge {
+    display: none;
+  }
+
+  .footer {
+    margin-top: 40px;
+
+    padding: 24px 16px;
+  }
+
+  .footer > div {
+    text-align: center;
+  }
+
+  .footer p {
+    font-size: 13px;
+  }
 }

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import styles from "./colorMatch.module.css";
+import styles from "./ColorMatch.module.css";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
@@ -267,7 +267,7 @@ const ColorMatchMain = ({
             }}
           />
         </div>
-        <p className={styles.main_title}>글씨의 색을 선택하세요</p>
+        <p className={styles.main_title}>🎨</p>
         <p className={styles.color_word} style={{ color: wordColor }}>
           {word}
         </p>

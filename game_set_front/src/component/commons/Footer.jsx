@@ -1,14 +1,16 @@
 import styles from "./commons.module.css";
 
-const Footer = ()=>{
-     return (
+const Footer = () => {
+  return (
     <footer className={styles.footer}>
       <div>
-        <p>github - 00chu</p>
-        <p>made by JiWoo Choi</p>
+        <a href="https://github.com/00chu" target="_blank" rel="noreferrer">
+          GitHub : 00chu
+        </a>
+        <p>© 2026 JiWoo Choi</p>
       </div>
     </footer>
   );
-}
+};
 
 export default Footer;

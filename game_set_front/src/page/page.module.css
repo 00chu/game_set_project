@@ -1,59 +1,222 @@
 .page {
-  width: 1200px;
-  margin: 80px auto;
-  padding: 50px 0px 10px 0px;
-  background-color: white;
-  border-radius: 16px;
+  max-width: 1200px;
+  width: 95%;
+
+  margin: 60px auto;
 }
 
-.page > h2 {
+/* =========================
+   MAIN HERO
+========================= */
+
+.hero {
   text-align: center;
-  color: var(--color4);
-  font-size: 40px;
-  font-weight: 800;
-  margin-bottom: 50px;
-  text-transform: uppercase;
+
+  margin-bottom: 60px;
 }
 
-.games > ul {
-  padding: 40px;
-  list-style-type: none;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.hero h1 {
+  font-size: clamp(42px, 8vw, 72px);
+
+  font-weight: 900;
+
+  background: linear-gradient(90deg, #8b5cf6, #c084fc);
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.games > ul > a {
-  font-size: 30px;
-  color: var(--color4);
-  font-weight: 600;
+.hero p {
+  margin-top: 16px;
+
+  color: #94a3b8;
+
+  font-size: 20px;
 }
 
-.games > ul > a > li {
-  border: 3px solid var(--color6);
-  border-radius: 16px;
-  padding: 20px;
+/* =========================
+   GAME PAGE HERO
+========================= */
+
+.gameHero {
   text-align: center;
+
+  margin-bottom: 30px;
 }
 
-.games > ul > a > li:hover {
-  background-color: var(--color2);
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+.gameHero h1 {
+  font-size: clamp(32px, 5vw, 52px);
+
+  font-weight: 900;
+
+  background: linear-gradient(90deg, #8b5cf6, #c084fc);
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.colorMatch_page {
-  width: 1200px;
-  margin: 80px auto;
-  padding: 50px 0px 10px 0px;
-  background-color: var(--color2);
-  border-radius: 16px;
+.gameHero p {
+  margin-top: 10px;
+
+  color: #94a3b8;
+
+  font-size: 18px;
 }
 
-.colorMatch_page > h2 {
-  text-align: center;
-  color: var(--color4);
-  font-size: 40px;
-  font-weight: 800;
-  margin-bottom: 50px;
-  text-transform: uppercase;
+/* =========================
+   GAME CARD GRID
+========================= */
+
+.games {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(280px, 360px));
+
+  justify-content: center;
+
+  gap: 24px;
+}
+
+.card {
+  background: #1e293b;
+
+  border-radius: 20px;
+
+  padding: 24px;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  text-decoration: none;
+
+  transition: all 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+
+  background: #334155;
+
+  box-shadow: 0 15px 40px rgba(139, 92, 246, 0.3);
+}
+
+.icon {
+  font-size: 42px;
+
+  margin-bottom: 18px;
+}
+
+.card h3 {
+  color: white;
+
+  font-size: 24px;
+
+  margin-bottom: 10px;
+}
+
+.card p {
+  color: #94a3b8;
+
+  line-height: 1.7;
+
+  margin-bottom: 18px;
+}
+
+.card span {
+  color: #a78bfa;
+
+  font-weight: 700;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 1024px) {
+  .page {
+    width: 95%;
+  }
+
+  .hero {
+    margin-bottom: 50px;
+  }
+
+  .hero p {
+    font-size: 18px;
+  }
+
+  .games {
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+  }
+
+  .gameHero h1 {
+    font-size: 40px;
+  }
+
+  .gameHero p {
+    font-size: 16px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+  .page {
+    width: 100%;
+
+    padding: 0 16px;
+
+    margin: 30px auto;
+  }
+
+  .hero {
+    margin-bottom: 40px;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  .games {
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .icon {
+    font-size: 38px;
+
+    margin-bottom: 14px;
+  }
+
+  .card h3 {
+    font-size: 22px;
+  }
+
+  .card p {
+    font-size: 14px;
+
+    margin-bottom: 14px;
+  }
+
+  .card span {
+    font-size: 14px;
+  }
+
+  .gameHero {
+    margin-bottom: 20px;
+  }
+
+  .gameHero h1 {
+    font-size: 28px;
+  }
+
+  .gameHero p {
+    font-size: 14px;
+  }
 }

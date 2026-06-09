@@ -4,11 +4,13 @@ import styles from "./commons.module.css";
 const Header = () => {
   return (
     <header className={styles.header}>
-      <div className={styles.logo}>
-        <Link to="/">🎮CodeArcade🎮</Link>
-      </div>
-      <div className={styles.nav}></div>
+      <Link to="/" className={styles.logo}>
+        🎮 CodeArcade
+      </Link>
+
+      <span className={styles.badge}>React Mini Games</span>
     </header>
   );
 };
+
 export default Header;

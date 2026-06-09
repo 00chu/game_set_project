@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styles from "./baseBall.module.css";
+import styles from "./BaseBall.module.css";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
@@ -68,16 +68,39 @@ const BaseBall = () => {
     console.log(answer); // answer 값이 변경된 후 로그 출력
   }, [answer]);
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <div className={styles.baseball_game}>
-      <BaseBallScore scores={scores} />
-      <BaseBallInput
-        throwBall={throwBall}
-        setThrowBall={setThrowBall}
-        result={result}
-        selectNum={selectNum}
-        setSelectNum={setSelectNum}
-      />
+      {!isMobile && <BaseBallScore scores={scores} />}
+      {isMobile ? (
+        <MobileBaseBallInput
+          throwBall={throwBall}
+          setThrowBall={setThrowBall}
+          result={result}
+          scores={scores}
+        />
+      ) : (
+        <BaseBallInput
+          throwBall={throwBall}
+          setThrowBall={setThrowBall}
+          result={result}
+          selectNum={selectNum}
+          setSelectNum={setSelectNum}
+        />
+      )}
     </div>
   );
 };
@@ -86,19 +109,22 @@ const BaseBallScore = ({ scores }) => {
   return (
     <div className={styles.baseball_score}>
       <h3>기록</h3>
-      {scores.map((score, i) => {
-        return (
-          <div key={"base-" + i}>
-            <ul>
-              <li>{i + 1}</li>
-              <li>{score.number}</li>
-              <li>{score.strikeCount}S</li>
-              <li>{score.ballCount}B</li>
-            </ul>
-            <hr></hr>
-          </div>
-        );
-      })}
+
+      <div className={styles.score_body}>
+        {scores.map((score, i) => {
+          return (
+            <div key={"base-" + i}>
+              <ul>
+                <li>{i + 1}</li>
+                <li>{score.number}</li>
+                <li>{score.strikeCount}S</li>
+                <li>{score.ballCount}B</li>
+              </ul>
+              <hr />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
@@ -111,6 +137,16 @@ const BaseBallInput = ({
   setSelectNum,
 }) => {
   const arr = Array.from({ length: 10 }, (_, i) => i);
+
+  const clearInput = (name) => {
+    setThrowBall((prev) => {
+      const next = { ...prev };
+      delete next[name];
+      return next;
+    });
+
+    setSelectNum(name);
+  };
 
   const btnClick = (i) => {
     setThrowBall({ ...throwBall, [selectNum]: i });
@@ -125,30 +161,30 @@ const BaseBallInput = ({
         <button
           className={styles.baseball_input}
           name="one"
-          onClick={(e) => {
-            setSelectNum(e.target.name);
-          }}
+          onClick={() => clearInput("one")}
         >
           {throwBall.one}
         </button>
         <button
           className={styles.baseball_input}
           name="two"
-          onClick={(e) => setSelectNum(e.target.name)}
+          onClick={() => clearInput("two")}
         >
           {throwBall.two}
         </button>
+
         <button
           className={styles.baseball_input}
           name="three"
-          onClick={(e) => setSelectNum(e.target.name)}
+          onClick={() => clearInput("three")}
         >
           {throwBall.three}
         </button>
+
         <button
           className={styles.baseball_input}
           name="four"
-          onClick={(e) => setSelectNum(e.target.name)}
+          onClick={() => clearInput("four")}
         >
           {throwBall.four}
         </button>
@@ -177,6 +213,95 @@ const BaseBallInput = ({
         <button onClick={result} disabled={Object.keys(throwBall).length < 4}>
           THROW
         </button>
+      </div>
+    </div>
+  );
+};
+
+const MobileBaseBallInput = ({ throwBall, setThrowBall, result, scores }) => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const handleChange = (e) => {
+    const num = e.nativeEvent.data;
+
+    if (!num || /\D/.test(num)) return;
+
+    if (Object.values(throwBall).includes(Number(num))) {
+      return;
+    }
+
+    const obj = { ...throwBall };
+
+    if (selectedIndex === 0) obj.one = Number(num);
+    if (selectedIndex === 1) obj.two = Number(num);
+    if (selectedIndex === 2) obj.three = Number(num);
+    if (selectedIndex === 3) obj.four = Number(num);
+
+    setThrowBall(obj);
+
+    if (selectedIndex < 3) {
+      setSelectedIndex(selectedIndex + 1);
+    }
+  };
+
+  const removeDigit = (index) => {
+    const obj = { ...throwBall };
+
+    if (index === 0) delete obj.one;
+    if (index === 1) delete obj.two;
+    if (index === 2) delete obj.three;
+    if (index === 3) delete obj.four;
+
+    setThrowBall(obj);
+    setSelectedIndex(index);
+  };
+
+  return (
+    <div className={styles.mobileGame}>
+      <h1 className={styles.mobileTitle}>Baseball</h1>
+
+      <label>
+        <input
+          className={styles.hiddenInput}
+          type="tel"
+          inputMode="numeric"
+          onChange={handleChange}
+          value=""
+        />
+
+        <div className={styles.mobileNumberBoxes}>
+          <div onClick={() => removeDigit(0)}>{throwBall.one ?? ""}</div>
+          <div onClick={() => removeDigit(1)}>{throwBall.two ?? ""}</div>
+          <div onClick={() => removeDigit(2)}>{throwBall.three ?? ""}</div>
+          <div onClick={() => removeDigit(3)}>{throwBall.four ?? ""}</div>
+        </div>
+      </label>
+
+      <button
+        className={styles.mobileThrow}
+        onClick={() => {
+          result();
+
+          setThrowBall({});
+          setSelectedIndex(0);
+        }}
+        disabled={Object.keys(throwBall).length !== 4}
+      >
+        THROW
+      </button>
+
+      <div className={styles.mobileHistory}>
+        <div className={styles.mobileHistoryHeader}>기록</div>
+
+        {scores.map((score, i) => (
+          <div key={i} className={styles.mobileHistoryItem}>
+            <span>{score.number}</span>
+
+            <span>
+              {score.strikeCount} S {score.ballCount} B
+            </span>
+          </div>
+        ))}
       </div>
     </div>
   );
