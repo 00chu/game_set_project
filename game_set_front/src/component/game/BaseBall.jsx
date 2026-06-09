@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import styles from "./BaseBall.module.css";
-import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
 const BaseBall = () => {

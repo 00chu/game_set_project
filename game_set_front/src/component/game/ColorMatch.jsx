@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./ColorMatch.module.css";
-import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
 const COLORS = [
