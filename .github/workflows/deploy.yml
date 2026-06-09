@@ -14,6 +14,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: game_set_front
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,13 +36,14 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: game_set_front/dist
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
     environment:
       name: github-pages
+
     steps:
       - name: Deploy
         uses: actions/deploy-pages@v4
