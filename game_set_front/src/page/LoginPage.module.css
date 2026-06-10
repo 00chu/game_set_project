@@ -1,49 +1,247 @@
 .main {
-  margin: 100px auto;
+  width: 100%;
+  min-height: calc(100vh - 120px);
+
   display: flex;
+  justify-content: center;
   align-items: center;
+
+  padding: 24px 16px;
+  background: #0b1220;
 }
 
-.login_div {
-  width: 40%;
-  border: 1px solid var(--text-sub);
+.loginCard {
+  width: 100%;
+  max-width: 420px;
+
+  background: #1e293b;
+
+  border-radius: 20px;
+
+  padding: 28px;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  font-size: 52px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.loginCard h1 {
+  color: white;
+
+  text-align: center;
+
+  font-size: 32px;
+
+  font-weight: 800;
+
+  margin: 0;
+}
+
+.description {
+  text-align: center;
+
+  color: #94a3b8;
+
+  margin-top: 6px;
+  margin-bottom: 18px;
+
+  font-size: 14px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+.inputGroup label {
+  color: white;
+
+  font-weight: 600;
+
+  font-size: 13px;
+}
+
+.inputGroup input {
+  height: 48px;
+
+  border-radius: 10px;
+
+  border: 1px solid #334155;
+
+  background: #0f172a;
+
+  color: white;
+
+  padding: 0 14px;
+
+  font-size: 14px;
+}
+
+.inputGroup input:focus {
+  outline: none;
+  border-color: #8b5cf6;
+}
+
+.loginBtn {
+  margin-top: 6px;
+
+  height: 50px;
+
+  border: none;
+
   border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 50px;
-}
 
-.login_div > p {
-  font-size: 30px;
+  background: linear-gradient(90deg, #8b5cf6, #a855f7);
+
+  color: white;
+
+  font-size: 16px;
+
   font-weight: 700;
-  font-family: var(sans-serif);
-  margin-bottom: 50px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
 }
 
-.login_div > form {
-  width: 100%;
+.loginBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.35);
+}
+
+.links {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
 
-.login_div ul {
-  width: 100%;
-  list-style-type: none;
-  display: flex;
-}
-
-.login_div li:first-child {
-  width: 40%;
-}
-
-.login_div li:last-child {
-  width: 60%;
-}
-
-.link {
-  width: 100%;
-  display: flex;
   justify-content: space-between;
+
+  margin-top: 14px;
+
+  font-size: 13px;
+}
+
+.links a {
+  color: #94a3b8;
+  text-decoration: none;
+}
+
+.links a:hover {
+  color: white;
+}
+
+.divider {
+  position: relative;
+
+  margin: 18px 0;
+
+  text-align: center;
+}
+
+.divider::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  top: 50%;
+
+  height: 1px;
+
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.divider span {
+  position: relative;
+
+  background: #1e293b;
+
+  padding: 0 12px;
+
+  color: #94a3b8;
+
+  font-size: 12px;
+}
+
+/* 🔥 소셜 로그인 가로 + 원형 버튼 */
+.socials {
+  display: flex;
+
+  justify-content: center;
+  gap: 12px;
+}
+
+.socials button {
+  width: 46px;
+  height: 46px;
+
+  border-radius: 50%;
+
+  border: none;
+
+  font-size: 16px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.socials button:hover {
+  transform: translateY(-2px);
+}
+
+/* 브랜드 컬러 */
+.google {
+  background: white;
+  color: #111827;
+}
+
+.kakao {
+  background: #fee500;
+  color: #191919;
+}
+
+.apple {
+  background: black;
+  color: white;
+  border: 1px solid #444 !important;
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+  .loginCard {
+    padding: 22px;
+  }
+
+  .loginCard h1 {
+    font-size: 28px;
+  }
+
+  .links {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
 }
