@@ -1,7 +1,6 @@
 .page {
   max-width: 1200px;
   width: 95%;
-
   margin: 60px auto;
 }
 
@@ -11,26 +10,26 @@
 
 .gameHero {
   text-align: center;
-
   margin-bottom: 30px;
 }
 
 .gameHero h1 {
-  font-size: clamp(32px, 5vw, 52px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
 
+  font-size: clamp(32px, 5vw, 52px);
   font-weight: 900;
 
   background: linear-gradient(90deg, #8b5cf6, #c084fc);
-
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gameHero p {
   margin-top: 10px;
-
   color: #94a3b8;
-
   font-size: 18px;
 }
 
@@ -63,15 +62,12 @@
 @media (max-width: 768px) {
   .page {
     width: 100%;
-
     padding: 0 16px;
-
     margin: 30px auto;
   }
 
   .games {
     grid-template-columns: 1fr;
-
     gap: 20px;
   }
 

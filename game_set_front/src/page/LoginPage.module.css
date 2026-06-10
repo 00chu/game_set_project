@@ -1,0 +1,49 @@
+.main {
+  margin: 100px auto;
+  display: flex;
+  align-items: center;
+}
+
+.login_div {
+  width: 40%;
+  border: 1px solid var(--text-sub);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px;
+}
+
+.login_div > p {
+  font-size: 30px;
+  font-weight: 700;
+  font-family: var(sans-serif);
+  margin-bottom: 50px;
+}
+
+.login_div > form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.login_div ul {
+  width: 100%;
+  list-style-type: none;
+  display: flex;
+}
+
+.login_div li:first-child {
+  width: 40%;
+}
+
+.login_div li:last-child {
+  width: 60%;
+}
+
+.link {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}

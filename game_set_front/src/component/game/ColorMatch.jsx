@@ -3,13 +3,13 @@ import styles from "./ColorMatch.module.css";
 import { useNavigate } from "react-router-dom";
 
 const COLORS = [
-  { name: "red", kor: "빨강", color: "#ef4444" },
+  { name: "red", kor: "빨강", color: "#ff3232" },
   { name: "orange", kor: "주황", color: "#f97316" },
   { name: "yellow", kor: "노랑", color: "#facc15" },
   { name: "green", kor: "초록", color: "#22c55e" },
   { name: "blue", kor: "파랑", color: "#3b82f6" },
   { name: "purple", kor: "보라", color: "#a855f7" },
-  { name: "black", kor: "검정", color: "#111827" },
+  { name: "black", kor: "검정", color: "#030508" },
 ];
 
 const ColorMatch = () => {

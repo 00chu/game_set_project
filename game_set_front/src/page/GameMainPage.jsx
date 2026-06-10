@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "./GameMainPage.module.css";
+import SportsBaseballIcon from "@mui/icons-material/SportsBaseball";
+import PaletteIcon from "@mui/icons-material/Palette";
 
 const GameMainPage = () => {
   return (
@@ -12,7 +14,14 @@ const GameMainPage = () => {
 
       <section className={styles.games}>
         <Link to="/baseBall" className={styles.card}>
-          <div className={styles.icon}>⚾</div>
+          <div className={styles.icon}>
+            <SportsBaseballIcon
+              sx={{
+                fontSize: 60,
+                color: "var(--accent-hover)",
+              }}
+            />
+          </div>
 
           <h3>Number Baseball</h3>
 
@@ -22,7 +31,14 @@ const GameMainPage = () => {
         </Link>
 
         <Link to="/colorMatch" className={styles.card}>
-          <div className={styles.icon}>🎨</div>
+          <div className={styles.icon}>
+            <PaletteIcon
+              sx={{
+                fontSize: 60,
+                color: "var(--accent-hover)",
+              }}
+            />
+          </div>
 
           <h3>Color Match</h3>
 

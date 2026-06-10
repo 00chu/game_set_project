@@ -27,7 +27,7 @@ const BaseBall = () => {
     }
 
     if (strike === 4) {
-      setIsGameOver(true); // 🔥 여기 중요
+      setIsGameOver(true);
 
       return;
     }
