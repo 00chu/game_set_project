@@ -19,7 +19,6 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/find-account" element={<FindAccountPage />} />
-
           <Route path="/baseball" element={<BaseBallPage />} />
           <Route path="/colorMatch" element={<ColorMatchPage />} />
         </Routes>
