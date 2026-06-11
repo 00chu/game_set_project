@@ -7,7 +7,7 @@ import "./App.css";
 import ColorMatchPage from "./page/ColorMatchPage";
 import LoginPage from "./page/login/LoginPage";
 import SignupPage from "./page/login/SignupPage";
-import FindAccountPage from "./page/login/findAccountPage";
+import FindAccountPage from "./page/login/FindAccountPage";
 
 function App() {
   return (
