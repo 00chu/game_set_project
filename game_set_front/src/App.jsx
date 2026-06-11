@@ -5,7 +5,7 @@ import GameMainPage from "./page/GameMainPage";
 import Footer from "./component/commons/Footer";
 import "./App.css";
 import ColorMatchPage from "./page/ColorMatchPage";
-import LoginPage from "./page/LoginPage";
+import LoginPage from "./page/login/LoginPage";
 
 function App() {
   return (
