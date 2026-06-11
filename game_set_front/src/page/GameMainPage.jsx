@@ -13,7 +13,7 @@ const GameMainPage = () => {
       </section>
 
       <section className={styles.games}>
-        <Link to="/baseBall" className={styles.card}>
+        <Link to="/baseball" className={styles.card}>
           <div className={styles.icon}>
             <SportsBaseballIcon
               sx={{

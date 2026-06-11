@@ -10,32 +10,32 @@ const LoginPage = () => {
         <h1>CodeArcade</h1>
 
         <p className={styles.description}>
-          Login to save your records and rankings
+          게임 기록과 랭킹을 저장하고 관리해보세요.
         </p>
 
         <form className={styles.form}>
           <div className={styles.inputGroup}>
-            <label>Email</label>
-            <input type="email" />
+            <label>이메일</label>
+            <input type="email" placeholder="이메일을 입력하세요" />
           </div>
 
           <div className={styles.inputGroup}>
-            <label>Password</label>
-            <input type="password" />
+            <label>비밀번호</label>
+            <input type="password" placeholder="비밀번호를 입력하세요" />
           </div>
 
           <button type="submit" className={styles.loginBtn}>
-            LOGIN
+            로그인
           </button>
         </form>
 
         <div className={styles.links}>
           <Link to="/signup">회원가입</Link>
-          <Link to="/find-account">아이디 / 비밀번호 찾기</Link>
+          <Link to="/find-account">비밀번호 찾기</Link>
         </div>
 
         <div className={styles.divider}>
-          <span>OR</span>
+          <span>또는</span>
         </div>
 
         <div className={styles.socials}>

@@ -6,6 +6,8 @@ import Footer from "./component/commons/Footer";
 import "./App.css";
 import ColorMatchPage from "./page/ColorMatchPage";
 import LoginPage from "./page/login/LoginPage";
+import SignupPage from "./page/login/SignupPage";
+import FindAccountPage from "./page/login/findAccountPage";
 
 function App() {
   return (
@@ -15,7 +17,10 @@ function App() {
         <Routes>
           <Route path="/" element={<GameMainPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/baseBall" element={<BaseBallPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/find-account" element={<FindAccountPage />} />
+
+          <Route path="/baseball" element={<BaseBallPage />} />
           <Route path="/colorMatch" element={<ColorMatchPage />} />
         </Routes>
       </div>
