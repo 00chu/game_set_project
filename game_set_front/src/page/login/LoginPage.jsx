@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../../component/auth/validation/authSchema.js";
 import styles from "./LoginPage.module.css";
+import { loginApi } from "../../component/auth/api.js";
 
 const LoginPage = () => {
   const {
@@ -13,15 +14,16 @@ const LoginPage = () => {
     resolver: yupResolver(loginSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log("로그인 데이터:", data);
-    
-    const response = await loginApi(data);
+  const onSubmit = async (data) => {
+    try {
+      const response = await loginApi(data);
 
-    login(
-      response.user,
-      response.accessToken
-    );
+      login(response.user, response.accessToken);
+
+      console.log("로그인 성공");
+    } catch (error) {
+      console.error("로그인 실패:", error);
+    }
   };
 
   return (

@@ -1,5 +1,5 @@
 import axios from "axios";
-import useAuthStore from "./store/authStore.js";
+import { useAuthStore } from "./store/authStore.js";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKSERVER,
@@ -28,7 +28,7 @@ api.interceptors.request.use(
 );
 
 export const loginApi = async (data) => {
-  const response = await api.post("/auth/login", data);
+  const response = await api.post("/login", data);
 
   return response.data;
 };
