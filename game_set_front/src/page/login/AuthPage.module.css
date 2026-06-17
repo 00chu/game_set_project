@@ -186,3 +186,55 @@
     font-size: 28px;
   }
 }
+
+.emailRow {
+  display: flex;
+  gap: 10px;
+}
+
+.emailRow input {
+  flex: 1;
+}
+
+.emailRow button {
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  background: #8b5cf6;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.emailRow button:hover {
+  background: #7c3aed;
+}
+
+.success {
+  margin-top: 8px;
+  color: #22c55e;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .emailRow {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .emailRow button {
+    width: 100%;
+  }
+
+  .primaryBtn {
+    width: 100%;
+  }
+}
+
+.error {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+}
