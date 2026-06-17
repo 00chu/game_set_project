@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { signupSchema } from "./signupSchema";
+import { signupSchema } from "../../component/auth/validation/authSchema.js";
 import { Link } from "react-router-dom";
 import styles from "./AuthPage.module.css";
 
@@ -10,6 +10,7 @@ const SignupPage = () => {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(signupSchema),
