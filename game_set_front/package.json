@@ -20,7 +20,8 @@
     "react-hook-form": "^7.79.0",
     "react-router-dom": "^7.17.0",
     "sweetalert2": "^11.26.22",
-    "yup": "^1.7.1"
+    "yup": "^1.7.1",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

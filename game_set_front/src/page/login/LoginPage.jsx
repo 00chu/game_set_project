@@ -15,7 +15,13 @@ const LoginPage = () => {
 
   const onSubmit = (data) => {
     console.log("로그인 데이터:", data);
-    // TODO: 로그인 API 호출
+    
+    const response = await loginApi(data);
+
+    login(
+      response.user,
+      response.accessToken
+    );
   };
 
   return (

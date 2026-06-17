@@ -11,25 +11,38 @@ const SignupPage = () => {
     handleSubmit,
     setValue,
     watch,
+    trigger,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(signupSchema),
     defaultValues: {
-      isEmailVerified: false, // 초기값 이메일 인증 false
+      email: "",
+      code: "",
+      isEmailVerified: false,
+      nickname: "",
+      password: "",
+      passwordConfirm: "",
     },
+    mode: "onChange", //재검증
   });
 
-  const [codeSent, setCodeSent] = useState(false);
-  const [code, setCode] = useState("");
-  const [verified, setVerified] = useState(false);
-
   const email = watch("email");
+  const isEmailVerified = watch("isEmailVerified");
+  const code = watch("code");
 
-  // 인증번호 전송
+  const [codeSent, setCodeSent] = useState(false);
+
   const sendCode = async () => {
+    const isValid = await trigger("email");
+
+    if (!isValid) {
+      return;
+    }
+
     console.log("인증번호 전송:", email);
 
-    // TODO API
     setCodeSent(true);
   };
 
@@ -37,18 +50,13 @@ const SignupPage = () => {
   const verifyCode = () => {
     console.log("인증 성공");
 
-    setVerified(true);
-
-    // RHF 폼 데이터 안에 인증 성공 남김
-    setValue("isEmailVerified", true);
+    setValue("isEmailVerified", true, {
+      shouldValidate: true,
+    });
   };
 
+  // 회원가입 submit
   const onSubmit = (data) => {
-    if (!verified) {
-      alert("이메일 인증이 필요합니다.");
-      return;
-    }
-
     console.log("회원가입 데이터:", data);
   };
 
@@ -88,16 +96,21 @@ const SignupPage = () => {
               <label>인증번호</label>
 
               <div className={styles.emailRow}>
-                <input value={code} onChange={(e) => setCode(e.target.value)} />
+                <input {...register("code")} />
 
                 <button type="button" onClick={verifyCode}>
                   인증 확인
                 </button>
               </div>
+
+              <p className={styles.error}>{errors.code?.message}</p>
             </div>
           )}
 
-          {verified && <p className={styles.success}>이메일 인증 완료 ✅</p>}
+          {/* 인증 성공 */}
+          {isEmailVerified && (
+            <p className={styles.success}>이메일 인증 완료</p>
+          )}
 
           {/* 비밀번호 */}
           <div className={styles.inputGroup}>
@@ -113,11 +126,7 @@ const SignupPage = () => {
             <p className={styles.error}>{errors.passwordConfirm?.message}</p>
           </div>
 
-          <button
-            type="submit"
-            className={styles.primaryBtn}
-            disabled={!verified}
-          >
+          <button type="submit" className={styles.primaryBtn}>
             회원가입
           </button>
         </form>
