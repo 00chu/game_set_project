@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signupSchema } from "../../component/auth/validation/authSchema.js";
+import { signupApi } from "../../component/auth/api.js";
 import { Link } from "react-router-dom";
 import styles from "./AuthPage.module.css";
 
@@ -56,8 +57,14 @@ const SignupPage = () => {
   };
 
   // 회원가입 submit
-  const onSubmit = (data) => {
-    console.log("회원가입 데이터:", data);
+  const onSubmit = async (data) => {
+    try {
+      const response = await signupApi(data);
+
+      console.log("회원가입 성공", response);
+    } catch (error) {
+      console.error("회원가입 실패", error);
+    }
   };
 
   return (
