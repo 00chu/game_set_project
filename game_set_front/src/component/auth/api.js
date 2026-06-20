@@ -27,6 +27,14 @@ api.interceptors.request.use(
   },
 );
 
+// 회원가입
+export const signupApi = async (data) => {
+  const response = await api.post("/auth/signup", data);
+
+  return response.data;
+};
+
+// 로그인
 export const loginApi = async (data) => {
   const response = await api.post("/login", data);
 
