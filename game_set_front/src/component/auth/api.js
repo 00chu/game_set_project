@@ -27,16 +27,32 @@ api.interceptors.request.use(
   },
 );
 
+// 이메일 인증번호 전송
+export const sendEmailApi = async (email) => {
+  const response = await api.post("/users/email-verification", {
+    email: email,
+  });
+
+  return response.data;
+};
+
+// 인증번호 확인
+export const checkEmailApi = async (data) => {
+  const response = await api.post("/users/email-verification/check", data);
+
+  return response.data;
+};
+
 // 회원가입
 export const signupApi = async (data) => {
-  const response = await api.post("/auth/signup", data);
+  const response = await api.post("/users/signup", data);
 
   return response.data;
 };
 
 // 로그인
 export const loginApi = async (data) => {
-  const response = await api.post("/login", data);
+  const response = await api.post("/users/login", data);
 
   return response.data;
 };

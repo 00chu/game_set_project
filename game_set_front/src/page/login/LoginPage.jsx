@@ -15,15 +15,11 @@ const LoginPage = () => {
   });
 
   const onSubmit = async (data) => {
-    try {
-      const response = await loginApi(data);
+    console.log("로그인 데이터:", data);
 
-      login(response.user, response.accessToken);
+    const response = await loginApi(data);
 
-      console.log("로그인 성공");
-    } catch (error) {
-      console.error("로그인 실패:", error);
-    }
+    login(response.user, response.accessToken);
   };
 
   return (

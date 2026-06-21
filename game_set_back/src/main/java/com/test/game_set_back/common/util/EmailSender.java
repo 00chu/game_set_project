@@ -1,4 +1,4 @@
-package com.test.withdayback.common.util;
+package com.test.game_set_back.common.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;

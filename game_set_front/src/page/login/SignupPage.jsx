@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signupSchema } from "../../component/auth/validation/authSchema.js";
-import { signupApi } from "../../component/auth/api.js";
+import {
+  signupApi,
+  sendEmailApi,
+  checkEmailApi,
+} from "../../component/auth/api.js";
 import { Link } from "react-router-dom";
 import styles from "./AuthPage.module.css";
 
@@ -34,6 +38,7 @@ const SignupPage = () => {
   const code = watch("code");
 
   const [codeSent, setCodeSent] = useState(false);
+  const [time, setTime] = useState(0);
 
   const sendCode = async () => {
     const isValid = await trigger("email");
@@ -42,18 +47,81 @@ const SignupPage = () => {
       return;
     }
 
-    console.log("인증번호 전송:", email);
+    try {
+      // 서버에 이메일 인증 요청
+      const response = await sendEmailApi(email);
 
-    setCodeSent(true);
+      // 서버가 보내준 만료 시간
+      const expiredTime = new Date(response.expiredAt);
+
+      // 현재 시간과 남은 시간 계산 (초)
+      const remainTime = Math.floor(
+        (expiredTime.getTime() - Date.now()) / 1000,
+      );
+
+      // 인증 입력창 표시
+      setCodeSent(true);
+
+      // 기존 인증번호 초기화
+      setValue("code", "");
+
+      // 이메일 인증 상태 초기화
+      setValue("isEmailVerified", false);
+
+      // 타이머 시작
+      setTime(remainTime);
+
+      console.log(response.message);
+    } catch (error) {
+      console.error("전송 실패", error);
+    }
+  };
+
+  useEffect(() => {
+    if (time <= 0) {
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setTime((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [time]);
+
+  const formatTime = () => {
+    const minute = String(Math.floor(time / 60)).padStart(2, "0");
+    const second = String(time % 60).padStart(2, "0");
+
+    return `${minute}:${second}`;
   };
 
   // 인증 확인
-  const verifyCode = () => {
-    console.log("인증 성공");
+  const verifyCode = async () => {
+    if (time <= 0) {
+      alert("인증 시간이 만료되었습니다. 다시 인증해주세요.");
+      return;
+    }
 
-    setValue("isEmailVerified", true, {
-      shouldValidate: true,
-    });
+    try {
+      await checkEmailApi({
+        email,
+        code,
+      });
+
+      setValue("isEmailVerified", true, {
+        shouldValidate: true,
+      });
+
+      clearErrors("code");
+
+      console.log("인증 성공");
+    } catch (error) {
+      setError("code", {
+        type: "manual",
+        message: "인증번호가 올바르지 않습니다.",
+      });
+    }
   };
 
   // 회원가입 submit
@@ -111,6 +179,7 @@ const SignupPage = () => {
               </div>
 
               <p className={styles.error}>{errors.code?.message}</p>
+              {!isEmailVerified && codeSent && <p>남은 시간: {formatTime()}</p>}
             </div>
           )}
 
