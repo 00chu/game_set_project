@@ -53,4 +53,21 @@ public class User {
             this.status = UserStatus.ACTIVE;
         }
     }
+
+    // 생성자
+    public User(
+            String email,
+            String nickname,
+            String password,
+            String profileImage
+    ) {
+        this.email = email;
+        this.nickname = nickname;
+        this.password = password;
+        this.profileImage = profileImage;
+    }
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
 }

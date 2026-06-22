@@ -8,6 +8,7 @@ import ColorMatchPage from "./page/ColorMatchPage";
 import LoginPage from "./page/login/LoginPage";
 import SignupPage from "./page/login/SignupPage";
 import FindAccountPage from "./page/login/FindAccountPage";
+import MyPage from "./page/mypage/MyPage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/find-account" element={<FindAccountPage />} />
+          <Route path="/mypage" element={<MyPage />} />
           <Route path="/baseball" element={<BaseBallPage />} />
           <Route path="/colorMatch" element={<ColorMatchPage />} />
         </Routes>

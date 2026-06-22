@@ -1,14 +1,18 @@
 package com.test.game_set_back.user.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
-@AllArgsConstructor
+@Setter
+@NoArgsConstructor
 public class EmailVerificationResponse {
-
     private String message;
-    private LocalDateTime expiredAt;
+    private Long expiredAt;
+
+    public EmailVerificationResponse(String message, Long expiredAt) {
+        this.message = message;
+        this.expiredAt = expiredAt;
+    }
 }

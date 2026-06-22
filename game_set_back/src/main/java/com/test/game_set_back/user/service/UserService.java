@@ -1,9 +1,18 @@
 package com.test.game_set_back.user.service;
 
+import com.test.game_set_back.common.enums.EmailAuthType;
+import com.test.game_set_back.common.s3.S3Service;
+import com.test.game_set_back.user.dto.ChangePasswordRequest;
 import com.test.game_set_back.user.dto.EmailVerificationResponse;
+import com.test.game_set_back.user.dto.LoginRequest;
+import com.test.game_set_back.user.dto.SignupRequest;
+import com.test.game_set_back.user.entity.User;
+import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import com.test.game_set_back.user.repository.UserRepository;
 import com.test.game_set_back.user.repository.EmailVerificationRepository;
@@ -16,22 +25,44 @@ public class UserService {
     private final UserRepository userRepository;
     private final EmailVerificationRepository emailVerificationRepository;
     private final EmailSender emailSender;
+    private final EmailService emailService;
+    private final PasswordEncoder passwordEncoder;
+    private final S3Service s3Service;
 
-    public EmailVerificationResponse sendVerificationEmail(String email) {
+    @Transactional
+    public EmailVerificationResponse sendVerificationEmail(String email, EmailAuthType type) {
         // 이메일 입력 여부
         if (email == null || email.trim().isEmpty()) {
             throw new RuntimeException("이메일을 입력해주세요.");
         }
 
-        // 중복 이메일 검사
-        if (userRepository.existsByEmail(email)) {
-            throw new RuntimeException("이미 사용 중인 이메일입니다.");
+        // 가입 - 중복 이메일 검사
+        if (type == EmailAuthType.SIGNUP) {
+            if (userRepository.existsByEmail(email)) {
+                throw new RuntimeException("이미 사용 중인 이메일입니다.");
+            }
         }
+
+        // 비밀번호 찾기 - 해당 이메일 가입 여부 검사
+        if (type == EmailAuthType.PASSWORD_RESET) {
+            if (!userRepository.existsByEmail(email)) {
+                throw new RuntimeException("가입되지 않은 이메일입니다.");
+            }
+        }
+
+        // 해당 이메일로 이전에 했던 인증을 모두 삭제함
+        emailVerificationRepository.deleteByEmail(email);
 
         // 6자리 인증번호 생성
         String authCode = String.valueOf(
                 (int) (Math.random() * 900000) + 100000
         );
+
+        // 인증번호 생성 시간
+        LocalDateTime createdAt = LocalDateTime.now();
+
+        // 만료 시간 (현재 시간 + 5분)
+        LocalDateTime expiredAt = LocalDateTime.now().plusMinutes(5);
 
         // 이메일 내용 생성
         String content = """
@@ -94,19 +125,14 @@ public class UserService {
             </div>
             """.formatted(authCode); // 포맷 문자열 방식
 
-        // 인증번호 생성 시간
-        LocalDateTime createdAt = LocalDateTime.now();
-
-        // 만료 시간 (현재 시간 + 5분)
-        LocalDateTime expiredAt = LocalDateTime.now().plusMinutes(5);
-
         // DB 저장
         EmailVerification verification =
                 new EmailVerification( // EmailVerification 객체 생성, DB에 저장 X
                         email,
                         authCode,
                         createdAt,
-                        expiredAt
+                        expiredAt,
+                        type
                 );
 
         // JPA가 verification 객체를 보고 SQL을 만들어 실행
@@ -114,8 +140,7 @@ public class UserService {
         emailVerificationRepository.save(verification);
 
         // 이메일 발송
-        emailSender.sendMail(
-                "CodeArcade 인증번호", // 이메일 제목
+        emailService.sendEmail(
                 email,  // 받는 사람의 이메일
                 content // 이메일 내용
         );
@@ -123,16 +148,25 @@ public class UserService {
         // 프론트에 인증번호를 보내지 않고 발송 완료 표시와 만료시간만 전송
         return new EmailVerificationResponse(
                 "인증번호가 발송되었습니다.",
-                expiredAt
+                expiredAt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
         );
     }
 
+    @Transactional
     public String verifyEmail(String email, String code) {
         EmailVerification verification =
-                emailVerificationRepository.findByEmail(email)
+                emailVerificationRepository
+                        // 이메일 인증 데이터 중 가장 최신 한 개만 가져오는 코드
+                        .findTopByEmailOrderByIdDesc(email)
+                        // 값이 없을 때 예외 발생
                         .orElseThrow(() ->
                                 new RuntimeException("인증 요청이 없습니다.")
                         );
+
+        // 이메일 중복 확인
+        if (verification.isVerified()) {
+            throw new RuntimeException("이미 인증된 이메일입니다.");
+        }
 
         // 인증번호 확인
         if (!verification.getCode().equals(code)) {
@@ -148,9 +182,110 @@ public class UserService {
         // 인증 성공 처리
         verification.verify();
 
+        // JPA를 통해 DB에 insert, update를 실행하는 코드
         emailVerificationRepository.save(verification);
 
         return "이메일 인증이 완료되었습니다.";
     }
 
+    @Transactional
+    public String signup(SignupRequest request) {
+        System.out.println("🔥 service 들어옴");
+
+        System.out.println("email = " + request.getEmail());
+        System.out.println("pw = " + request.getPassword());
+        System.out.println("pw2 = " + request.getPasswordConfirm());
+
+        if (!request.getPassword().equals(request.getPasswordConfirm())) {
+            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // 이메일 인증 확인
+        EmailVerification verification =
+                emailVerificationRepository
+                        .findTopByEmailOrderByIdDesc(request.getEmail())
+                        .orElseThrow(() ->
+                                new RuntimeException("이메일 인증을 진행해주세요.")
+                        );
+
+        System.out.println("email = " + request.getEmail());
+        System.out.println("verification = " + verification);
+
+        if (!verification.isVerified()) {
+            throw new RuntimeException("이메일 인증이 완료되지 않았습니다.");
+        }
+
+        // 이메일 중복 검사
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("이미 사용 중인 이메일입니다.");
+        }
+
+        // 닉네임 중복 검사
+        if (userRepository.existsByNickname(request.getNickname())) {
+            throw new RuntimeException("이미 사용 중인 닉네임입니다.");
+        }
+
+        // 비밀번호 암호화
+        String encodedPassword =
+                passwordEncoder.encode(request.getPassword());
+
+        // 프로필 이미지
+        String imageUrl = null;
+
+        if (request.getProfileImage() != null &&
+                !request.getProfileImage().isEmpty()) {
+            imageUrl = s3Service.upload(request.getProfileImage());
+        }
+
+        // User 엔티티 생성
+        User user = new User(
+                request.getEmail(),
+                request.getNickname(),
+                encodedPassword,
+                imageUrl
+        );
+
+        // 회원 저장
+        userRepository.save(user);
+
+        return "회원가입이 완료되었습니다.";
+    }
+
+    public User login(LoginRequest loginRequest) {
+        String email = loginRequest.getEmail().trim().toLowerCase();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("이메일 또는 비밀번호가 올바르지 않습니다."));
+
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw new RuntimeException("틀린 비밀번호");
+        }
+
+        return user;
+    }
+
+    @Transactional
+    public void changePassword(ChangePasswordRequest request) {
+        EmailVerification verification =
+                emailVerificationRepository.findTopByEmailOrderByIdDesc(request.getEmail())
+                        .orElseThrow(() -> new RuntimeException("인증 정보 없음"));
+
+        if (!verification.isVerified()) {
+            throw new RuntimeException("이메일 인증이 완료되지 않았습니다.");
+        }
+
+        if (!verification.getCode().equals(request.getCode())) {
+            throw new RuntimeException("인증번호가 틀렸습니다.");
+        }
+
+        if (LocalDateTime.now().isAfter(verification.getExpiredAt())) {
+            throw new RuntimeException("인증이 만료되었습니다.");
+        }
+
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("유저 없음"));
+
+        // JPA에서는 save 쓰지 않아도 DB에 반영됨
+        user.changePassword(passwordEncoder.encode(request.getNewPassword()));
+    }
 }

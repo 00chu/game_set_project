@@ -108,6 +108,19 @@
   font-weight: 500;
 }
 
+.checkboxGroup {
+  margin: 0;
+  font-size: 14px;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.checkboxGroup input {
+  margin-right: 8px;
+}
+
 .loginBtn {
   margin-top: 6px;
 

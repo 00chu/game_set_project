@@ -1,5 +1,6 @@
 package com.test.game_set_back.user.entity;
 
+import com.test.game_set_back.common.enums.EmailAuthType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,12 +32,17 @@ public class EmailVerification {
     // 인증 여부
     private boolean verified;
 
-    public EmailVerification(String email, String code, LocalDateTime createdAt, LocalDateTime expiredAt) {
+    // 회원가입 / 비밀번호 찾기 타입
+    @Enumerated(EnumType.STRING)
+    private EmailAuthType type;
+
+    public EmailVerification(String email, String code, LocalDateTime createdAt, LocalDateTime expiredAt, EmailAuthType type) {
         this.email = email;
         this.code = code;
         this.createdAt = createdAt;
         this.expiredAt = expiredAt;
         this.verified = false;
+        this.type = type;
     }
 
     public void verify() {

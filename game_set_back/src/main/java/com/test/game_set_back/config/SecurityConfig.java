@@ -2,6 +2,8 @@ package com.test.game_set_back.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -17,12 +19,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // CORS 활성화
+                // CORS (교차 출처 리소스 공유) 활성화
                 .cors(cors -> {})
-
-                // CSRF 비활성화
+                // CSRF (Cross-Site Request Forgery) 비활성화
                 .csrf(csrf -> csrf.disable())
-
                 // 모든 요청 허용 (개발용)
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll()
@@ -30,7 +30,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -66,5 +65,11 @@ public class SecurityConfig {
         );
 
         return source;
+    }
+
+    @Bean
+    // 비밀번호 암호화
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

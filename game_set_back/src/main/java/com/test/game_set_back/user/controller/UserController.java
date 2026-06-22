@@ -1,12 +1,13 @@
 package com.test.game_set_back.user.controller;
 
-import com.test.game_set_back.user.dto.EmailRequest;
-import com.test.game_set_back.user.dto.EmailVerificationResponse;
-import com.test.game_set_back.user.dto.LoginRequest;
-import com.test.game_set_back.user.dto.EmailVerifyRequest;
+import com.test.game_set_back.common.enums.EmailAuthType;
+import com.test.game_set_back.common.util.JwtUtil;
+import com.test.game_set_back.user.dto.*;
+import com.test.game_set_back.user.entity.User;
 import com.test.game_set_back.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,30 +19,26 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
-
-    // 로그인
-    @PostMapping("/login")
-    public ResponseEntity<?> login(LoginRequest loginRequest){
-
-        return ResponseEntity.ok(0);
-    }
+    @Autowired
+    private JwtUtil jwtUtil;
 
     // 이메일 인증코드 전송
-    @PostMapping("/email-verification")
+    @PostMapping("/email-verification/signup")
     public ResponseEntity<?> sendEmailVerification(@RequestBody EmailRequest request) {
         try {
             // 인증코드 전송 완료 메시지
             EmailVerificationResponse response =
-                    userService.sendVerificationEmail(request.getEmail());
+                    userService.sendVerificationEmail(request.getEmail(), EmailAuthType.SIGNUP);
 
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             // 중복 이메일, 빈 이메일 등 요청 오류
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
+            e.printStackTrace();
             // 서버 내부 오류
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("이메일 발송에 실패했습니다.");
+                    .body("이메일 발송 실패");
         }
     }
 
@@ -63,12 +60,15 @@ public class UserController {
     }
 
     // 회원가입
-    @PostMapping("/signup")
+    @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> signup(
-            @RequestBody SignupRequest request
+            @ModelAttribute SignupRequest request
     ) {
+        System.out.println("🔥 controller 들어옴");
+
         try {
             String message = userService.signup(request);
+            System.out.println("🔥 controller 들어옴");
 
             return ResponseEntity.ok(message);
         } catch (RuntimeException e) {
@@ -80,5 +80,47 @@ public class UserController {
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("회원가입에 실패했습니다.");
         }
+    }
+
+    // 로그인
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
+        User user = userService.login(loginRequest);
+
+        // 로그인한 유저의 아이디 등으로 토큰을 만들어 제공
+        String token = jwtUtil.createToken(
+                user,
+                loginRequest.isAutoLogin()
+        );
+
+        return ResponseEntity.ok(
+                new LoginResponse(token, user)
+        );
+    }
+
+    // 비밀번호 변경 이메일 인증코드 전송
+    @PostMapping("/email-verification/password-reset")
+    public ResponseEntity<?> sendPasswordResetEmail(@RequestBody EmailRequest request) {
+        try {
+            // 인증코드 전송 완료 메시지
+            EmailVerificationResponse response =
+                    userService.sendVerificationEmail(request.getEmail(), EmailAuthType.PASSWORD_RESET);
+
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            // 중복 이메일, 빈 이메일 등 요청 오류
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            // 서버 내부 오류
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request){
+        userService.changePassword(request);
+
+        return ResponseEntity.ok("비밀번호 변경 완료");
     }
 }

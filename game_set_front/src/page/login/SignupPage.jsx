@@ -7,10 +7,14 @@ import {
   sendEmailApi,
   checkEmailApi,
 } from "../../component/auth/api.js";
-import { Link } from "react-router-dom";
-import styles from "./AuthPage.module.css";
+import { Link, useNavigate } from "react-router-dom";
+import styles from "./SignupPage.module.css";
+import { useCountdownTimer } from "../../component/hooks/useCountdownTimer.js";
+import PasswordInput from "../../component/ui/PasswordInput.jsx";
 
 const SignupPage = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -29,6 +33,7 @@ const SignupPage = () => {
       nickname: "",
       password: "",
       passwordConfirm: "",
+      profileImage: null,
     },
     mode: "onChange", //재검증
   });
@@ -38,7 +43,9 @@ const SignupPage = () => {
   const code = watch("code");
 
   const [codeSent, setCodeSent] = useState(false);
-  const [time, setTime] = useState(0);
+  const [preview, setPreview] = useState(null);
+
+  const { time, startTimer, formatTime } = useCountdownTimer();
 
   const sendCode = async () => {
     const isValid = await trigger("email");
@@ -51,13 +58,7 @@ const SignupPage = () => {
       // 서버에 이메일 인증 요청
       const response = await sendEmailApi(email);
 
-      // 서버가 보내준 만료 시간
-      const expiredTime = new Date(response.expiredAt);
-
-      // 현재 시간과 남은 시간 계산 (초)
-      const remainTime = Math.floor(
-        (expiredTime.getTime() - Date.now()) / 1000,
-      );
+      startTimer(response.expiredAt);
 
       // 인증 입력창 표시
       setCodeSent(true);
@@ -68,32 +69,22 @@ const SignupPage = () => {
       // 이메일 인증 상태 초기화
       setValue("isEmailVerified", false);
 
-      // 타이머 시작
-      setTime(remainTime);
-
       console.log(response.message);
     } catch (error) {
       console.error("전송 실패", error);
     }
   };
 
-  useEffect(() => {
-    if (time <= 0) {
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+
+    if (!file) {
       return;
     }
+    setValue("profileImage", file);
 
-    const timer = setInterval(() => {
-      setTime((prev) => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [time]);
-
-  const formatTime = () => {
-    const minute = String(Math.floor(time / 60)).padStart(2, "0");
-    const second = String(time % 60).padStart(2, "0");
-
-    return `${minute}:${second}`;
+    const imageUrl = URL.createObjectURL(file);
+    setPreview(imageUrl);
   };
 
   // 인증 확인
@@ -127,9 +118,23 @@ const SignupPage = () => {
   // 회원가입 submit
   const onSubmit = async (data) => {
     try {
-      const response = await signupApi(data);
+      const formData = new FormData(); // 이미지는 JSON으로 올릴 수 없어 FormData로 전송
+
+      formData.append("nickname", data.nickname);
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+      formData.append("passwordConfirm", data.passwordConfirm);
+
+      if (data.profileImage) {
+        formData.append("profileImage", data.profileImage);
+      }
+
+      const response = await signupApi(formData);
 
       console.log("회원가입 성공", response);
+
+      // 가입 완료 후 로그인 페이지로 이동, 뒤로 가기 방지
+      navigate("/login", { replace: true });
     } catch (error) {
       console.error("회원가입 실패", error);
     }
@@ -143,6 +148,22 @@ const SignupPage = () => {
         <h1>Create Account</h1>
 
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          {/* 프로필 이미지 */}
+          <div className={styles.profileBox}>
+            <img
+              src={preview || "default-profile.png"}
+              alt="프로필 미리보기"
+              className={styles.profilePreview}
+            />
+
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className={styles.fileInput}
+            />
+          </div>
+
           {/* 닉네임 */}
           <div className={styles.inputGroup}>
             <label>닉네임</label>
@@ -179,7 +200,7 @@ const SignupPage = () => {
               </div>
 
               <p className={styles.error}>{errors.code?.message}</p>
-              {!isEmailVerified && codeSent && <p>남은 시간: {formatTime()}</p>}
+              {time > 0 && !isEmailVerified && <p>남은 시간: {formatTime()}</p>}
             </div>
           )}
 
@@ -191,14 +212,22 @@ const SignupPage = () => {
           {/* 비밀번호 */}
           <div className={styles.inputGroup}>
             <label>비밀번호</label>
-            <input type="password" {...register("password")} />
+            <PasswordInput
+              register={register}
+              name="password"
+              placeholder="비밀번호를 입력하세요"
+            />
             <p className={styles.error}>{errors.password?.message}</p>
           </div>
 
           {/* 비밀번호 확인 */}
           <div className={styles.inputGroup}>
             <label>비밀번호 확인</label>
-            <input type="password" {...register("passwordConfirm")} />
+            <PasswordInput
+              register={register}
+              name="passwordConfirm"
+              placeholder="비밀번호를 입력하세요"
+            />
             <p className={styles.error}>{errors.passwordConfirm?.message}</p>
           </div>
 

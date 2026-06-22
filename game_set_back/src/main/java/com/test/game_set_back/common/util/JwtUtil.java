@@ -1,5 +1,6 @@
 package com.test.game_set_back.common.util;
 
+import com.test.game_set_back.user.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -31,8 +32,7 @@ public class JwtUtil {
 
     // 토큰 생성
     public String createToken(
-            String email,
-            String nickname,
+            User user,
             boolean autoLogin
     ) {
         Date now = new Date();
@@ -47,8 +47,8 @@ public class JwtUtil {
 
         // 토큰 반환
         return Jwts.builder()
-                .setSubject(email) // 토큰 소유자, 유저 식별자
-                .claim("nickname", nickname)
+                .setSubject(user.getEmail()) // 토큰 소유자, 유저 식별자
+                .claim("nickname", user.getNickname())
                 .setIssuedAt(now) // 토큰 발급 시간
                 .setExpiration(expiryDate) // 토큰 만료 시간
                 .signWith(getKey()) // 서명

@@ -16,4 +16,5 @@ public interface UserRepository
 
     // 로그인 조회
     Optional<User> findByEmail(String email);
+
 }

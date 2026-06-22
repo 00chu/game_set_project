@@ -27,9 +27,9 @@ api.interceptors.request.use(
   },
 );
 
-// 이메일 인증번호 전송
+// 이메일 인증번호 전송 (회원가입)
 export const sendEmailApi = async (email) => {
-  const response = await api.post("/users/email-verification", {
+  const response = await api.post("/users/email-verification/signup", {
     email: email,
   });
 
@@ -53,6 +53,21 @@ export const signupApi = async (data) => {
 // 로그인
 export const loginApi = async (data) => {
   const response = await api.post("/users/login", data);
+
+  return response.data;
+};
+
+// 이메일 인증번호 전송 (비밀번호 변경)
+export const sendEmailResetApi = async (email) => {
+  const response = await api.post("/users/email-verification/password-reset", {
+    email: email,
+  });
+
+  return response.data;
+};
+
+export const changePassword = async (data) => {
+  const response = await api.post("/users/change-password", data);
 
   return response.data;
 };

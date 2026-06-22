@@ -1,55 +1,69 @@
 .header {
   width: 100%;
-
   padding: 18px 40px;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   position: sticky;
   top: 0;
   z-index: 100;
-
   background: rgba(15, 23, 42, 0.75);
-
   backdrop-filter: blur(16px);
-
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .logo {
   text-decoration: none;
-
   color: white;
-
   font-size: 28px;
   font-weight: 900;
-
   letter-spacing: -0.5px;
-
   transition: 0.25s;
 }
 
 .logo:hover {
   color: #c4b5fd;
-
   text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
 }
 
 .badge {
   padding: 8px 14px;
-
   border-radius: 999px;
-
   background: rgba(139, 92, 246, 0.15);
-
   border: 1px solid rgba(139, 92, 246, 0.3);
-
   color: #c4b5fd;
-
+  cursor: pointer;
   font-size: 13px;
   font-weight: 700;
+}
+
+.badge:hover {
+  background: rgb(131, 102, 201);
+  border: 1px solid rgb(99, 67, 173);
+  color: white;
+}
+
+.userBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* 요소 사이 간격 */
+}
+
+.profileImg {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%; /* 원형 */
+  object-fit: cover; /* 이미지 찌그러짐 방지 */
+  border: 2px solid #00ffd5;
+}
+
+.nickname {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  align-items: center;
+  text-align: center;
 }
 
 .subtitle {

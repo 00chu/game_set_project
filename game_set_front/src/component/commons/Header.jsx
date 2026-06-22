@@ -17,10 +17,21 @@ const Header = () => {
       </Link>
 
       {user ? (
-        <>
-          <p>{user.nickname}</p>
-          <button onClick={handleLogout}>Log out</button>
-        </>
+        <div className={styles.userBox}>
+          <img
+            className={styles.profileImg}
+            src={user.profileImage || "/default-profile.png"}
+            alt="profile"
+          />
+
+          <Link to="/mypage" className={styles.nickname}>
+            {user.nickname}
+          </Link>
+
+          <button className={styles.badge} onClick={handleLogout}>
+            Log out
+          </button>
+        </div>
       ) : (
         <Link to="/login" className={styles.badge}>
           Log In

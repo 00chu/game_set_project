@@ -1,14 +1,23 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { findAccountSchema } from "../../component/auth/validation/authSchema.js";
-import styles from "./AuthPage.module.css";
+import styles from "./FindAccountPage.module.css";
+import {
+  changePassword,
+  checkEmailApi,
+  sendEmailResetApi,
+} from "../../component/auth/api.js";
+import { useCountdownTimer } from "../../component/hooks/useCountdownTimer.js";
+import PasswordInput from "../../component/ui/PasswordInput.jsx";
 
 const FindAccountPage = () => {
+  const navigate = useNavigate();
+
   const [step, setStep] = useState(1);
 
-  // STEP 1 - 이메일
+  // 1 - 이메일
   const {
     register: registerEmail,
     handleSubmit: handleEmailSubmit,
@@ -17,42 +26,79 @@ const FindAccountPage = () => {
     resolver: yupResolver(findAccountSchema.pick(["email"])),
   });
 
-  // STEP 2 - 인증번호
+  // 2 - 인증번호
   const {
     register: registerCode,
     handleSubmit: handleCodeSubmit,
     formState: { errors: codeErrors },
+    setValue,
+    setError,
+    clearErrors,
   } = useForm({
     resolver: yupResolver(findAccountSchema.pick(["code"])),
   });
 
-  // STEP 3 - 비밀번호 변경
+  // 3 - 비밀번호 변경
   const {
     register: registerPassword,
     handleSubmit: handlePasswordSubmit,
     formState: { errors: passwordErrors },
   } = useForm({
     resolver: yupResolver(
+      // 이 폼에서는 두 개의 필드만 yup으로 검사함. step별로 form validation 분리
       findAccountSchema.pick(["newPassword", "newPasswordConfirm"]),
     ),
   });
 
-  // STEP 1 submit
-  const onEmailSubmit = (data) => {
-    console.log("이메일 전송:", data);
+  const { time, startTimer, formatTime } = useCountdownTimer();
+  const [emailData, setEmailData] = useState(null);
+  const [codeData, setCodeData] = useState(null);
+  const onEmailSubmit = async (data) => {
+    setEmailData(data.email);
+    const response = await sendEmailResetApi(data.email);
+    startTimer(response.expiredAt);
     setStep(2);
   };
 
-  // STEP 2 submit
-  const onCodeSubmit = (data) => {
-    console.log("코드 확인:", data);
-    setStep(3);
+  const onCodeSubmit = async (data) => {
+    if (time <= 0) {
+      setError("email", {
+        type: "manual",
+        message: "인증 시간이 만료되어 다시 인증해주세요.",
+      });
+
+      setStep(1);
+      setEmailData(null);
+      return;
+    }
+
+    try {
+      setCodeData(data.code);
+
+      await checkEmailApi({
+        email: emailData,
+        code: data.code,
+      });
+
+      clearErrors("code");
+      setStep(3);
+    } catch (error) {
+      setError("code", {
+        type: "manual",
+        message: error.response?.data || "인증번호가 올바르지 않습니다.",
+      });
+    }
   };
 
-  // STEP 3 submit
-  const onPasswordSubmit = (data) => {
-    console.log("비밀번호 변경:", data);
+  const onPasswordSubmit = async (data) => {
+    await changePassword({
+      email: emailData,
+      code: codeData,
+      newPassword: data.newPassword,
+    });
+
     alert("비밀번호 변경 완료!");
+    navigate("/login", { replace: true });
   };
 
   return (
@@ -113,6 +159,7 @@ const FindAccountPage = () => {
               />
 
               <p className={styles.error}>{codeErrors.code?.message}</p>
+              {time > 0 && <p>남은 시간: {formatTime()}</p>}
             </div>
 
             <button type="submit" className={styles.primaryBtn}>
@@ -130,10 +177,10 @@ const FindAccountPage = () => {
             <div className={styles.inputGroup}>
               <label>새 비밀번호</label>
 
-              <input
-                type="password"
-                placeholder="새 비밀번호를 입력하세요"
-                {...registerPassword("newPassword")}
+              <PasswordInput
+                register={registerPassword}
+                name="newPassword"
+                placeholder="새 비밀번호"
               />
 
               <p className={styles.error}>
@@ -144,10 +191,10 @@ const FindAccountPage = () => {
             <div className={styles.inputGroup}>
               <label>비밀번호 확인</label>
 
-              <input
-                type="password"
-                placeholder="비밀번호를 다시 입력하세요"
-                {...registerPassword("newPasswordConfirm")}
+              <PasswordInput
+                register={registerPassword}
+                name="newPasswordConfirm"
+                placeholder="비밀번호 확인"
               />
 
               <p className={styles.error}>

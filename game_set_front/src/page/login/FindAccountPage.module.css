@@ -1,11 +1,9 @@
 .main {
   width: 100%;
   min-height: calc(100vh - 120px);
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   padding: 24px 16px;
   background: #0b1220;
 }
@@ -13,17 +11,11 @@
 .authCard {
   width: 100%;
   max-width: 420px;
-
   background: #1e293b;
-
   border-radius: 20px;
-
   padding: 28px;
-
   border: 1px solid rgba(255, 255, 255, 0.05);
-
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-
   display: flex;
   flex-direction: column;
 }
@@ -45,11 +37,34 @@
 .description {
   text-align: center;
   color: #94a3b8;
-
   margin-top: 6px;
   margin-bottom: 18px;
-
   font-size: 14px;
+}
+
+.steps {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.steps span {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #334155;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.active {
+  background: #8b5cf6 !important;
+  color: white !important;
 }
 
 .form {
@@ -72,17 +87,11 @@
 
 .inputGroup input {
   height: 48px;
-
   border-radius: 10px;
-
   border: 1px solid #334155;
-
   background: #0f172a;
-
   color: white;
-
   padding: 0 14px;
-
   font-size: 14px;
 }
 
@@ -97,84 +106,43 @@
 
 .primaryBtn {
   margin-top: 6px;
-
   height: 50px;
-
   border: none;
-
   border-radius: 12px;
-
   background: linear-gradient(90deg, #8b5cf6, #a855f7);
-
   color: white;
-
   font-size: 16px;
-
   font-weight: 700;
-
   cursor: pointer;
-
   transition: 0.2s;
 }
 
 .primaryBtn:hover {
   transform: translateY(-2px);
-
   box-shadow: 0 10px 25px rgba(139, 92, 246, 0.35);
-}
-
-.steps {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-
-  margin-bottom: 24px;
-}
-
-.steps span {
-  width: 34px;
-  height: 34px;
-
-  border-radius: 50%;
-
-  background: #334155;
-
-  color: #94a3b8;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-weight: 700;
-
-  transition: 0.2s;
-}
-
-.active {
-  background: #8b5cf6 !important;
-  color: white !important;
 }
 
 .bottomLink {
   margin-top: 18px;
-
   text-align: center;
-
   color: #94a3b8;
-
   font-size: 14px;
 }
 
 .bottomLink a {
   color: #8b5cf6;
-
   text-decoration: none;
-
   font-weight: 700;
 }
 
 .bottomLink a:hover {
   color: #c084fc;
+}
+
+.error {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
 }
 
 @media (max-width: 768px) {
@@ -185,56 +153,4 @@
   .authCard h1 {
     font-size: 28px;
   }
-}
-
-.emailRow {
-  display: flex;
-  gap: 10px;
-}
-
-.emailRow input {
-  flex: 1;
-}
-
-.emailRow button {
-  padding: 10px 12px;
-  border: none;
-  border-radius: 8px;
-  background: #8b5cf6;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.emailRow button:hover {
-  background: #7c3aed;
-}
-
-.success {
-  margin-top: 8px;
-  color: #22c55e;
-  font-weight: 600;
-  font-size: 13px;
-}
-
-@media (max-width: 768px) {
-  .emailRow {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .emailRow button {
-    width: 100%;
-  }
-
-  .primaryBtn {
-    width: 100%;
-  }
-}
-
-.error {
-  color: #ef4444;
-  font-size: 12px;
-  margin-top: 4px;
 }
