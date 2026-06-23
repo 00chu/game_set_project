@@ -1,0 +1,313 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  color: white;
+}
+
+/* =======================
+   TITLE
+======================= */
+.title {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+}
+
+.title span {
+  color: #a855f7;
+}
+
+/* =======================
+   CARD BASE (통일 핵심)
+======================= */
+.rankingBox,
+.mySection {
+  width: 100%;
+  max-width: 520px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  margin-top: 20px;
+}
+
+.rankingBox {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px 26px;
+}
+
+/* =======================
+   HEADER (RANKING)
+======================= */
+.header {
+  display: grid;
+  grid-template-columns: 60px 1fr 80px;
+  align-items: center;
+
+  padding: 12px 10px;
+  font-weight: 700;
+  color: #cbd5e1;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 10px;
+}
+
+/* =======================
+   ROW (RANKING)
+======================= */
+.row {
+  display: grid;
+  grid-template-columns: 60px 1fr 80px;
+  align-items: center;
+
+  padding: 14px 10px;
+  border-radius: 10px;
+  transition: 0.2s;
+  font-size: 15px;
+}
+
+.row:hover {
+  background: rgba(255, 255, 255, 0.07);
+  transform: translateX(4px);
+}
+
+.header,
+.row {
+  padding: 14px 16px;
+}
+
+/* =======================
+   MY ROW (완전 동일 구조)
+======================= */
+.myRow {
+  display: grid;
+  grid-template-columns: 60px 1fr 80px;
+  align-items: center;
+
+  padding: 12px 10px;
+  color: #e2e8f0;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.header,
+.row,
+.myRow {
+  column-gap: 12px;
+}
+
+/* =======================
+   COLUMN STYLE
+======================= */
+.rank {
+  font-weight: 800;
+  color: #facc15;
+}
+
+.name {
+  color: #e2e8f0;
+}
+
+.score {
+  text-align: right;
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+/* =======================
+   TOP 3
+======================= */
+.top1 {
+  background: linear-gradient(90deg, rgba(250, 204, 21, 0.2), transparent);
+}
+
+.top2 {
+  background: linear-gradient(90deg, rgba(148, 163, 184, 0.2), transparent);
+}
+
+.top3 {
+  background: linear-gradient(90deg, rgba(217, 119, 6, 0.2), transparent);
+}
+
+/* =======================
+   EMPTY BOX
+======================= */
+.emptyBox {
+  margin-top: 40px;
+  padding: 30px;
+  text-align: center;
+  font-size: 18px;
+  color: #94a3b8;
+
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+}
+
+.emptyMyBox {
+  padding: 20px;
+  text-align: center;
+  color: #94a3b8;
+
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+}
+
+/* =======================
+   MY SECTION TITLE
+======================= */
+.mySection h2 {
+  color: #93c5fd;
+  margin-bottom: 10px;
+}
+
+/* =======================
+   MY RANK BOX
+======================= */
+.myRankBox {
+  margin-top: 20px;
+  padding: 12px 16px;
+
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 12px;
+
+  color: #93c5fd;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* =======================
+   BUTTONS
+======================= */
+.btnRow {
+  margin-top: 30px;
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  width: 100%;
+}
+
+/* 기본 버튼 */
+.btnRow button {
+  flex: 1;
+  max-width: 180px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+
+  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+/* hover */
+.btnRow button:hover {
+  transform: translateY(-3px);
+  background: rgba(139, 92, 246, 0.25);
+  border-color: rgba(139, 92, 246, 0.5);
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.25);
+}
+
+/* 첫 번째 버튼 (RETRY 강조) */
+.btnRow button:first-child {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  border: none;
+  color: white;
+}
+
+/* 첫 번째 버튼 hover */
+.btnRow button:first-child:hover {
+  background: linear-gradient(135deg, #6d28d9, #9333ea);
+  box-shadow: 0 10px 25px rgba(124, 58, 237, 0.4);
+}
+
+/* 두 번째 버튼 (HOME) */
+.btnRow button:last-child {
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #93c5fd;
+}
+
+.btnRow button:last-child:hover {
+  background: rgba(59, 130, 246, 0.3);
+  color: white;
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.25);
+}
+
+.emptyMyBox {
+  padding: 24px;
+  text-align: center;
+
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+
+  backdrop-filter: blur(10px);
+}
+
+/* 텍스트 */
+.emptyText {
+  color: #cbd5e1;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* 로그인 버튼 */
+.loginBtn {
+  padding: 10px 18px;
+  border-radius: 10px;
+
+  border: none;
+  cursor: pointer;
+
+  font-weight: 700;
+  font-size: 13px;
+
+  color: white;
+
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+
+  transition: all 0.2s ease;
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.25);
+}
+
+/* hover */
+.loginBtn:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #6d28d9, #9333ea);
+  box-shadow: 0 10px 25px rgba(124, 58, 237, 0.4);
+}
+
+/* 클릭 효과 */
+.loginBtn:active {
+  transform: scale(0.97);
+}
+
+.headerScore {
+  justify-self: end;
+  text-align: right;
+}

@@ -4,23 +4,32 @@ import com.test.game_set_back.common.enums.EmailAuthType;
 import com.test.game_set_back.common.util.JwtUtil;
 import com.test.game_set_back.user.dto.*;
 import com.test.game_set_back.user.entity.User;
+import com.test.game_set_back.user.repository.UserRepository;
 import com.test.game_set_back.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
 @CrossOrigin("*")
+@RequiredArgsConstructor
 public class UserController {
     @Autowired
     private UserService userService;
+
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private final UserRepository userRepository;
 
     // 이메일 인증코드 전송
     @PostMapping("/email-verification/signup")
@@ -122,5 +131,40 @@ public class UserController {
         userService.changePassword(request);
 
         return ResponseEntity.ok("비밀번호 변경 완료");
+    }
+
+    @GetMapping("/mypage")
+    public ResponseEntity<?> getMyInfo(
+            Authentication authentication
+    ) {
+        return ResponseEntity.ok(
+                userService.getMyInfo(
+                        authentication.getName()
+                )
+        );
+    }
+
+    @PatchMapping("/mypage")
+    public ResponseEntity<?> updateUser(
+            Authentication authentication,
+            @RequestParam String nickname,
+            @RequestParam(required = false) MultipartFile profileImage
+    ) {
+        userService.updateUser(
+                authentication.getName(),
+                nickname,
+                profileImage
+        );
+        return ResponseEntity.ok("수정 완료");
+    }
+
+    @DeleteMapping("/mypage")
+    public ResponseEntity<?> deleteUser(
+            Authentication authentication
+    ) {
+        userService.deleteUser(
+                authentication.getName()
+        );
+        return ResponseEntity.ok("회원 탈퇴 완료");
     }
 }

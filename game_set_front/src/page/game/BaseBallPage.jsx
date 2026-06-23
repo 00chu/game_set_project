@@ -1,4 +1,4 @@
-import BaseBall from "../component/game/BaseBall";
+import BaseBall from "../../component/game/BaseBall";
 import styles from "./page.module.css";
 import SportsBaseballIcon from "@mui/icons-material/SportsBaseball";
 

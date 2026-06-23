@@ -135,8 +135,34 @@
   background: var(--accent);
   border: none;
   border-radius: 10px;
+  color: white;
   cursor: pointer;
   font-weight: bold;
+}
+
+.saveBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+}
+
+.cancelBtn {
+  flex: 1;
+  padding: 10px;
+
+  background: transparent;
+  color: var(--text-sub);
+
+  border: 1px solid #475569;
+  border-radius: 10px;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cancelBtn:hover {
+  background: #334155;
+  color: var(--text-main);
+  transform: translateY(-2px);
 }
 
 .deleteBtn {
@@ -147,4 +173,52 @@
   border-radius: 10px;
   color: white;
   cursor: pointer;
+}
+
+.deleteBtn:hover {
+  transform: translateY(-2px);
+  background: #f87171;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+}
+
+.saveBtn:active,
+.deleteBtn:active,
+.cancelBtn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.error {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #ef4444;
+}
+
+.emptyRecord {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 250px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(139, 92, 246, 0.08),
+    rgba(15, 23, 42, 0.3)
+  );
+
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 14px;
+
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.08);
+}
+
+.emptyIcon {
+  font-size: 56px;
+  margin-bottom: 14px;
+}
+
+.emptyRecord p {
+  color: var(--text-sub);
+  font-weight: 500;
 }

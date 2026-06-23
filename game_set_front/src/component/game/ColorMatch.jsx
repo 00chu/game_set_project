@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./ColorMatch.module.css";
 import { useNavigate } from "react-router-dom";
+import { saveRecordApi } from "./api";
 
 const COLORS = [
   { name: "red", kor: "빨강", color: "#ff3232" },
@@ -75,14 +76,40 @@ const ColorMatch = () => {
     }
   };
 
+  // 게임 종료
   const handleWrong = () => {
     if (gameOverRef.current) return;
 
     gameOverRef.current = true;
+
+    // 게임 종료 화면 즉시 표시
     setOver(true);
 
     if (timerRef.current) clearInterval(timerRef.current);
   };
+
+  // 중복 저장 방지
+  const savedRef = useRef(false);
+
+  // 백그라운드에서 기록 저장
+  useEffect(() => {
+    if (!over) return;
+    if (savedRef.current) return;
+
+    savedRef.current = true;
+
+    (async () => {
+      try {
+        await saveRecordApi({
+          gameName: "COLOR_MATCH",
+          score: count,
+          playTime: time,
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [over]);
 
   const formatTime = (time) => {
     const m = String(Math.floor(time / 60)).padStart(2, "0");
@@ -96,7 +123,7 @@ const ColorMatch = () => {
     }
   }, [count, language]);
 
-  // ⏱ 타이머
+  // 타이머
   useEffect(() => {
     const id = setInterval(() => setTime((t) => t + 1), 1000);
     if (over) clearInterval(id);
@@ -161,6 +188,9 @@ const ColorMatch = () => {
 
             <div className={styles.btnRow}>
               <button onClick={() => window.location.reload()}>REPLAY</button>
+              <button onClick={() => navigate("/history/COLOR_MATCH")}>
+                HISTORY
+              </button>
               <button onClick={() => navigate("/")}>HOME</button>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./BaseBall.module.css";
 import { useNavigate } from "react-router-dom";
+import { saveRecordApi } from "./api";
 
 const BaseBall = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const BaseBall = () => {
 
   const [isGameOver, setIsGameOver] = useState(false);
 
-  const result = () => {
+  const result = async () => {
     const myAnswer = Object.values(throwBall);
 
     let strike = 0;
@@ -26,8 +27,20 @@ const BaseBall = () => {
       }
     }
 
+    const tryCount = scores.length + 1;
+
     if (strike === 4) {
       setIsGameOver(true);
+
+      // 여기서 저장
+      try {
+        await saveRecordApi({
+          gameName: "BASEBALL",
+          score: tryCount,
+        });
+      } catch (e) {
+        console.error(e);
+      }
 
       return;
     }
@@ -109,7 +122,9 @@ const BaseBall = () => {
               >
                 REPLAY
               </button>
-
+              <button onClick={() => navigate("/ranking/BASEBALL")}>
+                RANKING
+              </button>
               <button
                 onClick={() => {
                   navigate("/");

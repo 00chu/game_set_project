@@ -6,6 +6,7 @@ import styles from "./LoginPage.module.css";
 import { loginApi } from "../../component/auth/api.js";
 import { useAuthStore } from "../../component/auth/store/authStore.js";
 import PasswordInput from "../../component/ui/PasswordInput.jsx";
+import { useEffect } from "react";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -18,16 +19,28 @@ const LoginPage = () => {
     setValue,
     setError,
     clearErrors,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(loginSchema),
     defaultValues: {
       autoLogin: false,
+      saveEmail: false,
+      email: "",
     },
   });
 
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("savedEmail");
+
+    if (savedEmail) {
+      setValue("email", savedEmail);
+      setValue("saveEmail", true);
+    }
+  }, [setValue]);
+
   const onSubmit = async (data) => {
-    const { autoLogin, email, password } = data;
+    const { autoLogin, saveEmail, email, password } = data;
 
     try {
       const response = await loginApi({
@@ -38,15 +51,29 @@ const LoginPage = () => {
 
       const storage = autoLogin ? localStorage : sessionStorage;
 
+      // 스토리지에 토큰과 유저 정보 저장
       storage.setItem("token", response.token);
       storage.setItem("user", JSON.stringify(response.user));
 
+      // 아이디 저장
+      if (saveEmail) {
+        localStorage.setItem("savedEmail", email);
+      } else {
+        localStorage.removeItem("savedEmail");
+      }
+
       // Zustand에 로그인 정보 저장
-      login(response.user, response.accessToken);
+      login(response.user, response.token);
+
+      console.log(useAuthStore.getState());
 
       // 로그인 후 홈으로 이동, 뒤로 가기 방지
       navigate("/", { replace: true });
     } catch (error) {
+      console.log(error);
+      console.log(error.response);
+      console.log(error.response?.data);
+
       const message = error.response?.data;
 
       // 백엔드 메시지 기준 처리
@@ -108,12 +135,21 @@ const LoginPage = () => {
             <p className={styles.error}>{errors.password?.message}</p>
           </div>
 
-          {/* 자동 로그인 체크박스 */}
-          <div className={styles.checkboxGroup}>
-            <label>
-              <input type="checkbox" {...register("autoLogin")} />
-              자동 로그인
-            </label>
+          <div className={styles.checkboxWrap}>
+            {/* 아이디 저장 체크박스 */}
+            <div className={styles.checkboxGroup}>
+              <label>
+                <input type="checkbox" {...register("saveEmail")} />
+                아이디 저장
+              </label>
+            </div>
+            {/* 자동 로그인 체크박스 */}
+            <div className={styles.checkboxGroup}>
+              <label>
+                <input type="checkbox" {...register("autoLogin")} />
+                자동 로그인
+              </label>
+            </div>
           </div>
 
           <button type="submit" className={styles.loginBtn}>

@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useAuthStore } from "./store/authStore.js";
-import { logoutUser } from "./auth.js";
+import { useAuthStore } from "../auth/store/authStore";
+import { logoutUser } from "../auth/auth";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKSERVER,
@@ -12,6 +12,8 @@ api.interceptors.response.use(
   (response) => response,
 
   (error) => {
+    console.log("에러 상태:", error.response?.status);
+
     // 토큰 만료 (401) 시에 자동으로 로그아웃
     if (error.response?.status === 401 || error.response?.status === 403) {
       logoutUser();
@@ -29,6 +31,8 @@ api.interceptors.request.use(
     // zustand에서 토큰을 가져옴
     const token = useAuthStore.getState().token;
 
+    console.log("현재 토큰:", token);
+
     if (token) {
       // jwt 인증 표준 방식으로 토큰을 요청 헤더에 추가함
       config.headers.Authorization = `Bearer ${token}`;
@@ -42,49 +46,19 @@ api.interceptors.request.use(
   },
 );
 
-// 이메일 인증번호 전송 (회원가입)
-export const sendEmailApi = async (email) => {
-  const response = await api.post("/users/email-verification/signup", {
-    email: email,
-  });
+export const getMyInfoApi = async () => {
+  const response = await api.get("/users/mypage");
+  return response.data;
+};
+
+export const updateUserApi = async (formData) => {
+  const response = await api.patch("/users/mypage", formData);
 
   return response.data;
 };
 
-// 인증번호 확인
-export const checkEmailApi = async (data) => {
-  const response = await api.post("/users/email-verification/check", data);
+export const deleteUserApi = async () => {
+  const response = await api.delete("/users/mypage");
 
   return response.data;
 };
-
-// 회원가입
-export const signupApi = async (data) => {
-  const response = await api.post("/users/signup", data);
-
-  return response.data;
-};
-
-// 로그인
-export const loginApi = async (data) => {
-  const response = await api.post("/users/login", data);
-
-  return response.data;
-};
-
-// 이메일 인증번호 전송 (비밀번호 변경)
-export const sendEmailResetApi = async (email) => {
-  const response = await api.post("/users/email-verification/password-reset", {
-    email: email,
-  });
-
-  return response.data;
-};
-
-export const changePassword = async (data) => {
-  const response = await api.post("/users/change-password", data);
-
-  return response.data;
-};
-
-export default api;

@@ -2,10 +2,7 @@ package com.test.game_set_back.user.service;
 
 import com.test.game_set_back.common.enums.EmailAuthType;
 import com.test.game_set_back.common.s3.S3Service;
-import com.test.game_set_back.user.dto.ChangePasswordRequest;
-import com.test.game_set_back.user.dto.EmailVerificationResponse;
-import com.test.game_set_back.user.dto.LoginRequest;
-import com.test.game_set_back.user.dto.SignupRequest;
+import com.test.game_set_back.user.dto.*;
 import com.test.game_set_back.user.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +15,7 @@ import com.test.game_set_back.user.repository.UserRepository;
 import com.test.game_set_back.user.repository.EmailVerificationRepository;
 import com.test.game_set_back.common.util.EmailSender;
 import com.test.game_set_back.user.entity.EmailVerification;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor // 생성자 주입을 위한 어노테이션
 @Service
@@ -287,5 +285,42 @@ public class UserService {
 
         // JPA에서는 save 쓰지 않아도 DB에 반영됨
         user.changePassword(passwordEncoder.encode(request.getNewPassword()));
+    }
+
+    public Object getMyInfo(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("유저 없음"));
+
+        return MypageResponse.builder()
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .profileImage(user.getProfileImage())
+                .build();
+    }
+
+    @Transactional
+    public void updateUser(
+            String email,
+            String nickname,
+            MultipartFile profileImage
+    ) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("유저 없음"));
+
+        user.changeNickname(nickname);
+        // 프로필 이미지 변경
+        if (profileImage != null && !profileImage.isEmpty()) {
+            String imageUrl = s3Service.upload(profileImage);
+            user.changeProfileImage(imageUrl);
+        }
+    }
+
+    @Transactional
+    public void deleteUser(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("유저 없음"));
+
+        // JPA로 유저 삭제
+        userRepository.delete(user);
     }
 }

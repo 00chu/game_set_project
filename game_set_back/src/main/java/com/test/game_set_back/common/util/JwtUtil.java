@@ -24,8 +24,8 @@ public class JwtUtil {
         );
     }
 
-    // 기본 로그인 토큰 유효 시간 1시간
-    private final long SHORT_EXPIRATION_TIME = 60 * 60 * 1000L;
+    // 기본 로그인 토큰 유효 시간 1일
+    private final long SHORT_EXPIRATION_TIME = 24 * 60 * 60 * 1000L;
 
     // 자동 로그인 토큰 유효 시간 7일
     private final long LONG_EXPIRATION_TIME = 7 * 24 * 60 * 60 * 1000L;

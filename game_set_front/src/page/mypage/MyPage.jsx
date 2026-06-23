@@ -1,59 +1,102 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./MyPage.module.css";
+import { useAuthStore } from "../../component/auth/store/authStore";
+import {
+  getMyInfoApi,
+  updateUserApi,
+  deleteUserApi,
+} from "../../component/mypage/api";
+import { signupSchema } from "../../component/auth/validation/authSchema";
 
 const MyPage = () => {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState(null);
   const [nickname, setNickname] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState("");
-
+  const [user, setUser] = useState(null);
   const [gameRecords, setGameRecords] = useState([]);
 
-  // 유저 정보 불러오기 (임시)
   useEffect(() => {
-    const fetchData = async () => {
-      const res = {
-        email: "test@gmail.com",
-        nickname: "gamer01",
-        profileImage: "",
-      };
+    const fetchMyInfo = async () => {
+      console.log("마이페이지 API 호출 시작");
+      try {
+        const data = await getMyInfoApi();
 
-      setUser(res);
-      setNickname(res.nickname);
-      setPreview(res.profileImage);
-
-      setGameRecords([
-        { id: 1, game: "Tetris", score: 1200 },
-        { id: 2, game: "Snake", score: 800 },
-        { id: 3, game: "Pacman", score: 1500 },
-      ]);
+        setUser(data); // 전체 유저 저장
+        setNickname(data.nickname);
+        setPreview(data.profileImage);
+      } catch (error) {
+        console.error(error);
+      }
     };
 
-    fetchData();
+    fetchMyInfo();
   }, []);
 
-  // 이미지 변경
   const onImageChange = (e) => {
     const file = e.target.files[0];
+
+    if (!file) return;
+
     setImage(file);
     setPreview(URL.createObjectURL(file));
   };
 
-  // 저장
+  const [nicknameError, setNicknameError] = useState("");
+
   const onSave = async () => {
-    alert("정보 수정 완료!");
+    try {
+      await signupSchema.validateAt("nickname", {
+        nickname,
+      });
+
+      setNicknameError("");
+
+      const formData = new FormData();
+
+      formData.append("nickname", nickname);
+
+      if (image) {
+        formData.append("profileImage", image);
+      }
+
+      const updatedUser = await updateUserApi(formData);
+
+      setUser(updatedUser);
+      setNickname(updatedUser.nickname);
+      setPreview(updatedUser.profileImage);
+
+      alert("정보 수정 완료!");
+    } catch (error) {
+      setNicknameError(error.message);
+    }
   };
 
-  // 탈퇴
-  const onDelete = () => {
+  const onCancel = () => {
+    if (!user) return;
+
+    setNickname(user.nickname);
+    setPreview(user.profileImage || "");
+    setImage(null);
+    setNicknameError("");
+  };
+
+  const logout = useAuthStore((state) => state.logout);
+
+  const onDelete = async () => {
     const ok = confirm("정말 탈퇴하시겠습니까?");
     if (!ok) return;
 
+    await deleteUserApi();
+
+    logout();
+
     localStorage.clear();
-    navigate("/login", { replace: true });
+    sessionStorage.clear();
+
+    navigate("/", { replace: true });
   };
 
   return (
@@ -69,6 +112,7 @@ const MyPage = () => {
           <div className={styles.fileBox}>
             <input
               type="file"
+              accept="image/*"
               id="fileInput"
               onChange={onImageChange}
               className={styles.fileInput}
@@ -81,10 +125,16 @@ const MyPage = () => {
 
         <div className={styles.infoBox}>
           <h3>닉네임</h3>
+
           <input
             value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
+            onChange={(e) => {
+              setNickname(e.target.value);
+              setNicknameError("");
+            }}
           />
+
+          {nicknameError && <p className={styles.error}>{nicknameError}</p>}
         </div>
 
         <div className={styles.infoBox}>
@@ -96,7 +146,12 @@ const MyPage = () => {
           <button className={styles.saveBtn} onClick={onSave}>
             정보 저장
           </button>
+        </div>
 
+        <div className={styles.buttonGroup}>
+          <button className={styles.cancelBtn} onClick={onCancel}>
+            수정 취소
+          </button>
           <button className={styles.deleteBtn} onClick={onDelete}>
             회원 탈퇴
           </button>
@@ -108,12 +163,21 @@ const MyPage = () => {
         <h2 className={styles.title}>🎮 Game Records</h2>
 
         <ul className={styles.list}>
-          {gameRecords.map((g) => (
-            <li key={g.id} className={styles.item}>
-              <span>{g.game}</span>
-              <span>{g.score}점</span>
-            </li>
-          ))}
+          <ul className={styles.list}>
+            {gameRecords.length === 0 ? (
+              <div className={styles.emptyRecord}>
+                <span className={styles.emptyIcon}>🎮</span>
+                <p>아직 플레이한 기록이 없습니다.</p>
+              </div>
+            ) : (
+              gameRecords.map((g) => (
+                <li key={g.id} className={styles.item}>
+                  <span>{g.game}</span>
+                  <span>{g.score}점</span>
+                </li>
+              ))
+            )}
+          </ul>
         </ul>
       </div>
     </div>

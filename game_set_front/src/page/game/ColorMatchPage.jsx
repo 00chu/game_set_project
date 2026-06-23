@@ -1,4 +1,4 @@
-import ColorMatch from "../component/game/ColorMatch";
+import ColorMatch from "../../component/game/ColorMatch";
 import styles from "./page.module.css";
 import PaletteIcon from "@mui/icons-material/Palette";
 

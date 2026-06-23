@@ -1,10 +1,13 @@
 package com.test.game_set_back.user.entity;
 
+import com.test.game_set_back.game.entity.GameRecord;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -70,4 +73,15 @@ public class User {
     public void changePassword(String password) {
         this.password = password;
     }
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void changeProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    @OneToMany(mappedBy = "user")
+    private List<GameRecord> gameRecords = new ArrayList<>();
 }
