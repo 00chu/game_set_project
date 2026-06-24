@@ -49,11 +49,18 @@ const LoginPage = () => {
         autoLogin,
       });
 
+      const user = {
+        id: response.id,
+        email: response.email,
+        nickname: response.nickname,
+        profileImage: response.profileImage,
+      };
+
       const storage = autoLogin ? localStorage : sessionStorage;
 
       // 스토리지에 토큰과 유저 정보 저장
       storage.setItem("token", response.token);
-      storage.setItem("user", JSON.stringify(response.user));
+      storage.setItem("user", JSON.stringify(user));
 
       // 아이디 저장
       if (saveEmail) {
@@ -63,7 +70,7 @@ const LoginPage = () => {
       }
 
       // Zustand에 로그인 정보 저장
-      login(response.user, response.token);
+      login(user, response.token);
 
       console.log(useAuthStore.getState());
 

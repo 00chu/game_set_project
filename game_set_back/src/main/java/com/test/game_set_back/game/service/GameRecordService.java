@@ -49,7 +49,7 @@ public class GameRecordService {
 
         GameSortType sortType = GameSortType.from(gameName);
 
-        List<GameRecord> records = gameRecordRepository.findByGameName(gameName);
+        List<GameRecord> records = gameRecordRepository.findByGameName(GameName.valueOf(gameName));
 
         if (records.isEmpty()) {
             return List.of();
@@ -64,11 +64,12 @@ public class GameRecordService {
 
         return records.stream()
                 .sorted(comparator)
-                .map(r -> new GameRecordResponse(
-                        r.getId(),
-                        r.getUser().getNickname(),
-                        r.getScore()
-                ))
+                .map(r -> GameRecordResponse.builder()
+                        .id(r.getId())
+                        .gameName(r.getGameName())
+                        .nickname(r.getUser().getNickname())
+                        .score(r.getScore())
+                        .build())
                 .toList();
     }
 }

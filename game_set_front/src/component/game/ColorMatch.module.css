@@ -430,3 +430,24 @@ main {
   background: rgba(255, 255, 255, 0.15);
   transform: translateY(-1px);
 }
+
+.language {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.language button {
+  min-width: 120px;
+}
+
+.historyBtn {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.historyBtn:hover {
+  background: rgba(168, 85, 247, 0.2);
+  border-color: #a855f7;
+}

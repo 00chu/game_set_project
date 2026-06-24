@@ -6,6 +6,8 @@ import { saveRecordApi } from "./api";
 const BaseBall = () => {
   const navigate = useNavigate();
 
+  const [started, setStarted] = useState(false);
+
   const [answer, setAnswer] = useState([]);
   const [throwBall, setThrowBall] = useState({});
   const [scores, setScores] = useState([]);
@@ -87,9 +89,21 @@ const BaseBall = () => {
     };
   }, []);
 
+  if (!started) {
+    return (
+      <div className={styles.startContainer}>
+        <BaseBallStart
+          onStart={() => setStarted(true)}
+          onRanking={() => navigate("/history/BASEBALL")}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className={styles.baseball_game}>
       {!isMobile && <BaseBallScore scores={scores} />}
+
       {isMobile ? (
         <MobileBaseBallInput
           throwBall={throwBall}
@@ -106,10 +120,11 @@ const BaseBall = () => {
           setSelectNum={setSelectNum}
         />
       )}
+
       {isGameOver && (
         <div className={styles.gameOverOverlay}>
           <div className={styles.gameOverCard}>
-            <h1>HOME RUN 🎉</h1>
+            <h1>HOME RUN</h1>
 
             <p>정답: {answer.join("")}</p>
             <p>시도 횟수: {scores.length + 1}</p>
@@ -122,7 +137,7 @@ const BaseBall = () => {
               >
                 REPLAY
               </button>
-              <button onClick={() => navigate("/ranking/BASEBALL")}>
+              <button onClick={() => navigate("/history/BASEBALL")}>
                 RANKING
               </button>
               <button
@@ -337,6 +352,19 @@ const MobileBaseBallInput = ({ throwBall, setThrowBall, result, scores }) => {
             </span>
           </div>
         ))}
+      </div>
+    </div>
+  );
+};
+
+const BaseBallStart = ({ onStart, onRanking }) => {
+  return (
+    <div className={styles.startScreen}>
+      <h1 className={styles.startTitle}>⚾ BASEBALL</h1>
+
+      <div className={styles.startButtons}>
+        <button onClick={onStart}>START</button>
+        <button onClick={onRanking}>RANKING</button>
       </div>
     </div>
   );

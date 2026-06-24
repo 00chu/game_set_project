@@ -26,10 +26,7 @@ export const useAuthStore = create(
       // 사용자 정보 수정
       updateUser: (newUser) =>
         set((state) => ({
-          user: {
-            ...state.user,
-            ...newUser,
-          },
+          user: state.user ? { ...state.user, ...newUser } : newUser,
         })),
     }),
     {

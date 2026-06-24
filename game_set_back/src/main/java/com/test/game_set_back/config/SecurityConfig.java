@@ -36,7 +36,8 @@ public class SecurityConfig {
                                 "/users/signup",
                                 "/users/email-verification/**",
                                 "/users/change-password",
-                                "/users/mypage"
+                                "/users/mypage",
+                                "/games/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

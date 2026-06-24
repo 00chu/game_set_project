@@ -1,12 +1,16 @@
 package com.test.game_set_back.user.dto;
 
-import com.test.game_set_back.user.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 @AllArgsConstructor
 public class LoginResponse {
     private String token;
-    private User user;
+    private Long id;
+    private String email;
+    private String nickname;
+    private String profileImage;
 }

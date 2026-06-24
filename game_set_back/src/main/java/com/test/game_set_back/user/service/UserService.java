@@ -2,6 +2,7 @@ package com.test.game_set_back.user.service;
 
 import com.test.game_set_back.common.enums.EmailAuthType;
 import com.test.game_set_back.common.s3.S3Service;
+import com.test.game_set_back.game.dto.GameRecordResponse;
 import com.test.game_set_back.user.dto.*;
 import com.test.game_set_back.user.entity.User;
 import jakarta.transaction.Transactional;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 import com.test.game_set_back.user.repository.UserRepository;
 import com.test.game_set_back.user.repository.EmailVerificationRepository;
@@ -287,19 +289,31 @@ public class UserService {
         user.changePassword(passwordEncoder.encode(request.getNewPassword()));
     }
 
-    public Object getMyInfo(String email) {
+    public MypageResponse getMyInfo(String email) {
+
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("유저 없음"));
+
+        List<GameRecordResponse> records =
+                user.getGameRecords()
+                        .stream()
+                        .map(record -> GameRecordResponse.builder()
+                                .id(record.getId())
+                                .gameName(record.getGameName())
+                                .score(record.getScore())
+                                .build())
+                        .toList();
 
         return MypageResponse.builder()
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .profileImage(user.getProfileImage())
+                .gameRecords(records)
                 .build();
     }
 
     @Transactional
-    public void updateUser(
+    public MypageResponse updateUser(
             String email,
             String nickname,
             MultipartFile profileImage
@@ -313,6 +327,12 @@ public class UserService {
             String imageUrl = s3Service.upload(profileImage);
             user.changeProfileImage(imageUrl);
         }
+
+        return MypageResponse.builder()
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .profileImage(user.getProfileImage())
+            .build();
     }
 
     @Transactional

@@ -1,5 +1,6 @@
 package com.test.game_set_back.game.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.test.game_set_back.common.enums.GameName;
 import com.test.game_set_back.user.entity.User;
 import jakarta.persistence.*;
@@ -32,6 +33,7 @@ public class GameRecord {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     private LocalDateTime createdAt;

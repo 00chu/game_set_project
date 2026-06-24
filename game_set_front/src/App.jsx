@@ -10,12 +10,14 @@ import SignupPage from "./page/login/SignupPage";
 import FindAccountPage from "./page/login/FindAccountPage";
 import MyPage from "./page/mypage/MyPage";
 import GameHistoryPage from "./page/game/GameHistoryPage";
+import ScrollToTop from "./component/ui/ScrollToTop";
 
 function App() {
   return (
     <div className="wrap">
       <Header></Header>
       <div className="main">
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<GameMainPage />} />
           <Route path="/login" element={<LoginPage />} />

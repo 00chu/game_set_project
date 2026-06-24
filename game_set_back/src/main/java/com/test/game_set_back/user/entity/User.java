@@ -1,5 +1,6 @@
 package com.test.game_set_back.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.test.game_set_back.game.entity.GameRecord;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -83,5 +84,6 @@ public class User {
     }
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<GameRecord> gameRecords = new ArrayList<>();
 }

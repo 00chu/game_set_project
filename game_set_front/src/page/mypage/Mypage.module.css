@@ -222,3 +222,78 @@
   color: var(--text-sub);
   font-weight: 500;
 }
+
+.item {
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.item:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* =========================
+   TABLET
+========================= */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .left,
+  .right {
+    width: 100%;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 600px) {
+  .container {
+    margin: 20px auto;
+    padding: 12px;
+    gap: 16px;
+  }
+
+  .left,
+  .right {
+    padding: 16px;
+  }
+
+  .profileImg {
+    width: 90px;
+    height: 90px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+  }
+
+  .saveBtn,
+  .cancelBtn,
+  .deleteBtn {
+    width: 100%;
+  }
+
+  .item {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  /* 게임 기록 카드 */
+  .item span:nth-child(2) {
+    flex: 1;
+    margin-left: 8px;
+  }
+
+  .item span:last-child {
+    font-weight: 700;
+    color: var(--accent);
+  }
+}

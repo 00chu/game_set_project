@@ -9,6 +9,10 @@ import {
 } from "../../component/mypage/api";
 import { signupSchema } from "../../component/auth/validation/authSchema";
 
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import SportsBaseballIcon from "@mui/icons-material/SportsBaseball";
+import PaletteIcon from "@mui/icons-material/Palette";
+
 const MyPage = () => {
   const navigate = useNavigate();
 
@@ -20,13 +24,14 @@ const MyPage = () => {
 
   useEffect(() => {
     const fetchMyInfo = async () => {
-      console.log("마이페이지 API 호출 시작");
       try {
         const data = await getMyInfoApi();
 
-        setUser(data); // 전체 유저 저장
+        setUser(data);
         setNickname(data.nickname);
         setPreview(data.profileImage);
+
+        setGameRecords(data.gameRecords || []);
       } catch (error) {
         console.error(error);
       }
@@ -34,6 +39,25 @@ const MyPage = () => {
 
     fetchMyInfo();
   }, []);
+
+  // 게임 기록, 주소 설정
+  const gameNameMap = {
+    BASEBALL: "Number Baseball",
+    COLOR_MATCH: "Color Match",
+  };
+
+  const gamePathMap = {
+    BASEBALL: "/baseball",
+    COLOR_MATCH: "/colorMatch",
+  };
+
+  const baseballBest = gameRecords
+    .filter((g) => g.gameName === "BASEBALL")
+    .sort((a, b) => a.score - b.score)[0];
+
+  const colorBest = gameRecords
+    .filter((g) => g.gameName === "COLOR_MATCH")
+    .sort((a, b) => b.score - a.score)[0];
 
   const onImageChange = (e) => {
     const file = e.target.files[0];
@@ -45,6 +69,8 @@ const MyPage = () => {
   };
 
   const [nicknameError, setNicknameError] = useState("");
+
+  const updateAuthUser = useAuthStore((state) => state.updateUser);
 
   const onSave = async () => {
     try {
@@ -64,7 +90,17 @@ const MyPage = () => {
 
       const updatedUser = await updateUserApi(formData);
 
+      console.log("API response user:", updatedUser);
+
       setUser(updatedUser);
+
+      updateAuthUser({
+        nickname: updatedUser.nickname ?? user.nickname,
+        profileImage: updatedUser.profileImage ?? user.profileImage,
+      });
+
+      console.log("AFTER zustand update:", useAuthStore.getState().user);
+
       setNickname(updatedUser.nickname);
       setPreview(updatedUser.profileImage);
 
@@ -160,25 +196,38 @@ const MyPage = () => {
 
       {/* RIGHT - GAME RECORDS */}
       <div className={styles.right}>
-        <h2 className={styles.title}>🎮 Game Records</h2>
+        <h2 className={styles.title}>
+          <EmojiEventsIcon
+            sx={{
+              fontSize: 20,
+              color: "var(--accent-hover)",
+              marginRight: 1,
+            }}
+          />
+          Best Records
+        </h2>
 
-        <ul className={styles.list}>
-          <ul className={styles.list}>
-            {gameRecords.length === 0 ? (
-              <div className={styles.emptyRecord}>
-                <span className={styles.emptyIcon}>🎮</span>
-                <p>아직 플레이한 기록이 없습니다.</p>
-              </div>
-            ) : (
-              gameRecords.map((g) => (
-                <li key={g.id} className={styles.item}>
-                  <span>{g.game}</span>
-                  <span>{g.score}점</span>
-                </li>
-              ))
-            )}
-          </ul>
-        </ul>
+        <div className={styles.item} onClick={() => navigate("/baseball")}>
+          <SportsBaseballIcon
+            sx={{
+              fontSize: 20,
+              color: "var(--accent-hover)",
+            }}
+          />
+          <span>Number Baseball</span>
+          <span>{baseballBest ? `${baseballBest.score}회` : "기록 없음"}</span>
+        </div>
+
+        <div className={styles.item} onClick={() => navigate("/colorMatch")}>
+          <PaletteIcon
+            sx={{
+              fontSize: 20,
+              color: "var(--accent-hover)",
+            }}
+          />
+          <span>Color Match</span>
+          <span>{colorBest ? `${colorBest.score}점` : "기록 없음"}</span>
+        </div>
       </div>
     </div>
   );

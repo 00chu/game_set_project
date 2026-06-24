@@ -102,9 +102,15 @@ public class UserController {
                 loginRequest.isAutoLogin()
         );
 
-        return ResponseEntity.ok(
-                new LoginResponse(token, user)
-        );
+        LoginResponse response = LoginResponse.builder()
+                .token(token)
+                .id(user.getId())
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .profileImage(user.getProfileImage())
+                .build();
+
+        return ResponseEntity.ok(response);
     }
 
     // 비밀번호 변경 이메일 인증코드 전송
@@ -144,18 +150,19 @@ public class UserController {
         );
     }
 
-    @PatchMapping("/mypage")
-    public ResponseEntity<?> updateUser(
+   @PatchMapping("/mypage")
+    public ResponseEntity<MypageResponse> updateUser(
             Authentication authentication,
             @RequestParam String nickname,
             @RequestParam(required = false) MultipartFile profileImage
     ) {
-        userService.updateUser(
+        MypageResponse response = userService.updateUser(
                 authentication.getName(),
                 nickname,
                 profileImage
         );
-        return ResponseEntity.ok("수정 완료");
+
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/mypage")

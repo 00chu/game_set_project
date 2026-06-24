@@ -6,6 +6,8 @@ const Header = () => {
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
 
+  console.log("HEADER user:", user);
+
   const handleLogout = () => {
     logout();
   };
@@ -24,9 +26,11 @@ const Header = () => {
             alt="profile"
           />
 
-          <Link to="/mypage" className={styles.nickname}>
-            {user.nickname}
-          </Link>
+          {user?.nickname ? (
+            <Link to="/mypage" className={styles.nickname}>
+              {user.nickname}
+            </Link>
+          ) : null}
 
           <button className={styles.badge} onClick={handleLogout}>
             Log out

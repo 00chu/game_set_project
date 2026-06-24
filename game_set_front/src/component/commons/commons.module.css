@@ -165,3 +165,28 @@
     font-size: 13px;
   }
 }
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .userBox {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .nickname {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .logo {
+    width: 100%;
+    text-align: center;
+  }
+}

@@ -162,6 +162,7 @@ const ColorMatch = () => {
         <ColorMatchStart
           setLanguage={setLanguage}
           setCount={setCount}
+          navigate={navigate}
           gameOverRef={gameOverRef}
         />
       )}
@@ -200,7 +201,7 @@ const ColorMatch = () => {
   );
 };
 
-const ColorMatchStart = ({ setLanguage, setCount, gameOverRef }) => {
+const ColorMatchStart = ({ setLanguage, setCount, gameOverRef, navigate }) => {
   return (
     <main className={styles.start}>
       <div className={styles.game_title}>
@@ -227,6 +228,13 @@ const ColorMatchStart = ({ setLanguage, setCount, gameOverRef }) => {
           }}
         >
           English
+        </button>
+
+        <button
+          className={styles.historyBtn}
+          onClick={() => navigate("/history/COLOR_MATCH")}
+        >
+          RANKING
         </button>
       </div>
     </main>

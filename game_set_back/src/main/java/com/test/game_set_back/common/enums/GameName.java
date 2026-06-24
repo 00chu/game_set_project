@@ -1,6 +1,6 @@
 package com.test.game_set_back.common.enums;
 
 public enum GameName {
-    COLORMATCH,
+    COLOR_MATCH,
     BASEBALL
 }

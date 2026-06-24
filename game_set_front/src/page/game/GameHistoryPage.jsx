@@ -17,31 +17,27 @@ const GameHistoryPage = () => {
 
   const config = GAME_CONFIG[gameName];
 
-  //const [records, setRecords] = useState();
-  /*
+  const [records, setRecords] = useState([]);
+
   useEffect(() => {
     fetchRanking(gameName).then(setRecords);
   }, [gameName]);
-*/
-  // 임시 데이터 (나중에 API로 교체)
-  const records = [
-    { id: 1, nickname: "aaa", score: 10 },
-    { id: 2, nickname: "bbb", score: 8 },
-  ];
 
   const myNickname = user?.nickname;
 
-  // 내 기록만
   const myRecords = records.filter((r) => r.nickname === myNickname);
+
+  // 내 기록 중 가장 등수가 높은 것 하나만 출력
+  const myBestRecord =
+    myRecords.length > 0
+      ? [...myRecords].sort((a, b) =>
+          config?.sort === "asc" ? a.score - b.score : b.score - a.score,
+        )[0]
+      : null;
   const hasMyRecords = myRecords.length > 0;
 
-  // 내 최고 등수
-  const myBest = hasMyRecords ? myRecords[0] : null;
-
-  const merged = myBest ? [...records, myBest] : records;
-
   // 게임에 따라 정렬 로직 다르게 ( 1 ~ 10등 + 내 최고기록 )
-  const sorted = [...merged].sort((a, b) => {
+  const sorted = [...records].sort((a, b) => {
     return config?.sort === "asc" ? a.score - b.score : b.score - a.score;
   });
 
@@ -79,27 +75,18 @@ const GameHistoryPage = () => {
                 Log In
               </button>
             </div>
-          ) : hasMyRecords ? (
-            myRecords.map((r, i) => (
-              <div key={r.id} className={styles.myRow}>
-                <span>{i + 1}</span>
-                <span>{r.nickname}</span>
-                <span>{r.score}</span>
-              </div>
-            ))
+          ) : myBestRecord ? (
+            <div className={styles.myRow}>
+              <span>BEST</span>
+              <span>{myBestRecord.nickname}</span>
+              <span>{myBestRecord.score}</span>
+            </div>
           ) : (
             <div className={styles.emptyMyBox}>
               아직 내가 플레이한 기록이 없습니다
             </div>
           )}
         </div>
-
-        {/* 내 최고 등수 */}
-        {myRecords.length > 0 && (
-          <div className={styles.myRankBox}>
-            내 최고 등수: <b>{myRecords[0].rank ?? "?"}등</b>
-          </div>
-        )}
 
         {/* 버튼 */}
         <div className={styles.btnRow}>
