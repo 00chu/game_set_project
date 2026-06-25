@@ -1,0 +1,37 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getMyInfoApi } from "../../mypage/api";
+import { useAuthStore } from "../store/authStore";
+
+const OAuth2Success = () => {
+  const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
+
+  useEffect(() => {
+    const processLogin = async () => {
+      const params = new URLSearchParams(window.location.search);
+
+      const token = params.get("token");
+      console.log(token);
+
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+
+      localStorage.setItem("token", token);
+
+      const user = await getMyInfoApi();
+
+      login(user, token);
+
+      navigate("/", { replace: true });
+    };
+
+    processLogin();
+  }, []);
+
+  return <div>로그인 중...</div>;
+};
+
+export default OAuth2Success;

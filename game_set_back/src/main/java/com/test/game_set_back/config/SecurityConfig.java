@@ -1,6 +1,7 @@
 package com.test.game_set_back.config;
 
 import com.test.game_set_back.common.util.JwtAuthenticationFilter;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,13 +15,25 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.test.game_set_back.auth.handler.OAuth2SuccessHandler;
+import com.test.game_set_back.user.service.CustomOAuth2UserService;
+
 import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor // 생성자 자동 생성
 public class SecurityConfig {
 
+    @PostConstruct
+    public void init() {
+        System.out.println("🔥 SECURITY CONFIG LOADED");
+    }
+
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    // 구글 로그인
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -41,6 +54,15 @@ public class SecurityConfig {
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
+                .oauth2Login(oauth2 -> {
+
+                    oauth2.userInfoEndpoint(userInfo -> {
+                        System.out.println("🔥 userInfoEndpoint 등록");
+                        userInfo.userService(customOAuth2UserService);
+                    });
+
+                    oauth2.successHandler(oAuth2SuccessHandler);
+                })
                 .addFilterBefore(
                         jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class

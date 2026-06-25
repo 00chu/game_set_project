@@ -29,7 +29,8 @@ api.interceptors.request.use(
   // 보내려고 하는 요청의 정보
   (config) => {
     // zustand에서 토큰을 가져옴
-    const token = useAuthStore.getState().token;
+    const token =
+      useAuthStore.getState().token || localStorage.getItem("token");
 
     console.log("현재 토큰:", token);
 
@@ -46,11 +47,15 @@ api.interceptors.request.use(
   },
 );
 
-export const getMyInfoApi = async () => {
-  const response = await api.get("/users/mypage");
+export const getMyInfoApi = async (token) => {
+  const response = await api.get("/users/mypage", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
   return response.data;
 };
-
 export const updateUserApi = async (formData) => {
   const response = await api.patch("/users/mypage", formData);
 

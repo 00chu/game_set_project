@@ -8,7 +8,4 @@ export const logoutUser = () => {
   sessionStorage.clear();
 
   useAuthStore.getState().logout();
-
-  // 어디서 호출하든 홈으로 이동하게
-  window.location.href = "/";
 };

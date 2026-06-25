@@ -3,6 +3,8 @@ package com.test.game_set_back.user.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.test.game_set_back.game.entity.GameRecord;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @Table(name = "users")
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User {
 
     // 회원 번호 PK

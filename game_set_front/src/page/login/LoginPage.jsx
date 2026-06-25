@@ -7,6 +7,7 @@ import { loginApi } from "../../component/auth/api.js";
 import { useAuthStore } from "../../component/auth/store/authStore.js";
 import PasswordInput from "../../component/ui/PasswordInput.jsx";
 import { useEffect } from "react";
+import GoogleIcon from "@mui/icons-material/Google";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -173,10 +174,26 @@ const LoginPage = () => {
           <span>또는</span>
         </div>
 
-        <div className={styles.socials}>
-          <button className={styles.google}>G</button>
-          <button className={styles.kakao}>K</button>
-          <button className={styles.apple}>A</button>
+        <div className={styles.socialLoginSection}>
+          <button
+            type="button"
+            className={styles.googleLoginBtn}
+            onClick={() =>
+              (window.location.href =
+                "http://localhost:8080/oauth2/authorization/google?prompt=select_account")
+            }
+          >
+            <GoogleIcon />
+            <span>Google로 로그인</span>
+          </button>
+
+          <p className={styles.guide}>
+            Google 계정으로 빠르게 로그인하고 게임 기록을 저장해보세요.
+          </p>
+
+          <p className={styles.subGuide}>
+            다른 계정으로 로그인 시 Google 계정을 변경한 후 다시 시도해주세요.
+          </p>
         </div>
       </div>
     </main>

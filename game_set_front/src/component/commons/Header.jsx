@@ -1,15 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./commons.module.css";
 import { useAuthStore } from "../auth/store/authStore";
 
 const Header = () => {
+  const navigate = useNavigate();
+
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
 
-  console.log("HEADER user:", user);
-
   const handleLogout = () => {
     logout();
+    navigate("/", { replace: true });
   };
 
   return (
@@ -18,29 +19,31 @@ const Header = () => {
         🎮 CodeArcade
       </Link>
 
-      {user ? (
-        <div className={styles.userBox}>
-          <img
-            className={styles.profileImg}
-            src={user.profileImage || "/default-profile.png"}
-            alt="profile"
-          />
+      <div className={styles.userBox}>
+        {user ? (
+          <>
+            <img
+              className={styles.profileImg}
+              src={user.profileImage || "/default-profile.png"}
+              alt="profile"
+            />
 
-          {user?.nickname ? (
-            <Link to="/mypage" className={styles.nickname}>
-              {user.nickname}
-            </Link>
-          ) : null}
+            {user.nickname && (
+              <Link to="/mypage" className={styles.nickname}>
+                {user.nickname}
+              </Link>
+            )}
 
-          <button className={styles.badge} onClick={handleLogout}>
-            Log out
-          </button>
-        </div>
-      ) : (
-        <Link to="/login" className={styles.badge}>
-          Log In
-        </Link>
-      )}
+            <button className={styles.badge} onClick={handleLogout}>
+              Log out
+            </button>
+          </>
+        ) : (
+          <Link to="/login" className={styles.badge}>
+            Log In
+          </Link>
+        )}
+      </div>
     </header>
   );
 };
