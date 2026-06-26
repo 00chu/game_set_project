@@ -47,7 +47,7 @@ jobs:
       - name: Build Frontend Image
         run: |
           docker build \
-            --build-arg VITE_BACKSERVER=http://52.78.171.157:8080 \
+            --build-arg VITE_BACKSERVER=http://52.78.171.157:8080/api \
             -t gamjachoi/game-set-frontend:latest ./game_set_front
 
       - name: Push Frontend Image
