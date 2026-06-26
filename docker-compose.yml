@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  backend:
+    image: gamjachoi/game-set-backend:latest
+    container_name: game-set-backend
+    restart: always
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SERVER_PORT: 8080
+
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+
+      JWT_SECRET: ${JWT_SECRET}
+
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+
+  frontend:
+    image: gamjachoi/game-set-frontend:latest
+    container_name: game-set-frontend
+    restart: always
+
+    ports:
+      - "80:80"
+
+      env_file:
+    - .env
+
+    depends_on:
+      - backend

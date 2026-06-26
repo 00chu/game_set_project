@@ -1,49 +1,68 @@
-name: Deploy Vite App
+name: Deploy GameSet (Docker)
 
 on:
   push:
     branches:
       - main
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 jobs:
-  build:
+  build-backend:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: game_set_front
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Build Backend Docker Image
+        run: |
+          docker build -t gamjachoi/game-set-backend:latest ./game_set_back
+
+      - name: Login Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Push Backend Image
+        run: docker push gamjachoi/game-set-backend:latest
+
+  build-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Install
-        run: npm install
+      - name: Build Frontend Docker Image
+        run: |
+          docker build -t gamjachoi/game-set-frontend:latest ./game_set_front
 
-      - name: Build
-        run: npm run build
+      - name: Login Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: game_set_front/dist
+      - name: Push Frontend Image
+        run: docker push gamjachoi/game-set-frontend:latest
 
   deploy:
-    needs: build
+    needs: [build-backend, build-frontend]
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
 
     steps:
-      - name: Deploy
-        uses: actions/deploy-pages@v4
+      - name: SSH Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            cd ~/game_set_project
+            docker compose pull
+            docker compose up -d
