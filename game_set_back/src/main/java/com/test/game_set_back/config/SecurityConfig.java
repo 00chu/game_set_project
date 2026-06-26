@@ -75,8 +75,12 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // React 주소 허용
-        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        // 주소 허용
+        config.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "http://game-project-choi.s3-website.ap-northeast-2.amazonaws.com",
+                "https://d2uftzitv8h5w8.cloudfront.net"
+        ));
 
         // HTTP 메서드 허용
         config.setAllowedMethods(
