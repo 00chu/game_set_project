@@ -41,12 +41,14 @@ jobs:
         with:
           node-version: 20
 
-      - name: Build Frontend Docker Image
-        run: |
-          docker build -t gamjachoi/game-set-frontend:latest ./game_set_front
-
       - name: Login Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build Frontend Docker Image
+        run: |
+          docker build \
+            --build-arg VITE_BACKSERVER=http://52.78.171.157:8080 \
+            -t gamjachoi/game-set-frontend:latest ./game_set_front
 
       - name: Push Frontend Image
         run: docker push gamjachoi/game-set-frontend:latest
