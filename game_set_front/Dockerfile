@@ -8,6 +8,9 @@ RUN npm install
 
 COPY . .
 
+ARG VITE_BACKSERVER
+ENV VITE_BACKSERVER=$VITE_BACKSERVER
+
 RUN npm run build
 
 
