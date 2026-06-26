@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.example.game_set_back.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.example.game_set_back.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/game_set_back.main.iml" filepath="$PROJECT_DIR$/.idea/modules/game_set_back.main.iml" />
     </modules>
   </component>
 </project>
