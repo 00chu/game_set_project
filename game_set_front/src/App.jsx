@@ -15,9 +15,30 @@ import OAuth2Success from "./component/auth/oauth2/success";
 import { useEffect } from "react";
 
 function App() {
-  console.log("APP RENDER");
+  useEffect(() => {
+    console.log("BACKEND:", import.meta.env.VITE_BACKSERVER);
+  }, []);
 
-  return <div>TEST</div>;
+  return (
+    <div className="wrap">
+      <Header></Header>
+      <div className="main">
+        <ScrollToTop />
+        <Routes>
+          <Route path="/" element={<GameMainPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/find-account" element={<FindAccountPage />} />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/history/:gameName" element={<GameHistoryPage />} />
+          <Route path="/baseball" element={<BaseBallPage />} />
+          <Route path="/colorMatch" element={<ColorMatchPage />} />
+          <Route path="/oauth2/success" element={<OAuth2Success />} />
+        </Routes>
+      </div>
+      <Footer></Footer>
+    </div>
+  );
 }
 
 export default App;
