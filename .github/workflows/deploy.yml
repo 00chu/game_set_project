@@ -53,10 +53,6 @@ jobs:
       - name: Push Frontend Image
         run: docker push gamjachoi/game-set-frontend:latest
 
-      - name: Create env file
-        run: |
-          echo "VITE_BACKSERVER=${{ vars.VITE_BACKSERVER }}" > .env
-
   deploy:
     needs: [build-backend, build-frontend]
     runs-on: ubuntu-latest
