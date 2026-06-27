@@ -42,7 +42,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String token = jwtUtil.createToken(user, false);
 
         response.sendRedirect(
-                "http://localhost:5173/game_set_project/oauth2/success?token=" + token
+                "http://52.78.171.157:8080/game_set_project/oauth2/success?token=" + token
         );
     }
 }
