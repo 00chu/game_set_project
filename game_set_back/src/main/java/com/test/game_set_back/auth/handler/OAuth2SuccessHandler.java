@@ -42,7 +42,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String token = jwtUtil.createToken(user, false);
 
         response.sendRedirect(
-                  "https://d2uftzitv8h5w8.cloudfront.net/oauth2/success?token=" + token
+                "https://d2uftzitv8h5w8.cloudfront.net/oauth2/success?token=" + token
         );
     }
 }
