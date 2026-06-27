@@ -50,7 +50,14 @@ public class SecurityConfig {
                                 "/users/email-verification/**",
                                 "/users/change-password",
                                 "/users/mypage",
-                                "/games/**"
+                                "/games/**",
+
+
+                                "/api/users/login",
+                                "/api/users/signup",
+                                "/api/users/email-verification/**",
+                                "/api/users/change-password",
+                                "/api/games/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

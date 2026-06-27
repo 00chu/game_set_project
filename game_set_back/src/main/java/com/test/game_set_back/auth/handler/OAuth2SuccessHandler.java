@@ -41,6 +41,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 .orElseThrow(() -> new RuntimeException("User not found"));
         String token = jwtUtil.createToken(user, false);
 
+        // cloudfront -> react
         response.sendRedirect(
                 "https://d2uftzitv8h5w8.cloudfront.net/oauth2/success?token=" + token
         );
