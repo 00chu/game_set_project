@@ -40,7 +40,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 // CORS (교차 출처 리소스 공유) 활성화
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .cors(cors -> {})
                 // CSRF (Cross-Site Request Forgery) 비활성화
                 .csrf(csrf -> csrf.disable())
                 .formLogin(form -> form.disable())
