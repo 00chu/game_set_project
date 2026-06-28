@@ -56,14 +56,12 @@ public class SecurityConfig {
                 // 모든 요청 허용 (개발용)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                /*
                                 "/users/login",
                                 "/users/signup",
                                 "/users/email-verification/**",
                                 "/users/change-password",
                                 "/users/mypage",
                                 "/games/**",
-                                */
 
                                 "/api/users/login",
                                 "/api/users/signup",
