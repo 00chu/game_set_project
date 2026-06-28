@@ -14,6 +14,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import jakarta.servlet.http.HttpServletResponse;
 
 import com.test.game_set_back.auth.handler.OAuth2SuccessHandler;
 import com.test.game_set_back.user.service.CustomOAuth2UserService;
@@ -42,6 +43,16 @@ public class SecurityConfig {
                 .cors(cors -> {})
                 // CSRF (Cross-Site Request Forgery) 비활성화
                 .csrf(csrf -> csrf.disable())
+                .formLogin(form -> form.disable())
+                .httpBasic(httpBasic -> httpBasic.disable())
+                // redirect 방어
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> {
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        response.setContentType("application/json");
+                        response.getWriter().write("{\"error\":\"unauthorized\"}");
+                        })
+                )
                 // 모든 요청 허용 (개발용)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
