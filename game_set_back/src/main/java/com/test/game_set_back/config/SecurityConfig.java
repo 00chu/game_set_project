@@ -40,7 +40,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 // CORS (교차 출처 리소스 공유) 활성화
-                .cors(cors -> {})
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 // CSRF (Cross-Site Request Forgery) 비활성화
                 .csrf(csrf -> csrf.disable())
                 .formLogin(form -> form.disable())
@@ -97,7 +97,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         // 주소 허용
-        config.setAllowedOrigins(List.of(
+        config.setAllowedOriginPatterns(List.of(
                 "http://localhost:5173",
                 "http://game-project-choi.s3-website.ap-northeast-2.amazonaws.com",
                 "https://d2uftzitv8h5w8.cloudfront.net"
