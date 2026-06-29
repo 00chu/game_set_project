@@ -30,9 +30,6 @@ public class UserController {
     @Autowired
     private final UserRepository userRepository;
 
-    @Autowired
-    private final S3Service s3Service;
-
     // 이메일 인증코드 전송
     @PostMapping("/email-verification/signup")
     public ResponseEntity<?> sendEmailVerification(@RequestBody EmailRequest request) {
