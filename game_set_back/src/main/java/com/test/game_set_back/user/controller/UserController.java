@@ -33,8 +33,6 @@ public class UserController {
     // 이메일 인증코드 전송
     @PostMapping("/email-verification/signup")
     public ResponseEntity<?> sendEmailVerification(@RequestBody EmailRequest request) {
-        System.out.println("email request 들어옴");
-        
         try {
             // 인증코드 전송 완료 메시지
             EmailVerificationResponse response =

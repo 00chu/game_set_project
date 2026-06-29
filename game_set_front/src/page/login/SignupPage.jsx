@@ -69,7 +69,10 @@ const SignupPage = () => {
       // 이메일 인증 상태 초기화
       setValue("isEmailVerified", false);
     } catch (error) {
-      console.error("전송 실패", error);
+      setError("email", {
+        type: "manual",
+        message: error.response?.data || "이메일 전송 실패",
+      });
     }
   };
 
@@ -130,7 +133,10 @@ const SignupPage = () => {
       // 가입 완료 후 로그인 페이지로 이동, 뒤로 가기 방지
       navigate("/login", { replace: true });
     } catch (error) {
-      console.error("회원가입 실패", error);
+      setError("nickname", {
+        type: "manual",
+        message: error.response?.data,
+      });
     }
   };
 

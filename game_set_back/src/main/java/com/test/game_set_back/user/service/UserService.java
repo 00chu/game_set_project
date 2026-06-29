@@ -39,7 +39,7 @@ public class UserService {
         // 가입 - 중복 이메일 검사
         if (type == EmailAuthType.SIGNUP) {
             if (userRepository.existsByEmail(email)) {
-                throw new RuntimeException("이미 사용 중인 이메일입니다.");
+                throw new RuntimeException("이미 존재하는 이메일입니다.");
             }
         }
 
