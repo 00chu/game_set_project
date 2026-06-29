@@ -36,6 +36,8 @@ public class SecurityConfig {
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
 
+    // @CrossOrigin("*") 와 allowCredentials(true)는 
+    // 브라우저 CORS 규칙 상 동시에 사용할 수 없음
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -92,7 +94,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-/*
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
@@ -132,7 +134,7 @@ public class SecurityConfig {
 
         return source;
     }
-*/
+
     @Bean
     // 비밀번호 암호화
     public PasswordEncoder passwordEncoder() {
