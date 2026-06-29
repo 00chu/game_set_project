@@ -11,6 +11,7 @@ import software.amazon.awssdk.services.s3.model.*;
 
 import java.io.IOException;
 import java.util.UUID;
+import java.net.URI;
 
 @Service
 @RequiredArgsConstructor
@@ -53,9 +54,9 @@ public class S3Service {
 
     public void delete(String imageUrl) {
 
-        String key = imageUrl.substring(
-                imageUrl.indexOf(".com/") + 5
-        );
+        String key = URI.create(imageUrl)
+                .getPath()
+                .substring(1);
 
         System.out.println("삭제 URL = " + imageUrl);
         System.out.println("삭제 KEY = " + key);
