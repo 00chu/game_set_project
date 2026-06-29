@@ -73,15 +73,9 @@ const LoginPage = () => {
       // Zustand에 로그인 정보 저장
       login(user, response.token);
 
-      console.log(useAuthStore.getState());
-
       // 로그인 후 홈으로 이동, 뒤로 가기 방지
       navigate("/", { replace: true });
     } catch (error) {
-      console.log(error);
-      console.log(error.response);
-      console.log(error.response?.data);
-
       const message = error.response?.data;
 
       // 백엔드 메시지 기준 처리

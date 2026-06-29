@@ -190,12 +190,6 @@ public class UserService {
 
     @Transactional
     public String signup(SignupRequest request) {
-        System.out.println("🔥 service 들어옴");
-
-        System.out.println("email = " + request.getEmail());
-        System.out.println("pw = " + request.getPassword());
-        System.out.println("pw2 = " + request.getPasswordConfirm());
-
         if (!request.getPassword().equals(request.getPasswordConfirm())) {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
@@ -207,9 +201,6 @@ public class UserService {
                         .orElseThrow(() ->
                                 new RuntimeException("이메일 인증을 진행해주세요.")
                         );
-
-        System.out.println("email = " + request.getEmail());
-        System.out.println("verification = " + verification);
 
         if (!verification.isVerified()) {
             throw new RuntimeException("이메일 인증이 완료되지 않았습니다.");
@@ -230,11 +221,15 @@ public class UserService {
                 passwordEncoder.encode(request.getPassword());
 
         // 프로필 이미지
-        String imageUrl = null;
+        String imageUrl =
+        "https://d2uftzitv8h5w8.cloudfront.net/profile/default-profile.png";
 
         if (request.getProfileImage() != null &&
                 !request.getProfileImage().isEmpty()) {
-            imageUrl = s3Service.upload(request.getProfileImage());
+
+            imageUrl = s3Service.upload(
+                    request.getProfileImage()
+            );
         }
 
         // User 엔티티 생성

@@ -29,15 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-        System.out.println("===== DEBUG PATH =====");
-        System.out.println("servletPath = " + request.getServletPath());
-        System.out.println("requestURI = " + request.getRequestURI());
-
         String authHeader = request.getHeader("Authorization");
-
-        System.out.println("===== JWT FILTER =====");
-        System.out.println("Authorization = " + authHeader);
-
 
         if (authHeader == null ||
                 !authHeader.startsWith("Bearer ")) {
@@ -48,9 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token =
                 authHeader.substring(7);
-
         try {
-
             String email = jwtUtil.getEmail(token);
 
             UsernamePasswordAuthenticationToken authentication =
@@ -64,14 +54,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     .setAuthentication(authentication);
 
             filterChain.doFilter(request, response);
-
         } catch (ExpiredJwtException e) {
-
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("토큰 만료");
-
         } catch (JwtException e) {
-
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("유효하지 않은 토큰");
         }

@@ -58,9 +58,6 @@ public class S3Service {
                 .getPath()
                 .substring(1);
 
-        System.out.println("삭제 URL = " + imageUrl);
-        System.out.println("삭제 KEY = " + key);
-
         DeleteObjectRequest request =
                 DeleteObjectRequest.builder()
                         .bucket(bucket)
@@ -68,7 +65,5 @@ public class S3Service {
                         .build();
 
         s3Client.deleteObject(request);
-
-        System.out.println("삭제 성공");
     }
 }

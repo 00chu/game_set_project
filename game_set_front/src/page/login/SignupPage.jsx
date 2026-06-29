@@ -68,8 +68,6 @@ const SignupPage = () => {
 
       // 이메일 인증 상태 초기화
       setValue("isEmailVerified", false);
-
-      console.log(response.message);
     } catch (error) {
       console.error("전송 실패", error);
     }
@@ -105,8 +103,6 @@ const SignupPage = () => {
       });
 
       clearErrors("code");
-
-      console.log("인증 성공");
     } catch (error) {
       setError("code", {
         type: "manual",
@@ -130,8 +126,6 @@ const SignupPage = () => {
       }
 
       const response = await signupApi(formData);
-
-      console.log("회원가입 성공", response);
 
       // 가입 완료 후 로그인 페이지로 이동, 뒤로 가기 방지
       navigate("/login", { replace: true });

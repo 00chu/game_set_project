@@ -24,12 +24,6 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor // 생성자 자동 생성
 public class SecurityConfig {
-
-    @PostConstruct
-    public void init() {
-        System.out.println("🔥 SECURITY CONFIG LOADED");
-    }
-
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     // 구글 로그인
@@ -80,7 +74,6 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> {
 
                     oauth2.userInfoEndpoint(userInfo -> {
-                        System.out.println("🔥 userInfoEndpoint 등록");
                         userInfo.userService(customOAuth2UserService);
                     });
 

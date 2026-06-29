@@ -90,16 +90,12 @@ const MyPage = () => {
 
       const updatedUser = await updateUserApi(formData);
 
-      console.log("API response user:", updatedUser);
-
       setUser(updatedUser);
 
       updateAuthUser({
         nickname: updatedUser.nickname ?? user.nickname,
         profileImage: updatedUser.profileImage ?? user.profileImage,
       });
-
-      console.log("AFTER zustand update:", useAuthStore.getState().user);
 
       setNickname(updatedUser.nickname);
       setPreview(updatedUser.profileImage);

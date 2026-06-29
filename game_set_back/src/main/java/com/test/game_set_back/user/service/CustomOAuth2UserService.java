@@ -21,22 +21,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) {
-
-        System.out.println("🔥 CUSTOM OAUTH2 USER SERVICE");
-
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
         String picture = oAuth2User.getAttribute("picture");
 
-        System.out.println("GOOGLE EMAIL = " + email);
-
         User user = userRepository.findByEmail(email)
                 .orElseGet(() -> {
-
-                    System.out.println("신규 회원 생성");
-
                     User newUser = User.builder()
                             .email(email)
                             .nickname(name)
@@ -46,8 +38,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                             .build();
 
                     User saved = userRepository.save(newUser);
-
-                    System.out.println("저장 완료 ID = " + saved.getId());
 
                     return saved;
                 });
