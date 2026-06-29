@@ -324,8 +324,16 @@ public class UserService {
         user.changeNickname(nickname);
         // 프로필 이미지 변경
         if (profileImage != null && !profileImage.isEmpty()) {
-            String imageUrl = s3Service.upload(profileImage);
-            user.changeProfileImage(imageUrl);
+            if (user.getProfileImage() != null &&
+                !user.getProfileImage().contains("default-profile.png")) {
+
+                s3Service.delete(user.getProfileImage());
+            }
+
+            String imageUrl =
+                    s3Service.upload(profileImage);
+
+            user.setProfileImage(imageUrl);
         }
 
         return MypageResponse.builder()
@@ -340,7 +348,18 @@ public class UserService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("유저 없음"));
 
-        // JPA로 유저 삭제
+        // 프로필 이미지가 있으면 S3에서도 삭제, S3 삭제 실패해도 회원 삭제 성공
+        try {
+            if (user.getProfileImage() != null &&
+                !user.getProfileImage().isBlank()) {
+
+                s3Service.delete(user.getProfileImage());
+            }
+        } catch (Exception e) {
+            log.error("프로필 이미지 삭제 실패", e);
+        }
+
+        // DB에서 JPA로 유저 삭제
         userRepository.delete(user);
     }
 }

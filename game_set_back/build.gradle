@@ -58,6 +58,9 @@ dependencies {
 
     // google login
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    // s3 bucket
+    implementation 'software.amazon.awssdk:s3:2.33.3'
 }
 
 tasks.named('test') {
