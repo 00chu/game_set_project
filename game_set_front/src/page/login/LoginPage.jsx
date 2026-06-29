@@ -106,7 +106,7 @@ const LoginPage = () => {
     try {
       const response = await loginApi({
         email: "test@test.com",
-        password: "test1234",
+        password: "test1234.",
         autoLogin: false,
       });
 
@@ -126,7 +126,6 @@ const LoginPage = () => {
 
       navigate("/", { replace: true });
     } catch (error) {
-      console.error("테스트 로그인 실패", error);
       alert("테스트 계정 로그인이 실패했습니다.");
     }
   };
