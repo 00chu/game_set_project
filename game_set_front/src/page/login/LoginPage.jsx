@@ -180,7 +180,7 @@ const LoginPage = () => {
             className={styles.googleLoginBtn}
             onClick={() =>
               (window.location.href =
-                "https://d2uftzitv8h5w8.cloudfront.net/api/authorization/google?prompt=select_account")
+                "https://d2uftzitv8h5w8.cloudfront.net/api/oauth2/authorization/google?prompt=select_account")
             }
           >
             <GoogleIcon />
