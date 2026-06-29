@@ -30,6 +30,9 @@ public class UserController {
     @Autowired
     private final UserRepository userRepository;
 
+    @Autowired
+    private final S3Service s3Service;
+
     // 이메일 인증코드 전송
     @PostMapping("/email-verification/signup")
     public ResponseEntity<?> sendEmailVerification(@RequestBody EmailRequest request) {
@@ -157,14 +160,6 @@ public class UserController {
                 nickname,
                 profileImage
         );
-
-        String profileImageUrl = user.getProfileImage();
-
-        if (profileImage != null && !profileImage.isEmpty()) {
-            profileImageUrl = s3Service.upload(profileImage);
-        }
-
-        user.setProfileImage(profileImageUrl);
 
         return ResponseEntity.ok(response);
     }

@@ -226,7 +226,6 @@ public class UserService {
 
         if (request.getProfileImage() != null &&
                 !request.getProfileImage().isEmpty()) {
-
             imageUrl = s3Service.upload(
                     request.getProfileImage()
             );
