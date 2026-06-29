@@ -94,6 +94,8 @@ public class UserController {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
+        System.out.println("🔥🔥🔥 LOGIN CONTROLLER 진입");
+
         User user = userService.login(loginRequest);
 
         // 로그인한 유저의 아이디 등으로 토큰을 만들어 제공
