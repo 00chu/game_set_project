@@ -12,13 +12,8 @@ import MyPage from "./page/mypage/MyPage";
 import GameHistoryPage from "./page/game/GameHistoryPage";
 import ScrollToTop from "./component/ui/ScrollToTop";
 import OAuth2Success from "./component/auth/oauth2/success";
-import { useEffect } from "react";
 
 function App() {
-  useEffect(() => {
-    console.log("BACKEND:", import.meta.env.VITE_BACKSERVER);
-  }, []);
-
   return (
     <div className="wrap">
       <Header></Header>

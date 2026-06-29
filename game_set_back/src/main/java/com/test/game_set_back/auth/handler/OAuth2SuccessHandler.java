@@ -26,16 +26,10 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             HttpServletResponse response,
             Authentication authentication
     ) throws IOException {
-
-        System.out.println("===== SUCCESS HANDLER =====");
-        System.out.println("authentication.getName() = " + authentication.getName());
-
         OAuth2User oAuth2User =
                 (OAuth2User) authentication.getPrincipal();
 
         String email = oAuth2User.getAttribute("email");
-
-        System.out.println("SUCCESS EMAIL = " + email);
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));

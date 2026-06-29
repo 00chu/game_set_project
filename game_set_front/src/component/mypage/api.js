@@ -32,8 +32,6 @@ api.interceptors.request.use(
     const token =
       useAuthStore.getState().token || localStorage.getItem("token");
 
-    console.log("현재 토큰:", token);
-
     if (token) {
       // jwt 인증 표준 방식으로 토큰을 요청 헤더에 추가함
       config.headers.Authorization = `Bearer ${token}`;

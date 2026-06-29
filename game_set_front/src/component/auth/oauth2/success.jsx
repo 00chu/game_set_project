@@ -12,7 +12,6 @@ const OAuth2Success = () => {
       const params = new URLSearchParams(window.location.search);
 
       const token = params.get("token");
-      console.log(token);
 
       if (!token) {
         navigate("/login");

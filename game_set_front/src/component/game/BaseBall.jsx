@@ -71,10 +71,6 @@ const BaseBall = () => {
     setAnswer(arr);
   }, []);
 
-  useEffect(() => {
-    console.log(answer); // answer 값이 변경된 후 로그 출력
-  }, [answer]);
-
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
