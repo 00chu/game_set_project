@@ -12,8 +12,6 @@ api.interceptors.response.use(
   (response) => response,
 
   (error) => {
-    console.log("에러 상태:", error.response?.status);
-
     // 토큰 만료 (401) 시에 자동으로 로그아웃
     if (error.response?.status === 401 || error.response?.status === 403) {
       logoutUser();

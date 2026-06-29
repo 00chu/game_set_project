@@ -102,6 +102,35 @@ const LoginPage = () => {
     }
   };
 
+  const handleTestLogin = async () => {
+    try {
+      const response = await loginApi({
+        email: "test@test.com",
+        password: "test1234",
+        autoLogin: false,
+      });
+
+      const user = {
+        id: response.id,
+        email: response.email,
+        nickname: response.nickname,
+        profileImage: response.profileImage,
+      };
+
+      const storage = localStorage;
+
+      storage.setItem("token", response.token);
+      storage.setItem("user", JSON.stringify(user));
+
+      login(user, response.token);
+
+      navigate("/", { replace: true });
+    } catch (error) {
+      console.error("테스트 로그인 실패", error);
+      alert("테스트 계정 로그인이 실패했습니다.");
+    }
+  };
+
   return (
     <main className={styles.main}>
       <div className={styles.loginCard}>
@@ -156,6 +185,14 @@ const LoginPage = () => {
 
           <button type="submit" className={styles.loginBtn}>
             로그인
+          </button>
+
+          <button
+            type="button"
+            onClick={handleTestLogin}
+            className={styles.testLoginBtn}
+          >
+            테스트 유저로 로그인
           </button>
         </form>
 
