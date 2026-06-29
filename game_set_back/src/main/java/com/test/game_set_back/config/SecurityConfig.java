@@ -92,6 +92,7 @@ public class SecurityConfig {
         return http.build();
     }
 
+/*
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
@@ -131,7 +132,7 @@ public class SecurityConfig {
 
         return source;
     }
-
+*/
     @Bean
     // 비밀번호 암호화
     public PasswordEncoder passwordEncoder() {

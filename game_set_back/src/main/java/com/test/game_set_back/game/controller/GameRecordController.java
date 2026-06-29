@@ -13,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/games")
-@CrossOrigin("*")
 @RequiredArgsConstructor
 public class GameRecordController {
     @Autowired

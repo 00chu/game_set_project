@@ -1,3 +1,4 @@
+/*
 package com.test.game_set_back.config;
 
 import org.springframework.context.annotation.Configuration;
@@ -27,3 +28,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("*");
     }
 }
+*/

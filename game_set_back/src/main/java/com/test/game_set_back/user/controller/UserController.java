@@ -19,7 +19,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin("*")
 @RequiredArgsConstructor
 public class UserController {
     @Autowired
