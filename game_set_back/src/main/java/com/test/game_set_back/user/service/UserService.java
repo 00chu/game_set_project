@@ -333,7 +333,7 @@ public class UserService {
             String imageUrl =
                     s3Service.upload(profileImage);
 
-            user.setProfileImage(imageUrl);
+            user.changeProfileImage(imageUrl);
         }
 
         return MypageResponse.builder()
@@ -356,7 +356,7 @@ public class UserService {
                 s3Service.delete(user.getProfileImage());
             }
         } catch (Exception e) {
-            log.error("프로필 이미지 삭제 실패", e);
+            e.printStackTrace();
         }
 
         // DB에서 JPA로 유저 삭제
