@@ -1,14 +1,20 @@
+# 여러 컨테이너를 한번에 실행하기 위한 설정 파일
+
 version: "3.8"
 
 services:
+  # Spring 서버
   backend:
+    # Docker Hub에 업로드된 이미지를 다운로드
     image: gamjachoi/game-set-backend:latest
     container_name: game-set-backend
     restart: always
 
+    # EC2의 8080 포트를 컨테이너의 8080 포트와 연결
     ports:
       - "8080:8080"
 
+    # 환경변수를 전달
     environment:
       SPRING_PROFILES_ACTIVE: prod
       SERVER_PORT: 8080
@@ -29,13 +35,16 @@ services:
       AWS_SECRET_KEY: ${AWS_SECRET_KEY}
       AWS_BUCKET_NAME: ${AWS_BUCKET_NAME}
 
+  # React + Nginx 컨테이너
   frontend:
     image: gamjachoi/game-set-frontend:latest
     container_name: game-set-frontend
     restart: always
 
+    # 브라우저에서 http://EC2-IP 로 접속할 수 있게 됨
     ports:
       - "80:80"
 
+    # 백엔드 컨테이너를 먼저 실행한 후 프론트를 실행
     depends_on:
       - backend
