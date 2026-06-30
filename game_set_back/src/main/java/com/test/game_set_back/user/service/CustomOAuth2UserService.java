@@ -17,10 +17,10 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    private final UserRepository userRepository;
+        private final UserRepository userRepository;
 
-    @Override
-    public OAuth2User loadUser(OAuth2UserRequest userRequest) {
+        @Override
+        public OAuth2User loadUser(OAuth2UserRequest userRequest) {
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
         String email = oAuth2User.getAttribute("email");
@@ -28,32 +28,34 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String picture = oAuth2User.getAttribute("picture");
 
         String profileImage =
-        (picture != null && !picture.isBlank())
-                ? picture
-                : "https://d2uftzitv8h5w8.cloudfront.net/profile/default-profile.png";
-        
-        String baseNickname = name;
-        String nickname = baseNickname;
+                (picture != null && !picture.isBlank())
+                        ? picture
+                        : "https://d2uftzitv8h5w8.cloudfront.net/profile/default-profile.png";
 
-        int i = 1;
-        while (userRepository.existsByNickname(nickname)) {
-        nickname = baseNickname + i++;
+        // 유저 있는지 확인
+        User user = userRepository.findByEmail(email).orElse(null);
+
+        // 없을 때만 생성
+        if (user == null) {
+
+                String baseNickname = (name != null ? name : "user");
+                String nickname = baseNickname;
+
+                int i = 1;
+                while (userRepository.existsByNickname(nickname)) {
+                nickname = baseNickname + i++;
+                }
+
+                user = User.builder()
+                        .email(email)
+                        .nickname(nickname)
+                        .profileImage(profileImage)
+                        .password("GOOGLE_LOGIN")
+                        .status(UserStatus.ACTIVE)
+                        .build();
+
+                userRepository.save(user);
         }
-
-        User user = userRepository.findByEmail(email)
-                .orElseGet(() -> {
-                    User newUser = User.builder()
-                            .email(email)
-                            .nickname(nickname) 
-                            .profileImage(profileImage)
-                            .password("GOOGLE_LOGIN")
-                            .status(UserStatus.ACTIVE)
-                            .build();
-
-                    User saved = userRepository.save(newUser);
-
-                    return saved;
-                });
 
         return new DefaultOAuth2User(
                 Collections.singleton(
@@ -62,5 +64,5 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 oAuth2User.getAttributes(),
                 "email"
         );
-    }
+        }
 }
