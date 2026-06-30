@@ -155,19 +155,19 @@ const BaseBall = () => {
 };
 
 const BaseBallScore = ({ scores }) => {
-  const bottomRef = useRef(null);
+  const scoreRef = useRef(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({
-      behavior: "smooth",
-    });
+    if (scoreRef.current) {
+      scoreRef.current.scrollTop = scoreRef.current.scrollHeight;
+    }
   }, [scores]);
 
   return (
     <div className={styles.baseball_score}>
       <h3>기록</h3>
 
-      <div className={styles.score_body}>
+      <div className={styles.score_body} ref={scoreRef}>
         {scores.map((score, i) => {
           return (
             <div key={"base-" + i}>
@@ -181,7 +181,6 @@ const BaseBallScore = ({ scores }) => {
             </div>
           );
         })}
-        <div ref={bottomRef} />
       </div>
     </div>
   );
@@ -314,12 +313,12 @@ const MobileBaseBallInput = ({ throwBall, setThrowBall, result, scores }) => {
     setSelectedIndex(index);
   };
 
-  const bottomRef = useRef(null);
+  const historyRef = useRef(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({
-      behavior: "smooth",
-    });
+    if (historyRef.current) {
+      historyRef.current.scrollTop = historyRef.current.scrollHeight;
+    }
   }, [scores]);
 
   return (
@@ -356,7 +355,7 @@ const MobileBaseBallInput = ({ throwBall, setThrowBall, result, scores }) => {
         THROW
       </button>
 
-      <div className={styles.mobileHistory}>
+      <div className={styles.mobileHistory} ref={historyRef}>
         <div className={styles.mobileHistoryHeader}>기록</div>
 
         {scores.map((score, i) => (
@@ -368,7 +367,6 @@ const MobileBaseBallInput = ({ throwBall, setThrowBall, result, scores }) => {
             </span>
           </div>
         ))}
-        <div ref={bottomRef} />
       </div>
     </div>
   );
