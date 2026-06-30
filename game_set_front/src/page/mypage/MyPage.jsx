@@ -102,7 +102,7 @@ const MyPage = () => {
 
       alert("정보 수정 완료!");
     } catch (error) {
-      setNicknameError(error.message);
+      setNicknameError(error.response?.data || "오류 발생");
     }
   };
 

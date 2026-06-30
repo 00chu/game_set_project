@@ -315,11 +315,18 @@ public class UserService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("유저 없음"));
 
+        // 닉네임 중복 체크
+        if (!user.getNickname().equals(nickname)
+                && userRepository.existsByNickname(nickname)) {
+            throw new RuntimeException("이미 사용 중인 닉네임입니다.");
+        }
+
         user.changeNickname(nickname);
         // 프로필 이미지 변경
         if (profileImage != null && !profileImage.isEmpty()) {
-            if (user.getProfileImage() != null &&
-                !user.getProfileImage().contains("default-profile.png")) {
+            if (user.getProfileImage() != null
+                    && user.getProfileImage().startsWith("https://d2uftzitv8h5w8.cloudfront.net/")
+                    && !user.getProfileImage().contains("default-profile.png")) {
 
                 s3Service.delete(user.getProfileImage());
             }
@@ -344,8 +351,9 @@ public class UserService {
 
         // 프로필 이미지가 있으면 S3에서도 삭제, S3 삭제 실패해도 회원 삭제 성공
         try {
-            if (user.getProfileImage() != null &&
-                !user.getProfileImage().isBlank()) {
+            if (user.getProfileImage() != null
+                && user.getProfileImage().startsWith("https://d2uftzitv8h5w8.cloudfront.net/")
+                && !user.getProfileImage().contains("default-profile.png")) {
 
                 s3Service.delete(user.getProfileImage());
             }
