@@ -27,12 +27,25 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String name = oAuth2User.getAttribute("name");
         String picture = oAuth2User.getAttribute("picture");
 
+        String profileImage =
+        (picture != null && !picture.isBlank())
+                ? picture
+                : "https://d2uftzitv8h5w8.cloudfront.net/profile/default-profile.png";
+        
+        String baseNickname = name;
+        String nickname = baseNickname;
+
+        int i = 1;
+        while (userRepository.existsByNickname(nickname)) {
+        nickname = baseNickname + i++;
+        }
+
         User user = userRepository.findByEmail(email)
                 .orElseGet(() -> {
                     User newUser = User.builder()
                             .email(email)
-                            .nickname(name)
-                            .profileImage(picture)
+                            .nickname(nickname) 
+                            .profileImage(profileImage)
                             .password("GOOGLE_LOGIN")
                             .status(UserStatus.ACTIVE)
                             .build();
