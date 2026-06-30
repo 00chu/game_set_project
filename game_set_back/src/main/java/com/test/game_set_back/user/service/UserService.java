@@ -220,12 +220,14 @@ public class UserService {
         String encodedPassword =
                 passwordEncoder.encode(request.getPassword());
 
-        // 프로필 이미지
+        // 프로필 이미지 (사용자가 이미지를 안 올렸을 때 기본 프로필 사용)
         String imageUrl =
         "https://d2uftzitv8h5w8.cloudfront.net/profile/default-profile.png";
 
+        // 사용자가 파일을 업로드했는지 체크
         if (request.getProfileImage() != null &&
                 !request.getProfileImage().isEmpty()) {
+            // 실제로 S3에 업로드하는 부분
             imageUrl = s3Service.upload(
                     request.getProfileImage()
             );
@@ -323,6 +325,7 @@ public class UserService {
 
         user.changeNickname(nickname);
         // 프로필 이미지 변경
+        // 기존 이미지가 있으면 삭제, 새 이미지 S3 업로드, DB에 URL 업데이트
         if (profileImage != null && !profileImage.isEmpty()) {
             if (user.getProfileImage() != null
                     && user.getProfileImage().startsWith("https://d2uftzitv8h5w8.cloudfront.net/")
@@ -331,6 +334,7 @@ public class UserService {
                 s3Service.delete(user.getProfileImage());
             }
 
+            // S3에 실제 이미지 업로드
             String imageUrl =
                     s3Service.upload(profileImage);
 

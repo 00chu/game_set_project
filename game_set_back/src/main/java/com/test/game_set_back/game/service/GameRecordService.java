@@ -30,7 +30,7 @@ public class GameRecordService {
             String email,
             GameRecordRequest request
     ) {
-
+        // JWT에서 나온 email 기반으로 유저 조회
         User user = userRepository.findByEmail(email)
                 .orElseThrow();
 
@@ -44,20 +44,25 @@ public class GameRecordService {
         gameRecordRepository.save(record);
     }
 
+    // 랭킹을 조회하는 메서드
     @Transactional
     public List<GameRecordResponse> getRanking(String gameName) {
 
         GameSortType sortType = GameSortType.from(gameName);
 
+        // 특정 게임의 기록을 전부 가져옴
         List<GameRecord> records = gameRecordRepository.findByGameName(GameName.valueOf(gameName));
 
+        // 데이터 없을 시 종료
         if (records.isEmpty()) {
             return List.of();
         }
 
+        // 정렬 기준 default 는 점수 오름차순
         Comparator<GameRecord> comparator =
                 Comparator.comparing(GameRecord::getScore);
 
+        // DESC 처리
         if (sortType.isDesc()) {
             comparator = comparator.reversed();
         }

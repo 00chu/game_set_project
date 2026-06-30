@@ -47,6 +47,7 @@ const SignupPage = () => {
 
   const { time, startTimer, formatTime } = useCountdownTimer();
 
+  // 이메일 인증코드 전송
   const sendCode = async () => {
     const isValid = await trigger("email");
 
@@ -76,6 +77,7 @@ const SignupPage = () => {
     }
   };
 
+  // 프로필 이미지 변경
   const handleImageChange = (e) => {
     const file = e.target.files[0];
 

@@ -31,6 +31,7 @@ const LoginPage = () => {
     },
   });
 
+  // 이메일 저장
   useEffect(() => {
     const savedEmail = localStorage.getItem("savedEmail");
 
@@ -40,6 +41,7 @@ const LoginPage = () => {
     }
   }, [setValue]);
 
+  // 로그인
   const onSubmit = async (data) => {
     const { autoLogin, saveEmail, email, password } = data;
 
@@ -102,6 +104,7 @@ const LoginPage = () => {
     }
   };
 
+  // 테스트 로그인
   const handleTestLogin = async () => {
     try {
       const response = await loginApi({

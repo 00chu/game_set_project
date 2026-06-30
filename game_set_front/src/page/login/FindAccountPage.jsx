@@ -53,6 +53,8 @@ const FindAccountPage = () => {
   const { time, startTimer, formatTime } = useCountdownTimer();
   const [emailData, setEmailData] = useState(null);
   const [codeData, setCodeData] = useState(null);
+
+  // 이메일 인증 코드 전송
   const onEmailSubmit = async (data) => {
     setEmailData(data.email);
     const response = await sendEmailResetApi(data.email);
@@ -60,6 +62,7 @@ const FindAccountPage = () => {
     setStep(2);
   };
 
+  // 이메일 인증 코드 확인
   const onCodeSubmit = async (data) => {
     if (time <= 0) {
       setError("email", {

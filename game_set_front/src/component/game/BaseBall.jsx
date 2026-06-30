@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./BaseBall.module.css";
 import { useNavigate } from "react-router-dom";
 import { saveRecordApi } from "./api";
@@ -15,6 +15,7 @@ const BaseBall = () => {
 
   const [isGameOver, setIsGameOver] = useState(false);
 
+  // 정답 판단
   const result = async () => {
     const myAnswer = Object.values(throwBall);
 
@@ -60,6 +61,7 @@ const BaseBall = () => {
     setSelectNum("one");
   };
 
+  // 정답 생성
   useEffect(() => {
     const arr = [];
     while (arr.length < 4) {
@@ -71,6 +73,7 @@ const BaseBall = () => {
     setAnswer(arr);
   }, []);
 
+  // 768보다 작을 때 모바일 UI 사용
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
@@ -152,6 +155,14 @@ const BaseBall = () => {
 };
 
 const BaseBallScore = ({ scores }) => {
+  const bottomRef = useRef(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [scores]);
+
   return (
     <div className={styles.baseball_score}>
       <h3>기록</h3>
@@ -170,6 +181,7 @@ const BaseBallScore = ({ scores }) => {
             </div>
           );
         })}
+        <div ref={bottomRef} />
       </div>
     </div>
   );
@@ -302,6 +314,14 @@ const MobileBaseBallInput = ({ throwBall, setThrowBall, result, scores }) => {
     setSelectedIndex(index);
   };
 
+  const bottomRef = useRef(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [scores]);
+
   return (
     <div className={styles.mobileGame}>
       <h1 className={styles.mobileTitle}>Baseball</h1>
@@ -348,6 +368,7 @@ const MobileBaseBallInput = ({ throwBall, setThrowBall, result, scores }) => {
             </span>
           </div>
         ))}
+        <div ref={bottomRef} />
       </div>
     </div>
   );

@@ -24,6 +24,7 @@ const OAuth2Success = () => {
 
       login(user, token);
 
+      // 로그인 후 홈으로 이동. 뒤로 가기 방지
       navigate("/", { replace: true });
     };
 
