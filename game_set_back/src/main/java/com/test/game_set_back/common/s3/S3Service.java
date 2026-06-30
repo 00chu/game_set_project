@@ -53,8 +53,7 @@ public class S3Service {
     }
 
     public void delete(String imageUrl) {
-
-        String key = URI.create(imageUrl)
+        String key = URI.create(imageUrl.replace(" ", "%20"))
                 .getPath()
                 .substring(1);
 
