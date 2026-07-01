@@ -23,7 +23,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         @Override
         public OAuth2User loadUser(OAuth2UserRequest userRequest) {
-        // 실젝 구글 데이터 가져오는 부분
+        // 실제 구글 데이터 가져오는 부분
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
         // 데이터 추출
