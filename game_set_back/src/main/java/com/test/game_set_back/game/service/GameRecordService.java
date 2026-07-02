@@ -70,7 +70,6 @@ public class GameRecordService {
         if (sortType.isDesc()) {
                 comparator = comparator.reversed();
         }
-        }
 
         return records.stream()
                 .sorted(comparator)
