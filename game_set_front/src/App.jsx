@@ -12,6 +12,7 @@ import MyPage from "./page/mypage/MyPage";
 import GameHistoryPage from "./page/game/GameHistoryPage";
 import ScrollToTop from "./component/ui/ScrollToTop";
 import OAuth2Success from "./component/auth/oauth2/success";
+import HangmanGame from "./component/game/hangman/HangmanGame";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/history/:gameName" element={<GameHistoryPage />} />
           <Route path="/baseball" element={<BaseBallPage />} />
           <Route path="/colorMatch" element={<ColorMatchPage />} />
+          <Route path="/hangman" element={<HangmanGame />} />
           <Route path="/oauth2/success" element={<OAuth2Success />} />
         </Routes>
       </div>
