@@ -44,30 +44,35 @@ public class GameRecordService {
         gameRecordRepository.save(record);
     }
 
-    // 랭킹을 조회하는 메서드
-    @Transactional
-    public List<GameRecordResponse> getRanking(String gameName) {
+         // 랭킹을 조회하는 메서드
+        @Transactional
+        public List<GameRecordResponse> getRanking(String gameName) {
 
-        GameSortType sortType = GameSortType.from(gameName);
+        GameName type = GameName.valueOf(gameName);
 
-        // 특정 게임의 기록을 전부 가져옴
-        List<GameRecord> records = gameRecordRepository.findByGameName(GameName.valueOf(gameName));
+        List<GameRecord> records =
+                gameRecordRepository.findByGameName(type);
 
-        // 데이터 없을 시 종료
         if (records.isEmpty()) {
-            return List.of();
+                return List.of();
         }
 
         Comparator<GameRecord> comparator;
 
-        if (GameName.HANGMAN == GameName.valueOf(gameName)) {
-        comparator = Comparator
-                .comparing(GameRecord::getScore)
-                .reversed()
-                .thenComparing(GameRecord::getPlayTime);
+        // 기본 정렬 기준 (게임별 확장 가능)
+        if (type == GameName.HANGMAN) {
+                comparator = Comparator
+                        .comparing(GameRecord::getScore)
+                        .reversed()
+                        .thenComparing(GameRecord::getPlayTime);
+        } else {
+                comparator = Comparator
+                        .comparing(GameRecord::getScore)
+                        .reversed();
         }
 
-        if (sortType.isDesc()) {
+        // GameSortType 로 정렬 방향 처리 (안전하게)
+        if (sortType == GameSortType.DESC) {
                 comparator = comparator.reversed();
         }
 
@@ -80,5 +85,5 @@ public class GameRecordService {
                         .score(r.getScore())
                         .build())
                 .toList();
-    }
+        }
 }
