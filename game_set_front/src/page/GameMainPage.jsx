@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import styles from "./GameMainPage.module.css";
 import SportsBaseballIcon from "@mui/icons-material/SportsBaseball";
 import PaletteIcon from "@mui/icons-material/Palette";
+import PsychologyIcon from "@mui/icons-material/Psychology";
 
 const GameMainPage = () => {
   return (
@@ -43,6 +44,22 @@ const GameMainPage = () => {
           <h3>Color Match</h3>
 
           <p>기억력과 반응속도를 테스트하는 게임</p>
+
+          <span>PLAY GAME →</span>
+        </Link>
+        <Link to="/hangman" className={styles.card}>
+          <div className={styles.icon}>
+            <PsychologyIcon
+              sx={{
+                fontSize: 60,
+                color: "var(--accent-hover)",
+              }}
+            />
+          </div>
+
+          <h3>Hangman</h3>
+
+          <p>영단어를 추리하여 맞추는 게임</p>
 
           <span>PLAY GAME →</span>
         </Link>

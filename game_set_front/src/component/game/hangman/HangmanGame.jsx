@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./Hangman.module.css";
 import { useNavigate } from "react-router-dom";
-import { saveRecordApi } from "./api";
+import { saveRecordApi } from "../api";
 
 const MAX_LIFE = 6;
 

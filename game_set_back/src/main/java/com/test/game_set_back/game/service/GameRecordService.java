@@ -58,13 +58,18 @@ public class GameRecordService {
             return List.of();
         }
 
-        // 정렬 기준 default 는 점수 오름차순
-        Comparator<GameRecord> comparator =
-                Comparator.comparing(GameRecord::getScore);
+        Comparator<GameRecord> comparator;
 
-        // DESC 처리
+        if (GameName.HANGMAN == GameName.valueOf(gameName)) {
+        comparator = Comparator
+                .comparing(GameRecord::getScore)
+                .reversed()
+                .thenComparing(GameRecord::getPlayTime);
+        }
+
         if (sortType.isDesc()) {
-            comparator = comparator.reversed();
+                comparator = comparator.reversed();
+        }
         }
 
         return records.stream()

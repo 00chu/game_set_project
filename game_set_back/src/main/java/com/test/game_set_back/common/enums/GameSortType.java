@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum GameSortType {
 
     BASEBALL(false),
+    COLOR_MATCH(true),
     COLOR_MATCH(true);
 
     private final boolean desc;
