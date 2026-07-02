@@ -17,7 +17,14 @@ const BaseBall = () => {
 
   // 정답 판단
   const result = async () => {
-    const myAnswer = Object.values(throwBall);
+    // Object.values(throwBall) 사용 X
+    // 무조건 칸 순서대로 비교
+    const myAnswer = [
+      throwBall.one,
+      throwBall.two,
+      throwBall.three,
+      throwBall.four,
+    ];
 
     let strike = 0;
     let ball = 0;
@@ -35,7 +42,6 @@ const BaseBall = () => {
     if (strike === 4) {
       setIsGameOver(true);
 
-      // 여기서 저장
       try {
         await saveRecordApi({
           gameName: "BASEBALL",
@@ -48,8 +54,8 @@ const BaseBall = () => {
       return;
     }
 
-    setScores((scores) => [
-      ...scores,
+    setScores((prev) => [
+      ...prev,
       {
         number: myAnswer.join(""),
         strikeCount: strike,
@@ -195,6 +201,14 @@ const BaseBallInput = ({
 }) => {
   const arr = Array.from({ length: 10 }, (_, i) => i);
 
+  // 선택된 숫자들도 칸 순서대로 명시적으로 관리
+  const selectedNumbers = [
+    throwBall.one,
+    throwBall.two,
+    throwBall.three,
+    throwBall.four,
+  ].filter((v) => v !== undefined);
+
   const clearInput = (name) => {
     setThrowBall((prev) => {
       const next = { ...prev };
@@ -206,7 +220,11 @@ const BaseBallInput = ({
   };
 
   const btnClick = (i) => {
-    setThrowBall({ ...throwBall, [selectNum]: i });
+    setThrowBall((prev) => ({
+      ...prev,
+      [selectNum]: i,
+    }));
+
     if (selectNum === "one") setSelectNum("two");
     else if (selectNum === "two") setSelectNum("three");
     else if (selectNum === "three") setSelectNum("four");
@@ -220,14 +238,15 @@ const BaseBallInput = ({
           name="one"
           onClick={() => clearInput("one")}
         >
-          {throwBall.one}
+          {throwBall.one ?? ""}
         </button>
+
         <button
           className={styles.baseball_input}
           name="two"
           onClick={() => clearInput("two")}
         >
-          {throwBall.two}
+          {throwBall.two ?? ""}
         </button>
 
         <button
@@ -235,7 +254,7 @@ const BaseBallInput = ({
           name="three"
           onClick={() => clearInput("three")}
         >
-          {throwBall.three}
+          {throwBall.three ?? ""}
         </button>
 
         <button
@@ -243,16 +262,18 @@ const BaseBallInput = ({
           name="four"
           onClick={() => clearInput("four")}
         >
-          {throwBall.four}
+          {throwBall.four ?? ""}
         </button>
       </div>
+
       <div className={styles.input_btn_zone}>
         <h1>{selectNum}</h1>
+
         <div className={styles.input_buttons}>
           {arr.map((i) => (
             <button
               className={
-                Object.values(throwBall).includes(i)
+                selectedNumbers.includes(i)
                   ? styles.input_button_already
                   : styles.input_button
               }
@@ -266,6 +287,7 @@ const BaseBallInput = ({
           ))}
         </div>
       </div>
+
       <div className={styles.btn}>
         <button onClick={result} disabled={Object.keys(throwBall).length < 4}>
           THROW
@@ -277,6 +299,7 @@ const BaseBallInput = ({
 
 const MobileBaseBallInput = ({ throwBall, setThrowBall, result, scores }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const historyRef = useRef(null);
 
   const handleChange = (e) => {
     const num = e.nativeEvent.data;
@@ -313,8 +336,6 @@ const MobileBaseBallInput = ({ throwBall, setThrowBall, result, scores }) => {
     setSelectedIndex(index);
   };
 
-  const historyRef = useRef(null);
-
   useEffect(() => {
     if (historyRef.current) {
       historyRef.current.scrollTop = historyRef.current.scrollHeight;
@@ -346,7 +367,6 @@ const MobileBaseBallInput = ({ throwBall, setThrowBall, result, scores }) => {
         className={styles.mobileThrow}
         onClick={() => {
           result();
-
           setThrowBall({});
           setSelectedIndex(0);
         }}
@@ -361,7 +381,6 @@ const MobileBaseBallInput = ({ throwBall, setThrowBall, result, scores }) => {
         {scores.map((score, i) => (
           <div key={i} className={styles.mobileHistoryItem}>
             <span>{score.number}</span>
-
             <span>
               {score.strikeCount} S {score.ballCount} B
             </span>
