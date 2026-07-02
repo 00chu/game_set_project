@@ -48,6 +48,8 @@ public class GameRecordService {
         @Transactional
         public List<GameRecordResponse> getRanking(String gameName) {
 
+        GameSortType sortType = GameSortType.from(gameName); 
+
         GameName type = GameName.valueOf(gameName);
 
         List<GameRecord> records =
