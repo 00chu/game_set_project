@@ -42,6 +42,11 @@
   margin-bottom: 30px;
 }
 
+.left_panel svg {
+  display: block;
+  margin: 0 auto;
+}
+
 /* =======================
    DRAWING
 ======================= */
