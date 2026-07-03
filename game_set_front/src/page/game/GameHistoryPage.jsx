@@ -98,9 +98,10 @@ const GameHistoryPage = () => {
             <div className={styles.myRow}>
               <span>BEST</span>
               <span>{myBestRecord.nickname}</span>
-              <span>{myBestRecord.score}</span>
-
-              {gameName === "HANGMAN" && <span>{myBestRecord.playTime}s</span>}
+              <span className={styles.score}>
+                {myBestRecord.score}
+                {gameName === "HANGMAN" && ` (${myBestRecord.playTime}s)`}
+              </span>
             </div>
           ) : (
             <div className={styles.emptyMyBox}>
