@@ -1,151 +1,134 @@
-const HEAD = (
-  <div
-    style={{
-      width: 50,
-      height: 50,
-      border: "5px solid #111",
-      borderRadius: "50%",
-      position: "absolute",
-      top: 50,
-      left: 95,
-    }}
-  />
-);
+const PARTS = [
+  // 머리
+  <circle
+    key="head"
+    cx="140"
+    cy="75"
+    r="25"
+    stroke="currentColor"
+    strokeWidth="5"
+    fill="none"
+  />,
 
-const BODY = (
-  <div
-    style={{
-      width: 5,
-      height: 90,
-      background: "#111",
-      position: "absolute",
-      top: 100,
-      left: 120,
-    }}
-  />
-);
+  // 몸통
+  <line
+    key="body"
+    x1="140"
+    y1="100"
+    x2="140"
+    y2="180"
+    stroke="currentColor"
+    strokeWidth="5"
+    strokeLinecap="round"
+  />,
 
-const LEFT_ARM = (
-  <div
-    style={{
-      width: 60,
-      height: 5,
-      background: "#111",
-      position: "absolute",
-      top: 125,
-      left: 68,
-      transform: "rotate(-30deg)",
-      transformOrigin: "right center",
-    }}
-  />
-);
+  // 왼팔
+  <line
+    key="left-arm"
+    x1="140"
+    y1="120"
+    x2="105"
+    y2="150"
+    stroke="currentColor"
+    strokeWidth="5"
+    strokeLinecap="round"
+  />,
 
-const RIGHT_ARM = (
-  <div
-    style={{
-      width: 60,
-      height: 5,
-      background: "#111",
-      position: "absolute",
-      top: 125,
-      left: 122,
-      transform: "rotate(30deg)",
-      transformOrigin: "left center",
-    }}
-  />
-);
+  // 오른팔
+  <line
+    key="right-arm"
+    x1="140"
+    y1="120"
+    x2="175"
+    y2="150"
+    stroke="currentColor"
+    strokeWidth="5"
+    strokeLinecap="round"
+  />,
 
-const LEFT_LEG = (
-  <div
-    style={{
-      width: 70,
-      height: 5,
-      background: "#111",
-      position: "absolute",
-      top: 205,
-      left: 58,
-      transform: "rotate(-50deg)",
-      transformOrigin: "right center",
-    }}
-  />
-);
+  // 왼다리
+  <line
+    key="left-leg"
+    x1="140"
+    y1="180"
+    x2="110"
+    y2="230"
+    stroke="currentColor"
+    strokeWidth="5"
+    strokeLinecap="round"
+  />,
 
-const RIGHT_LEG = (
-  <div
-    style={{
-      width: 70,
-      height: 5,
-      background: "#111",
-      position: "absolute",
-      top: 205,
-      left: 122,
-      transform: "rotate(50deg)",
-      transformOrigin: "left center",
-    }}
-  />
-);
-
-const BODY_PARTS = [HEAD, BODY, LEFT_ARM, RIGHT_ARM, LEFT_LEG, RIGHT_LEG];
+  // 오른다리
+  <line
+    key="right-leg"
+    x1="140"
+    y1="180"
+    x2="170"
+    y2="230"
+    stroke="currentColor"
+    strokeWidth="5"
+    strokeLinecap="round"
+  />,
+];
 
 export default function HangmanDrawing({ mistakes }) {
   return (
     <div
       style={{
-        position: "relative",
-        width: 250,
-        height: 320,
-        margin: "0 auto",
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        color: "white", // 다크 테마용
       }}
     >
-      {BODY_PARTS.slice(0, mistakes)}
+      <svg width="260" height="320" viewBox="0 0 260 320">
+        {/* 바닥 */}
+        <line
+          x1="20"
+          y1="300"
+          x2="220"
+          y2="300"
+          stroke="currentColor"
+          strokeWidth="6"
+          strokeLinecap="round"
+        />
 
-      {/* 밧줄 */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 120,
-          width: 4,
-          height: 50,
-          background: "#111",
-        }}
-      />
+        {/* 세로 기둥 */}
+        <line
+          x1="50"
+          y1="20"
+          x2="50"
+          y2="300"
+          stroke="currentColor"
+          strokeWidth="6"
+          strokeLinecap="round"
+        />
 
-      {/* 가로대 */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 20,
-          width: 100,
-          height: 4,
-          background: "#111",
-        }}
-      />
+        {/* 가로 기둥 */}
+        <line
+          x1="50"
+          y1="20"
+          x2="140"
+          y2="20"
+          stroke="currentColor"
+          strokeWidth="6"
+          strokeLinecap="round"
+        />
 
-      {/* 세로대 */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 20,
-          width: 4,
-          height: 300,
-          background: "#111",
-        }}
-      />
+        {/* 줄 */}
+        <line
+          x1="140"
+          y1="20"
+          x2="140"
+          y2="50"
+          stroke="currentColor"
+          strokeWidth="6"
+          strokeLinecap="round"
+        />
 
-      {/* 바닥 */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          width: 180,
-          height: 4,
-          background: "#111",
-        }}
-      />
+        {/* 신체 */}
+        {PARTS.slice(0, mistakes)}
+      </svg>
     </div>
   );
 }
