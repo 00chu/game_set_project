@@ -19,36 +19,36 @@ import java.util.List;
 @RequiredArgsConstructor // 생성자 주입을 위한 어노테이션
 @Service
 public class GameRecordService {
-    @Autowired
-    private UserRepository userRepository;
+        @Autowired
+        private UserRepository userRepository;
 
-    @Autowired
-    private GameRecordRepository gameRecordRepository;
+        @Autowired
+        private GameRecordRepository gameRecordRepository;
 
-    @Transactional
-    public void saveRecord(
-            String email,
-            GameRecordRequest request
-    ) {
-        // JWT에서 나온 email 기반으로 유저 조회
-        User user = userRepository.findByEmail(email)
-                .orElseThrow();
+        @Transactional
+        public void saveRecord(
+                String email,
+                GameRecordRequest request
+        ) {
+                // JWT에서 나온 email 기반으로 유저 조회
+                User user = userRepository.findByEmail(email)
+                        .orElseThrow();
 
-        GameRecord record = GameRecord.builder()
-                .gameName(GameName.valueOf(request.getGameName()))
-                .score(request.getScore())
-                .playTime(request.getPlayTime())
-                .user(user)
-                .build();
+                GameRecord record = GameRecord.builder()
+                        .gameName(GameName.valueOf(request.getGameName()))
+                        .score(request.getScore())
+                        .playTime(request.getPlayTime())
+                        .user(user)
+                        .build();
 
-        gameRecordRepository.save(record);
-    }
+                gameRecordRepository.save(record);
+        }
 
          // 랭킹을 조회하는 메서드
         @Transactional
         public List<GameRecordResponse> getRanking(String gameName) {
 
-        GameSortType sortType = GameSortType.from(gameName); 
+        GameSortType sortType = GameSortType.from(gameName);
 
         GameName type = GameName.valueOf(gameName);
 
@@ -61,21 +61,16 @@ public class GameRecordService {
 
         Comparator<GameRecord> comparator;
 
-        // 기본 정렬 기준 (게임별 확장 가능)
         if (type == GameName.HANGMAN) {
-                comparator = Comparator
-                        .comparing(GameRecord::getScore)
-                        .reversed()
-                        .thenComparing(GameRecord::getPlayTime);
+        comparator = Comparator
+                .comparing(GameRecord::getScore, Comparator.reverseOrder())
+                .thenComparing(GameRecord::getPlayTime);
         } else {
-                comparator = Comparator
-                        .comparing(GameRecord::getScore)
-                        .reversed();
-        }
+        comparator = Comparator.comparing(GameRecord::getScore);
 
-        // GameSortType 로 정렬 방향 처리 (안전하게)
-        if (sortType == GameSortType.DESC) {
-                comparator = comparator.reversed();
+                if (sortType.isDesc()) {
+                        comparator = comparator.reversed();
+                }
         }
 
         return records.stream()
@@ -85,6 +80,7 @@ public class GameRecordService {
                         .gameName(r.getGameName())
                         .nickname(r.getUser().getNickname())
                         .score(r.getScore())
+                        .playTime(r.getPlayTime())
                         .build())
                 .toList();
         }

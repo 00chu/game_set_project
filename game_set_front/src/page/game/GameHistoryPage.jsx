@@ -30,14 +30,33 @@ const GameHistoryPage = () => {
   // 내 기록 중 가장 등수가 높은 것 하나만 출력
   const myBestRecord =
     myRecords.length > 0
-      ? [...myRecords].sort((a, b) =>
-          config?.sort === "asc" ? a.score - b.score : b.score - a.score,
-        )[0]
+      ? [...myRecords].sort((a, b) => {
+          if (gameName === "HANGMAN") {
+            // 목숨 많은 순 -> 시간이 짧은 순
+            if (b.score !== a.score) {
+              return b.score - a.score;
+            }
+
+            return a.playTime - b.playTime;
+          }
+
+          return config?.sort === "asc" ? a.score - b.score : b.score - a.score;
+        })[0]
       : null;
   const hasMyRecords = myRecords.length > 0;
 
   // 게임에 따라 정렬 로직 다르게 ( 1 ~ 10등 + 내 최고기록 )
   const sorted = [...records].sort((a, b) => {
+    if (gameName === "HANGMAN") {
+      // 남은 목숨 많은 순
+      if (b.score !== a.score) {
+        return b.score - a.score;
+      }
+
+      // 같은 목숨이면 플레이 시간 짧은 순
+      return a.playTime - b.playTime;
+    }
+
     return config?.sort === "asc" ? a.score - b.score : b.score - a.score;
   });
 
@@ -55,7 +74,7 @@ const GameHistoryPage = () => {
         {top10.length === 0 ? (
           <div className={styles.emptyBox}>아직 전체 기록이 없습니다</div>
         ) : (
-          <GameRanking records={top10} />
+          <GameRanking records={top10} gameName={gameName} />
         )}
 
         {/* 내 기록 영역 */}
@@ -80,6 +99,8 @@ const GameHistoryPage = () => {
               <span>BEST</span>
               <span>{myBestRecord.nickname}</span>
               <span>{myBestRecord.score}</span>
+
+              {gameName === "HANGMAN" && <span>{myBestRecord.playTime}s</span>}
             </div>
           ) : (
             <div className={styles.emptyMyBox}>

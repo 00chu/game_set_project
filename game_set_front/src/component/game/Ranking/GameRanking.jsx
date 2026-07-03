@@ -1,12 +1,20 @@
 import styles from "../../../page/game/GameHistoryPage.module.css";
 
-const GameRanking = ({ records }) => {
+const GameRanking = ({ records, gameName }) => {
+  const scoreTitle =
+    gameName === "BASEBALL" ? "TRY" : gameName === "HANGMAN" ? "LIFE" : "SCORE";
+
   return (
     <div className={styles.rankingBox}>
       <div className={styles.header}>
         <span>RANK</span>
         <span>NAME</span>
-        <span className={styles.headerScore}>SCORE</span>
+
+        <span className={styles.headerScore}>{scoreTitle}</span>
+
+        {gameName === "HANGMAN" && (
+          <span className={styles.headerTime}>TIME</span>
+        )}
       </div>
 
       {records.map((record, index) => (
@@ -23,8 +31,14 @@ const GameRanking = ({ records }) => {
           }`}
         >
           <span className={styles.rank}>{index + 1}</span>
+
           <span className={styles.name}>{record.nickname}</span>
+
           <span className={styles.score}>{record.score}</span>
+
+          {gameName === "HANGMAN" && (
+            <span className={styles.time}>{record.playTime}s</span>
+          )}
         </div>
       ))}
     </div>

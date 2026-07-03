@@ -9,6 +9,7 @@ const Hangman = () => {
   const navigate = useNavigate();
 
   const [started, setStarted] = useState(false);
+  const [startTime, setStartTime] = useState(null);
   const [word, setWord] = useState("");
   const [guessedLetters, setGuessedLetters] = useState([]);
 
@@ -68,9 +69,12 @@ const Hangman = () => {
       setIsClear(true);
 
       try {
+        const playTime = Math.floor((Date.now() - startTime) / 1000);
+
         await saveRecordApi({
           gameName: "HANGMAN",
           score: remainLife,
+          playTime,
         });
       } catch (e) {
         console.error(e);
@@ -104,7 +108,10 @@ const Hangman = () => {
     return (
       <div className={styles.startContainer}>
         <HangmanStart
-          onStart={() => setStarted(true)}
+          onStart={() => {
+            setStartTime(Date.now());
+            setStarted(true);
+          }}
           onRanking={() => navigate("/history/HANGMAN")}
         />
       </div>

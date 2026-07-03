@@ -14,5 +14,6 @@ public class GameRecordResponse {
     private Long id;
     private GameName gameName;
     private String nickname;
+    private Integer playTime;
     private Integer score;
 }

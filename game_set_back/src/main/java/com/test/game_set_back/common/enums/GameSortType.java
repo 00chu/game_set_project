@@ -4,10 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum GameSortType {
-
-    BASEBALL(false),
-    COLOR_MATCH(true),
-    HANGMAN(false);
+    BASEBALL(false),     // 적을수록 좋음
+    COLOR_MATCH(true),   // 높을수록 좋음
+    HANGMAN(true);       // 남은 목숨 많을수록 좋음
 
     private final boolean desc;
 
