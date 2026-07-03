@@ -1,109 +1,189 @@
 .hangman_game {
-  display: flex;
-  gap: 2rem;
-  padding: 2rem;
-  height: 100%;
+  width: min(1200px, 95%);
+  min-height: 700px;
+
+  display: grid;
+  grid-template-columns: 320px 1fr;
+
+  gap: 30px;
+
+  padding: 30px;
+
+  border-radius: 24px;
+
+  background: #151d30;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
 }
 
+/* =======================
+   LEFT PANEL
+======================= */
+
 .left_panel {
-  width: 320px;
-  background: white;
+  background: #1e293b;
+
   border-radius: 20px;
-  padding: 24px;
-  box-shadow: 0 4px 20px rgb(0 0 0 / 0.1);
-  text-align: center;
+
+  padding: 30px;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  color: white;
 }
 
 .left_panel h2 {
-  color: #111827;
-  margin-bottom: 20px;
+  font-size: 36px;
+  margin-bottom: 30px;
 }
 
+/* =======================
+   DRAWING
+======================= */
+
+.hangman_draw {
+  font-size: 32px;
+
+  color: white;
+
+  white-space: pre;
+
+  line-height: 1.2;
+}
+
+/* =======================
+   RIGHT PANEL
+======================= */
+
 .right_panel {
-  flex: 1;
-  background: white;
+  background: #1e293b;
+
   border-radius: 20px;
-  padding: 24px;
-  box-shadow: 0 4px 20px rgb(0 0 0 / 0.1);
+
+  padding: 30px;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .right_panel h1 {
   text-align: center;
-  color: #111827;
-  margin-bottom: 30px;
+
+  color: white;
+
+  font-size: 42px;
+
+  margin-bottom: 40px;
+
+  letter-spacing: 4px;
 }
+
+/* =======================
+   WORD
+======================= */
 
 .word {
   display: flex;
+
   justify-content: center;
+
   flex-wrap: wrap;
+
   gap: 16px;
-  margin: 40px 0;
+
+  margin-bottom: 50px;
 }
 
 .word_box {
   width: 60px;
   height: 70px;
-  border-bottom: 4px solid #2563eb;
+
+  border-bottom: 4px solid #8b5cf6;
+
   display: flex;
+
   justify-content: center;
   align-items: center;
+
   font-size: 42px;
-  font-weight: bold;
-  color: #111827;
+  font-weight: 800;
+
+  color: white;
 }
+
+/* =======================
+   KEYBOARD
+======================= */
 
 .keyboard {
   display: grid;
+
   grid-template-columns: repeat(9, 1fr);
+
   gap: 12px;
 }
 
 .key {
-  height: 55px;
-  border-radius: 12px;
-  border: none;
-  background: #f3f4f6;
-  color: #111827;
-  font-size: 20px;
+  height: 60px;
+
+  border-radius: 16px;
+
+  border: 2px solid #334155;
+
+  background: #0f172a;
+
+  color: white;
+
+  font-size: 22px;
   font-weight: 700;
+
   cursor: pointer;
-  transition: 0.2s;
+
+  transition: 0.25s;
 }
 
 .key:hover:not(:disabled) {
-  background: #2563eb;
-  color: white;
+  transform: translateY(-4px);
+
+  border-color: #8b5cf6;
+
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.35);
 }
 
 .key:disabled {
-  background: #d1d5db;
-  color: #6b7280;
+  opacity: 0.35;
+
   cursor: not-allowed;
 }
 
-.correct {
-  opacity: 0.5;
+/* =======================
+   MOBILE
+======================= */
+
+.mobile_input_area {
+  display: flex;
+
+  justify-content: center;
 }
 
-.wrong {
-  background: #ffb3b3;
-}
-
-.new_game_btn {
-  margin-top: 24px;
+.mobile_input_btn {
+  width: 250px;
   height: 60px;
-  width: 220px;
-  border: none;
-  border-radius: 14px;
-  font-size: 20px;
-}
 
-.hangman_draw {
-  font-size: 28px;
-  color: #111827;
-  text-align: center;
-  white-space: pre-wrap;
+  border: none;
+
+  border-radius: 16px;
+
+  background: linear-gradient(90deg, #8b5cf6, #a855f7);
+
+  color: white;
+
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .hidden_input {
@@ -112,137 +192,156 @@
   pointer-events: none;
 }
 
-.mobile_input_area {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.mobile_input_btn {
-  width: 220px;
-  height: 60px;
-  border: none;
-  border-radius: 14px;
-  background: #2563eb;
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.mobile_input_btn:active {
-  transform: scale(0.97);
-}
-
-/* 시작 화면 */
+/* =======================
+   START SCREEN
+======================= */
 
 .startContainer {
+  width: min(1200px, 95%);
+  min-height: 700px;
+
+  background: #151d30;
+
+  border-radius: 24px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 500px;
 }
 
 .startScreen {
-  width: 100%;
-  max-width: 500px;
-  background: white;
-  border-radius: 24px;
-  padding: 50px;
-  text-align: center;
-  box-shadow: 0 8px 30px rgb(0 0 0 / 0.1);
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 40px;
 }
 
 .startTitle {
-  font-size: 48px;
-  margin-bottom: 40px;
-  color: #111827;
+  color: white;
+
+  font-size: 72px;
+
+  font-weight: 900;
+
+  text-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
 }
 
 .startButtons {
   display: flex;
-  justify-content: center;
   gap: 20px;
 }
 
 .startButtons button {
   width: 180px;
   height: 60px;
+
   border: none;
-  border-radius: 14px;
-  background: #2563eb;
+
+  border-radius: 16px;
+
   color: white;
+
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 800;
+
   cursor: pointer;
 }
 
-/* 게임 종료 화면 */
+.startButtons button:first-child {
+  background: linear-gradient(90deg, #8b5cf6, #a855f7);
+}
+
+.startButtons button:last-child {
+  background: #1e293b;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* =======================
+   GAME OVER
+======================= */
 
 .gameOverOverlay {
   position: fixed;
   inset: 0;
-  background: rgb(0 0 0 / 0.6);
+
+  background: rgba(0, 0, 0, 0.65);
+
+  backdrop-filter: blur(6px);
 
   display: flex;
+
   justify-content: center;
   align-items: center;
 
-  z-index: 1000;
+  z-index: 9999;
 }
 
 .gameOverCard {
-  width: 90%;
-  max-width: 450px;
-  background: white;
-  border-radius: 24px;
-  padding: 40px;
+  width: min(420px, 90vw);
+
+  padding: 32px;
+
+  border-radius: 20px;
+
+  background: rgba(15, 23, 42, 0.95);
+
+  border: 1px solid rgba(139, 92, 246, 0.3);
+
   text-align: center;
 }
 
-.gameOverCard h1 {
-  color: #111827;
-  margin-bottom: 20px;
-}
-
+.gameOverCard h1,
 .gameOverCard p {
-  color: #374151;
-  margin-bottom: 20px;
+  color: white;
 }
 
 .btnRow {
   display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 30px;
+
+  gap: 10px;
+
+  margin-top: 20px;
 }
 
 .btnRow button {
-  width: 120px;
+  flex: 1;
+
   height: 50px;
+
   border: none;
+
   border-radius: 12px;
-  background: #2563eb;
+
+  background: linear-gradient(90deg, #8b5cf6, #a855f7);
+
   color: white;
-  font-weight: bold;
+
+  font-weight: 700;
+
   cursor: pointer;
 }
 
-/* 모바일 */
+/* =======================
+   MOBILE
+======================= */
 
 @media (max-width: 768px) {
   .hangman_game {
-    flex-direction: column;
-    padding: 1rem;
-  }
-
-  .left_panel {
     width: 100%;
-  }
 
-  .right_panel {
-    width: 100%;
+    min-height: auto;
+
+    grid-template-columns: 1fr;
+
+    padding: 20px;
+
+    border-radius: 18px;
   }
 
   .keyboard {
@@ -252,21 +351,17 @@
   .word_box {
     width: 45px;
     height: 55px;
-    font-size: 28px;
+
+    font-size: 30px;
   }
 
-  .startButtons {
+  .startButtons,
+  .btnRow {
     flex-direction: column;
-  }
-
-  .startButtons button {
     width: 100%;
   }
 
-  .btnRow {
-    flex-direction: column;
-  }
-
+  .startButtons button,
   .btnRow button {
     width: 100%;
   }
