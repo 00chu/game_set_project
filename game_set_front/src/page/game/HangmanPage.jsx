@@ -1,4 +1,4 @@
-import Hangman from "../../component/game/hangman/Hangman";
+import Hangman from "../../component/game/hangman/HangmanGame";
 import styles from "./page.module.css";
 import PsychologyIcon from "@mui/icons-material/Psychology";
 
